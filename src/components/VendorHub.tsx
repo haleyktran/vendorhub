@@ -160,6 +160,47 @@ function getMatchingNotes(vendor: VendorContact, query: string): string[] {
   return vendor.notes.filter((n) => n.toLowerCase().includes(q))
 }
 
+// ─── category grouping ────────────────────────────────────────────────────────
+
+const GROUP_ORDER = [
+  "Fundraising & Company Intelligence",
+  "Company Data",
+  "Technographics & Tech Stack",
+  "Intent & Signals",
+  "Website Visitor",
+  "Advertising Intelligence",
+  "SEO & Web Analytics",
+  "Ecommerce & Social",
+]
+
+const GROUP_ICONS: Record<string, string> = {
+  "Fundraising & Company Intelligence": "💰",
+  "Company Data": "🏢",
+  "Technographics & Tech Stack": "🔧",
+  "Intent & Signals": "📡",
+  "Website Visitor": "👁️",
+  "Advertising Intelligence": "📣",
+  "SEO & Web Analytics": "📈",
+  "Ecommerce & Social": "🛍️",
+}
+
+function getGroupName(category: string): string {
+  const primary = category.split(" · ")[0].trim()
+  const map: Record<string, string> = {
+    "Technographics": "Technographics & Tech Stack",
+    "Tech Stack": "Technographics & Tech Stack",
+    "Tech Stack & Technographics": "Technographics & Tech Stack",
+    "Tech Intelligence": "Technographics & Tech Stack",
+    "SEO": "SEO & Web Analytics",
+    "Ecommerce": "Ecommerce & Social",
+    "Network & Relationship Signals": "Intent & Signals",
+    "Developer Intent": "Intent & Signals",
+    "Website Visitor": "Website Visitor",
+    "Website Visitor & Company Intelligence": "Website Visitor",
+  }
+  return map[primary] ?? primary
+}
+
 // ─── action item row ──────────────────────────────────────────────────────────
 
 function ActionItemRow({
@@ -339,6 +380,157 @@ function VendorDetail({
   )
 }
 
+// ─── vendor table (shared across groups) ─────────────────────────────────────
+
+function VendorTable({
+  vendors,
+  expandedRows,
+  toggleExpanded,
+  actionState,
+  ownerState,
+  toggleAction,
+  changeOwner,
+  getEffectiveDone,
+  getEffectiveOwner,
+  query,
+}: {
+  vendors: VendorContact[]
+  expandedRows: Set<string>
+  toggleExpanded: (id: string) => void
+  actionState: Record<string, boolean>
+  ownerState: Record<string, string>
+  toggleAction: (vendorId: string, actionId: string) => void
+  changeOwner: (vendorId: string, actionId: string, owner: string) => void
+  getEffectiveDone: (vendorId: string, actionId: string, defaultDone: boolean) => boolean
+  getEffectiveOwner: (vendorId: string, actionId: string, defaultOwner: string) => string
+  query: string
+}) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow className="bg-muted/40">
+          <TableHead className="w-6"></TableHead>
+          <TableHead className="w-[160px]">Vendor</TableHead>
+          <TableHead className="w-[90px]">Last contact</TableHead>
+          <TableHead className="w-[160px]">Email</TableHead>
+          <TableHead className="w-[50px] text-center" title="Commercial status from Will's brief">$$</TableHead>
+          <TableHead className="w-[70px] text-center">Key / Tests</TableHead>
+          <TableHead>Next action</TableHead>
+          <TableHead className="w-[90px]">Status</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {vendors.map((vendor) => {
+          const expanded = expandedRows.has(vendor.id)
+          const { text: contactText, color: contactColor } = lastContactLabel(vendor.lastContactDate)
+          const openActions = vendor.actionItems.filter((a) => !getEffectiveDone(vendor.id, a.id, a.done))
+          const nextOnMe   = openActions.find((a) => getEffectiveOwner(vendor.id, a.id, a.owner) === "me")
+          const nextOnWill = openActions.find((a) => getEffectiveOwner(vendor.id, a.id, a.owner) === "will")
+          const nextOnThem = openActions.find((a) => getEffectiveOwner(vendor.id, a.id, a.owner) === "them")
+          const nextAction = nextOnMe ?? nextOnWill ?? nextOnThem
+          const nextActionOwner = nextAction ? getEffectiveOwner(vendor.id, nextAction.id, nextAction.owner) : null
+
+          return (
+            <React.Fragment key={vendor.id}>
+              <TableRow
+                className="cursor-pointer hover:bg-muted/30 transition-colors"
+                onClick={() => toggleExpanded(vendor.id)}
+              >
+                {/* expand */}
+                <TableCell className="text-muted-foreground pr-0">
+                  {expanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
+                </TableCell>
+
+                {/* vendor */}
+                <TableCell>
+                  <div className="font-semibold text-sm">{vendor.name}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {vendor.tier && <span className="font-medium text-foreground mr-1">{vendor.tier}</span>}
+                    {vendor.category}
+                  </div>
+                </TableCell>
+
+                {/* last contact */}
+                <TableCell>
+                  <span className={`text-sm font-medium ${contactColor}`}>{contactText}</span>
+                </TableCell>
+
+                {/* email */}
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  {emailBadge(vendor.emailStatus, vendor.emailSubject)}
+                </TableCell>
+
+                {/* commercial status */}
+                <TableCell className="text-center" onClick={(e) => e.stopPropagation()}>
+                  {commercialBadge(vendor.commercialStatus)}
+                </TableCell>
+
+                {/* key / tests */}
+                <TableCell className="text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <span title={vendor.hasApiKey ? "API key obtained" : "No API key yet"}
+                      className={vendor.hasApiKey ? "text-emerald-600" : "text-gray-300"}>
+                      <Key className="h-3.5 w-3.5" />
+                    </span>
+                    <span title={vendor.latencyTestRun ? "Latency tests run" : "Tests not run"}
+                      className={vendor.latencyTestRun ? "text-emerald-600" : "text-gray-300"}>
+                      <FlaskConical className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+                </TableCell>
+
+                {/* next action */}
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  {nextAction && nextActionOwner ? (
+                    <div className="flex items-start gap-2">
+                      <button
+                        onClick={() => toggleAction(vendor.id, nextAction.id)}
+                        className="mt-0.5 flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        <Circle className="h-4 w-4" />
+                      </button>
+                      <p className="text-xs leading-snug line-clamp-2 flex-1">{nextAction.text}</p>
+                      <span className="flex-shrink-0 mt-0.5">
+                        <OwnerSelect
+                          owner={nextActionOwner}
+                          onChange={(o) => changeOwner(vendor.id, nextAction.id, o)}
+                        />
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1 text-xs text-emerald-600">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      All done
+                    </div>
+                  )}
+                </TableCell>
+
+                {/* status */}
+                <TableCell>{statusBadge(vendor.overallStatus)}</TableCell>
+              </TableRow>
+
+              {expanded && (
+                <TableRow className="hover:bg-transparent">
+                  <TableCell colSpan={8} className="p-0">
+                    <VendorDetail
+                      vendor={vendor}
+                      actionState={actionState}
+                      ownerState={ownerState}
+                      onToggle={toggleAction}
+                      onOwnerChange={changeOwner}
+                      query={query}
+                    />
+                  </TableCell>
+                </TableRow>
+              )}
+            </React.Fragment>
+          )
+        })}
+      </TableBody>
+    </Table>
+  )
+}
+
 // ─── main component ───────────────────────────────────────────────────────────
 
 type FilterTab = "all" | "me" | "will" | "them" | "ready" | "blocked" | "pending"
@@ -347,6 +539,7 @@ export function VendorHub() {
   const [query, setQuery] = React.useState("")
   const [filter, setFilter] = React.useState<FilterTab>("all")
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set())
+  const [collapsedGroups, setCollapsedGroups] = React.useState<Set<string>>(new Set())
   const [actionState, setActionState] = React.useState<Record<string, boolean>>({})
   const [ownerState, setOwnerState] = React.useState<Record<string, string>>({})
 
@@ -355,6 +548,15 @@ export function VendorHub() {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
+      return next
+    })
+  }
+
+  const toggleGroup = (group: string) => {
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev)
+      if (next.has(group)) next.delete(group)
+      else next.add(group)
       return next
     })
   }
@@ -390,6 +592,25 @@ export function VendorHub() {
     if (filter === "pending") return v.overallStatus === "pending" || v.overallStatus === "meeting-booked"
     return true
   })
+
+  // ── group by category ────────────────────────────────────────────────────
+
+  const grouped = React.useMemo(() => {
+    const groups: Record<string, VendorContact[]> = {}
+    filtered.forEach((v) => {
+      const group = getGroupName(v.category)
+      if (!groups[group]) groups[group] = []
+      groups[group].push(v)
+    })
+    return Object.entries(groups).sort(([a], [b]) => {
+      const ai = GROUP_ORDER.indexOf(a)
+      const bi = GROUP_ORDER.indexOf(b)
+      if (ai === -1 && bi === -1) return a.localeCompare(b)
+      if (ai === -1) return 1
+      if (bi === -1) return -1
+      return ai - bi
+    })
+  }, [filtered])
 
   // ── quick stats ──────────────────────────────────────────────────────────
 
@@ -481,135 +702,54 @@ export function VendorHub() {
         ))}
       </div>
 
-      {/* Table */}
+      {/* Grouped tables */}
       {filtered.length === 0 ? (
         <div className="py-12 text-center text-sm text-muted-foreground">
           {query ? `No vendors match "${query}"` : "No vendors in this view."}
         </div>
       ) : (
-        <div className="rounded-lg border overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/40">
-                <TableHead className="w-6"></TableHead>
-                <TableHead className="w-[160px]">Vendor</TableHead>
-                <TableHead className="w-[90px]">Last contact</TableHead>
-                <TableHead className="w-[160px]">Email</TableHead>
-                <TableHead className="w-[50px] text-center" title="Commercial status from Will's brief">$$</TableHead>
-                <TableHead className="w-[70px] text-center">Key / Tests</TableHead>
-                <TableHead>Next action</TableHead>
-                <TableHead className="w-[90px]">Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.map((vendor) => {
-                const expanded = expandedRows.has(vendor.id)
-                const { text: contactText, color: contactColor } = lastContactLabel(vendor.lastContactDate)
-                const openActions = vendor.actionItems.filter((a) => !getEffectiveDone(vendor.id, a.id, a.done))
-                const nextOnMe   = openActions.find((a) => getEffectiveOwner(vendor.id, a.id, a.owner) === "me")
-                const nextOnWill = openActions.find((a) => getEffectiveOwner(vendor.id, a.id, a.owner) === "will")
-                const nextOnThem = openActions.find((a) => getEffectiveOwner(vendor.id, a.id, a.owner) === "them")
-                const nextAction = nextOnMe ?? nextOnWill ?? nextOnThem
-                const nextActionOwner = nextAction ? getEffectiveOwner(vendor.id, nextAction.id, nextAction.owner) : null
+        <div className="space-y-6">
+          {grouped.map(([groupName, vendors]) => {
+            const isCollapsed = collapsedGroups.has(groupName)
+            const icon = GROUP_ICONS[groupName] ?? "📦"
+            return (
+              <div key={groupName} className="space-y-0">
+                {/* Section header */}
+                <button
+                  onClick={() => toggleGroup(groupName)}
+                  className="w-full flex items-center gap-2 py-2 px-1 text-left group"
+                >
+                  <span className="text-base leading-none">{icon}</span>
+                  <span className="font-semibold text-sm text-foreground">{groupName}</span>
+                  <span className="text-xs text-muted-foreground bg-muted rounded-full px-2 py-0.5">{vendors.length}</span>
+                  <span className="ml-auto text-muted-foreground group-hover:text-foreground transition-colors">
+                    {isCollapsed
+                      ? <ChevronRight className="h-4 w-4" />
+                      : <ChevronDown className="h-4 w-4" />
+                    }
+                  </span>
+                </button>
 
-                return (
-                  <React.Fragment key={vendor.id}>
-                    <TableRow
-                      className="cursor-pointer hover:bg-muted/30 transition-colors"
-                      onClick={() => toggleExpanded(vendor.id)}
-                    >
-                      {/* expand */}
-                      <TableCell className="text-muted-foreground pr-0">
-                        {expanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
-                      </TableCell>
-
-                      {/* vendor */}
-                      <TableCell>
-                        <div className="font-semibold text-sm">{vendor.name}</div>
-                        <div className="text-xs text-muted-foreground">
-                          {vendor.tier && <span className="font-medium text-foreground mr-1">{vendor.tier}</span>}
-                          {vendor.category}
-                        </div>
-                      </TableCell>
-
-                      {/* last contact */}
-                      <TableCell>
-                        <span className={`text-sm font-medium ${contactColor}`}>{contactText}</span>
-                      </TableCell>
-
-                      {/* email */}
-                      <TableCell onClick={(e) => e.stopPropagation()}>
-                        {emailBadge(vendor.emailStatus, vendor.emailSubject)}
-                      </TableCell>
-
-                      {/* commercial status */}
-                      <TableCell className="text-center" onClick={(e) => e.stopPropagation()}>
-                        {commercialBadge(vendor.commercialStatus)}
-                      </TableCell>
-
-                      {/* key / tests */}
-                      <TableCell className="text-center">
-                        <div className="flex items-center justify-center gap-2">
-                          <span title={vendor.hasApiKey ? "API key obtained" : "No API key yet"}
-                            className={vendor.hasApiKey ? "text-emerald-600" : "text-gray-300"}>
-                            <Key className="h-3.5 w-3.5" />
-                          </span>
-                          <span title={vendor.latencyTestRun ? "Latency tests run" : "Tests not run"}
-                            className={vendor.latencyTestRun ? "text-emerald-600" : "text-gray-300"}>
-                            <FlaskConical className="h-3.5 w-3.5" />
-                          </span>
-                        </div>
-                      </TableCell>
-
-                      {/* next action */}
-                      <TableCell onClick={(e) => e.stopPropagation()}>
-                        {nextAction && nextActionOwner ? (
-                          <div className="flex items-start gap-2">
-                            <button
-                              onClick={() => toggleAction(vendor.id, nextAction.id)}
-                              className="mt-0.5 flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors"
-                            >
-                              <Circle className="h-4 w-4" />
-                            </button>
-                            <p className="text-xs leading-snug line-clamp-2 flex-1">{nextAction.text}</p>
-                            <span className="flex-shrink-0 mt-0.5">
-                              <OwnerSelect
-                                owner={nextActionOwner}
-                                onChange={(o) => changeOwner(vendor.id, nextAction.id, o)}
-                              />
-                            </span>
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-1 text-xs text-emerald-600">
-                            <CheckCircle2 className="h-3.5 w-3.5" />
-                            All done
-                          </div>
-                        )}
-                      </TableCell>
-
-                      {/* status */}
-                      <TableCell>{statusBadge(vendor.overallStatus)}</TableCell>
-                    </TableRow>
-
-                    {expanded && (
-                      <TableRow className="hover:bg-transparent">
-                        <TableCell colSpan={8} className="p-0">
-                          <VendorDetail
-                            vendor={vendor}
-                            actionState={actionState}
-                            ownerState={ownerState}
-                            onToggle={toggleAction}
-                            onOwnerChange={changeOwner}
-                            query={query}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </React.Fragment>
-                )
-              })}
-            </TableBody>
-          </Table>
+                {/* Table */}
+                {!isCollapsed && (
+                  <div className="rounded-lg border overflow-hidden">
+                    <VendorTable
+                      vendors={vendors}
+                      expandedRows={expandedRows}
+                      toggleExpanded={toggleExpanded}
+                      actionState={actionState}
+                      ownerState={ownerState}
+                      toggleAction={toggleAction}
+                      changeOwner={changeOwner}
+                      getEffectiveDone={getEffectiveDone}
+                      getEffectiveOwner={getEffectiveOwner}
+                      query={query}
+                    />
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
 

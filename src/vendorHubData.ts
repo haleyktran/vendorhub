@@ -448,6 +448,7 @@ export const vendorContacts: VendorContact[] = [
     overallStatus: "pending",
     commercialStatus: "wait",
     contacts: ["David Connors — david@theswarm.com","Grace — grace@theswarm.com"],
+    slackChannel: "#theswarm-unify",
     granolaLink: "https://notes.granola.ai/d/f66cee5e-38b1-4c34-8faa-f1dc3ec1a668",
     pricing: "$500/mo=50K credits; Full DB flatfile: $10K/mo",
   },
@@ -660,11 +661,11 @@ export const vendorContacts: VendorContact[] = [
     emailStatus: "waiting-on-them",
     emailSubject: "Porter to send updated API docs (95% complete)",
     signal:
-      "Display ad intelligence: programmatic, direct, native, pre-roll video. 35 countries. Real-time ad delivery data (500ms). API with spend estimates, ad copy, network placement. NO search/social data (separate vendor needed). OEM/reseller pricing available. Call with Porter today (Wed Mar 25 3:00pm PT).",
+      "Display ad intelligence: programmatic, direct, native, pre-roll video. 35 countries. Real-time ad delivery data (500ms). API with spend estimates, ad copy, network placement. NO search/social data (separate vendor needed). OEM/reseller pricing available. Call with Porter rescheduled to Thu Mar 26.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
-      { id: "adb-1", text: "Join 3:00pm PT call with Porter today (Wed Mar 25)", owner: "me", done: false },
+      { id: "adb-1", text: "Join rescheduled call with Porter on Thu Mar 26", owner: "me", done: false },
       { id: "adb-2", text: "Receive updated API docs from Porter (95% complete)", owner: "them", done: false },
       { id: "adb-3", text: "Schedule 30-min demo with Will", owner: "me", done: false },
     ],
@@ -678,7 +679,7 @@ export const vendorContacts: VendorContact[] = [
       "Porter consulting Mark (VP Ops) on Clay-style partnership deal",
       "API docs 95% complete — pending from Porter",
       "OEM/reseller pricing available; TBD",
-      "Call with Porter Wed Mar 25 3:00pm PT",
+      "Call with Porter rescheduled to Thu Mar 26",
       "Demo with Will scheduled",
       "Granola: https://notes.granola.ai/d/a9aa8d7f-9452-4e96-8813-516a3c637928",
     ],
@@ -1091,7 +1092,7 @@ export const vendorContacts: VendorContact[] = [
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
-      { id: "pb-1", text: "Attend meeting with Shouyi Poon (partnerships team) — he booked a slot after Haley followed up", owner: "me", done: false },
+      { id: "pb-1", text: "Attend meeting with Shouyi Poon (partnerships team) on Thu Mar 26", owner: "me", done: false },
       { id: "pb-2", text: "Clarify whether Clay-style data partnership (API → enrich Unify end users) is possible under their redistribution policy", owner: "me", done: false },
     ],
     notes: [
