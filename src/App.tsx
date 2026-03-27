@@ -4,6 +4,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 import { Badge } from "@/components/ui/badge"
 import { summaryData, tierData, burstData, runLog, type Status } from "./data"
 import { VendorHub } from "@/components/VendorHub"
+import { CommercialHub } from "@/components/CommercialHub"
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -267,10 +268,10 @@ const VENDOR_STATUS: [string, Status][] = [
   ["HG Insights","pending"],
 ]
 
-type AppView = "latency" | "followups"
+type AppView = "latency" | "followups" | "commercial"
 
 export default function App() {
-  const [view, setView] = React.useState<AppView>("followups")
+  const [view, setView] = React.useState<AppView>("commercial")
 
   return (
     <div className="min-h-screen bg-background">
@@ -288,6 +289,16 @@ export default function App() {
               }`}
             >
               Vendor Follow-ups
+            </button>
+            <button
+              onClick={() => setView("commercial")}
+              className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${
+                view === "commercial"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              💰 Commercial
             </button>
             <button
               onClick={() => setView("latency")}
@@ -314,6 +325,20 @@ export default function App() {
               </p>
             </div>
             <VendorHub />
+          </>
+        )}
+
+        {/* ── Commercial view ──────────────────────────────────────────────── */}
+        {view === "commercial" && (
+          <>
+            <div className="mb-6">
+              <h1 className="text-2xl font-semibold tracking-tight mb-1">💰 Commercial Brief</h1>
+              <p className="text-sm text-muted-foreground max-w-2xl">
+                Pricing, upfront commitment, and next commercial steps for every vendor — sorted by readiness.
+                Priority this week: push forward commercial conversations with 🟢 Ready vendors.
+              </p>
+            </div>
+            <CommercialHub />
           </>
         )}
 
