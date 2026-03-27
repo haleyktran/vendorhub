@@ -292,13 +292,4 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialOwner: "haley",
   },
 
-  theirstack: {
-    commitmentTier: "none",
-    commitmentLabel: "Zero upfront",
-    pricingTldr: "Zero upfront. 1 credit = 1 job signal; 3 credits = 1 tech lookup. Volume discounts above 1M credits.",
-    pricingDetail: "Pure PAYG — only charged when notifications fire. 1 credit = 1 job signal; 3 credits = 1 company technographic lookup. Volume discounts above 1M credits. Public pricing up to 1M; custom beyond. Best commercial model of any vendor in the eval.",
-    capability: "finds-enrich",
-    commercialNextStep: "Reach out to Xoel López — strongest commercial profile: zero upfront, pure PAYG. Get trial API invite + loop in finance for pricing above 1M credits.",
-    commercialOwner: "will",
-  },
 }
