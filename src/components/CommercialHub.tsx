@@ -1,50 +1,133 @@
 import * as React from "react"
 import { vendorContacts } from "@/vendorHubData"
 import { vendorCommercialData, type CommitmentTier, type Capability } from "@/vendorCommercialData"
+import { useLocalOverrides, type CommercialOverride } from "@/hooks/useLocalOverrides"
 import {
   Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
 } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, AlertCircle, User } from "lucide-react"
+import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, AlertCircle, User, Pencil, RotateCcw } from "lucide-react"
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
-const COMMIT_CONFIG: Record<CommitmentTier, { label: string; color: string; bg: string; dot: string }> = {
-  none: { label: "✅ No commit",  color: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200", dot: "bg-emerald-400" },
-  low:  { label: "⚠️ Low",        color: "text-amber-700",   bg: "bg-amber-50 border-amber-200",     dot: "bg-amber-400"   },
-  high: { label: "❌ High",       color: "text-red-700",     bg: "bg-red-50 border-red-200",         dot: "bg-red-400"     },
-}
+const COMMIT_TIERS: Array<{ value: CommitmentTier | ""; label: string }> = [
+  { value: "",     label: "TBD" },
+  { value: "none", label: "✅ No commit" },
+  { value: "low",  label: "⚠️ Low ($2K–$25K)" },
+  { value: "high", label: "❌ High ($50K+)" },
+]
 
-const CAP_LABELS: Record<Capability, string> = {
-  "finds-enrich":         "Finds + enrich",
-  "enrich-only":          "Enrich only",
-  "dataset":              "Buy dataset",
-  "finds-enrich-dataset": "Finds + enrich + dataset",
-  "platform":             "Platform",
-}
+const CAPABILITIES: Array<{ value: Capability | ""; label: string }> = [
+  { value: "",                    label: "TBD" },
+  { value: "finds-enrich",        label: "Finds + enrich" },
+  { value: "enrich-only",         label: "Enrich only" },
+  { value: "dataset",             label: "Buy dataset" },
+  { value: "finds-enrich-dataset",label: "Finds + enrich + dataset" },
+  { value: "platform",            label: "Platform" },
+]
 
-function CommitBadge({ tier, label }: { tier: CommitmentTier | null; label: string }) {
-  if (!tier) return <span className="text-xs text-muted-foreground">TBD</span>
-  const cfg = COMMIT_CONFIG[tier]
+const STATUSES: Array<{ value: "ready" | "wait" | "blocked" | "tbd"; label: string }> = [
+  { value: "ready",   label: "🟢 Ready" },
+  { value: "wait",    label: "🟡 In motion" },
+  { value: "blocked", label: "🔴 Blocked" },
+  { value: "tbd",     label: "⚪ TBD" },
+]
+
+// ─── inline edit primitives ────────────────────────────────────────────────────
+
+function EditableText({
+  value, onSave, className = "", multiline = false, placeholder = "Add note…",
+}: {
+  value: string
+  onSave: (v: string) => void
+  className?: string
+  multiline?: boolean
+  placeholder?: string
+}) {
+  const [editing, setEditing] = React.useState(false)
+  const [draft, setDraft] = React.useState(value)
+  const ref = React.useRef<HTMLInputElement & HTMLTextAreaElement>(null)
+
+  React.useEffect(() => { setDraft(value) }, [value])
+  React.useEffect(() => { if (editing) ref.current?.focus() }, [editing])
+
+  const commit = () => {
+    setEditing(false)
+    if (draft.trim() !== value) onSave(draft.trim())
+  }
+
+  if (editing) {
+    const shared = {
+      ref,
+      value: draft,
+      onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setDraft(e.target.value),
+      onBlur: commit,
+      onKeyDown: (e: React.KeyboardEvent) => {
+        if (e.key === "Enter" && !multiline) { e.preventDefault(); commit() }
+        if (e.key === "Escape") { setEditing(false); setDraft(value) }
+      },
+      placeholder,
+      className: `w-full text-xs border border-violet-400 rounded px-1.5 py-1 bg-white outline-none ring-1 ring-violet-300 ${className}`,
+    }
+    return multiline
+      ? <textarea {...shared} rows={3} className={shared.className + " resize-none"} />
+      : <input {...shared} />
+  }
+
   return (
-    <div className="flex flex-col gap-0.5">
-      <span className={`text-xs font-medium ${cfg.color}`}>{cfg.label}</span>
-      <span className="text-[10px] text-muted-foreground">{label}</span>
-    </div>
+    <span
+      className={`group/edit relative inline-flex items-start gap-1 cursor-text hover:bg-violet-50 rounded px-0.5 -mx-0.5 transition-colors ${className}`}
+      onClick={e => { e.stopPropagation(); setEditing(true) }}
+    >
+      <span className="flex-1">{value || <span className="text-muted-foreground italic">{placeholder}</span>}</span>
+      <Pencil className="h-2.5 w-2.5 text-violet-400 opacity-0 group-hover/edit:opacity-100 mt-0.5 flex-shrink-0 transition-opacity" />
+    </span>
   )
 }
 
-function CapBadge({ cap }: { cap: Capability | null }) {
-  if (!cap) return <span className="text-xs text-muted-foreground">TBD</span>
-  const variantMap: Record<Capability, "green" | "yellow" | "purple" | "gray"> = {
-    "finds-enrich":         "green",
-    "enrich-only":          "yellow",
-    "dataset":              "purple",
-    "finds-enrich-dataset": "green",
-    "platform":             "gray",
+function EditableSelect<T extends string>({
+  value, options, onSave, className = "",
+}: {
+  value: T | null
+  options: Array<{ value: T | ""; label: string }>
+  onSave: (v: T | null) => void
+  className?: string
+}) {
+  const [editing, setEditing] = React.useState(false)
+  const ref = React.useRef<HTMLSelectElement>(null)
+  React.useEffect(() => { if (editing) ref.current?.focus() }, [editing])
+
+  if (editing) {
+    return (
+      <select
+        ref={ref}
+        defaultValue={value ?? ""}
+        autoFocus
+        onChange={e => {
+          const v = e.target.value as T | ""
+          onSave(v === "" ? null : v)
+          setEditing(false)
+        }}
+        onBlur={() => setEditing(false)}
+        className="text-xs border border-violet-400 rounded px-1 py-0.5 bg-white outline-none ring-1 ring-violet-300"
+      >
+        {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
+    )
   }
-  return <Badge variant={variantMap[cap]} className="text-[10px] whitespace-nowrap">{CAP_LABELS[cap]}</Badge>
+
+  const current = options.find(o => o.value === (value ?? ""))
+  return (
+    <span
+      className={`group/edit inline-flex items-center gap-1 cursor-pointer hover:bg-violet-50 rounded px-0.5 -mx-0.5 transition-colors ${className}`}
+      onClick={e => { e.stopPropagation(); setEditing(true) }}
+    >
+      <span className="text-xs">{current?.label ?? "TBD"}</span>
+      <Pencil className="h-2.5 w-2.5 text-violet-400 opacity-0 group-hover/edit:opacity-100 flex-shrink-0 transition-opacity" />
+    </span>
+  )
 }
+
+// ─── sub-components ────────────────────────────────────────────────────────────
 
 function OwnerChip({ owner }: { owner: "haley" | "will" | null }) {
   if (!owner) return null
@@ -78,10 +161,11 @@ function StatusSection({ status }: { status: "ready" | "wait" | "blocked" | "tbd
   )
 }
 
-// ─── main component ───────────────────────────────────────────────────────────
+// ─── main component ────────────────────────────────────────────────────────────
 
 export function CommercialHub() {
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set())
+  const { overrides, setField, resetVendor, hasOverrides } = useLocalOverrides()
 
   const toggle = (id: string) => {
     setExpandedRows(prev => {
@@ -91,24 +175,25 @@ export function CommercialHub() {
     })
   }
 
-  // Merge vendor data with commercial data
+  const merged = (vendorId: string, base: typeof vendorCommercialData[string] | null) => {
+    const o = overrides[vendorId] ?? {}
+    return base ? { ...base, ...o } : (Object.keys(o).length ? o as unknown as typeof base : null)
+  }
+
   const rows = vendorContacts
     .filter(v => v.overallStatus !== "do-not-contact")
-    .map(v => ({
-      vendor: v,
-      commercial: vendorCommercialData[v.id] ?? null,
-      // Derive section from commercialStatus
-      section: v.commercialStatus === "ready"   ? "ready"
-              : v.commercialStatus === "wait"    ? "wait"
-              : v.commercialStatus === "blocked" ? "blocked"
-              : "tbd" as "ready" | "wait" | "blocked" | "tbd",
-    }))
+    .map(v => {
+      const base = vendorCommercialData[v.id] ?? null
+      const comm = merged(v.id, base)
+      const statusOverride = (overrides[v.id] as CommercialOverride)?.commercialStatus
+      const section = (statusOverride !== undefined ? statusOverride : v.commercialStatus) ?? "tbd"
+      return { vendor: v, commercial: comm, section: section as "ready" | "wait" | "blocked" | "tbd" }
+    })
     .sort((a, b) => {
       const order = { ready: 0, wait: 1, blocked: 2, tbd: 3 }
-      return order[a.section] - order[b.section]
+      return (order[a.section] ?? 3) - (order[b.section] ?? 3)
     })
 
-  // Stats
   const readyCount   = rows.filter(r => r.section === "ready").length
   const waitCount    = rows.filter(r => r.section === "wait").length
   const blockedCount = rows.filter(r => r.section === "blocked").length
@@ -137,11 +222,11 @@ export function CommercialHub() {
       {/* Stats strip */}
       <div className="grid grid-cols-5 gap-3">
         {[
-          { label: "Ready now",        value: readyCount,   color: "text-emerald-700", icon: <CheckCircle2 className="h-4 w-4" />, bg: "bg-emerald-50" },
-          { label: "In motion",        value: waitCount,    color: "text-amber-700",   icon: <Clock className="h-4 w-4" />,        bg: "bg-amber-50"   },
-          { label: "Blocked / depr.",  value: blockedCount, color: "text-red-700",     icon: <AlertCircle className="h-4 w-4" />,  bg: "bg-red-50"     },
-          { label: "✅ PAYG / no commit", value: paygCount, color: "text-emerald-700", icon: <DollarSign className="h-4 w-4" />,   bg: "bg-emerald-50" },
-          { label: "❌ High commit ($50K+)", value: highCount, color: "text-red-700",  icon: <DollarSign className="h-4 w-4" />,   bg: "bg-red-50"     },
+          { label: "Ready now",             value: readyCount,   color: "text-emerald-700", icon: <CheckCircle2 className="h-4 w-4" />, bg: "bg-emerald-50" },
+          { label: "In motion",             value: waitCount,    color: "text-amber-700",   icon: <Clock className="h-4 w-4" />,        bg: "bg-amber-50"   },
+          { label: "Blocked / depr.",       value: blockedCount, color: "text-red-700",     icon: <AlertCircle className="h-4 w-4" />,  bg: "bg-red-50"     },
+          { label: "✅ PAYG / no commit",   value: paygCount,    color: "text-emerald-700", icon: <DollarSign className="h-4 w-4" />,   bg: "bg-emerald-50" },
+          { label: "❌ High commit ($50K+)", value: highCount,   color: "text-red-700",     icon: <DollarSign className="h-4 w-4" />,   bg: "bg-red-50"     },
         ].map(stat => (
           <div key={stat.label} className={`rounded-lg border px-4 py-3 flex items-center gap-3 ${stat.bg}`}>
             <span className={stat.color}>{stat.icon}</span>
@@ -161,13 +246,20 @@ export function CommercialHub() {
         </div>
         <div>
           <p className="font-semibold text-amber-700 mb-1">⚠️ Low commit ($2K–$25K)</p>
-          <p className="text-muted-foreground">Harmonic ($10K), Dealroom (€12K/yr), Crustdata ($4K/mo), HitHorizons (€3.5K/60K), Beauhurst (£20–40K)</p>
+          <p className="text-muted-foreground">Harmonic ($10K), Dealroom (€12K/yr), Crustdata ($4K/mo), HitHorizons (€3.5K/60K), Store Leads ($25K), Beauhurst (£20–40K)</p>
         </div>
         <div>
           <p className="font-semibold text-red-700 mb-1">❌ High commit ($50K+)</p>
           <p className="text-muted-foreground">Crunchbase ($150K), PitchBook (~$160K), CB Insights (6-fig), Spade (6-fig), SimilarWeb ($50K+), Openmart ($80K), Explorium ($60K)</p>
         </div>
       </div>
+
+      {/* Edit hint */}
+      <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+        <Pencil className="h-3 w-3" />
+        Click any field to edit inline — changes are saved locally in your browser.
+        Expand a row to edit pricing detail and move vendors between sections.
+      </p>
 
       {/* Table */}
       <div className="rounded-lg border overflow-hidden">
@@ -192,10 +284,10 @@ export function CommercialHub() {
                   <StatusSection status={section} />
                   {sectionRows.map(({ vendor, commercial }) => {
                     const expanded = expandedRows.has(vendor.id)
+                    const edited = hasOverrides(vendor.id)
                     const tier = commercial?.commitmentTier ?? null
                     const tierLabel = commercial?.commitmentLabel ?? "TBD"
 
-                    // Row tint by section
                     const rowBg = section === "ready"   ? "hover:bg-emerald-50/60"
                                 : section === "wait"    ? "hover:bg-amber-50/60"
                                 : section === "blocked" ? "hover:bg-red-50/40"
@@ -217,42 +309,79 @@ export function CommercialHub() {
                             {expanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
                           </TableCell>
 
-                          {/* vendor */}
+                          {/* vendor + edited indicator */}
                           <TableCell>
-                            <div className="font-semibold text-sm">{vendor.name}</div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-semibold text-sm">{vendor.name}</span>
+                              {edited && (
+                                <span className="h-1.5 w-1.5 rounded-full bg-violet-400 flex-shrink-0" title="Locally edited" />
+                              )}
+                            </div>
                             <div className="text-xs text-muted-foreground">
                               {vendor.tier && <span className="font-medium text-foreground mr-1">{vendor.tier}</span>}
                               {vendor.category.split(" · ")[0]}
                             </div>
                           </TableCell>
 
-                          {/* commit tier */}
-                          <TableCell>
-                            <CommitBadge tier={tier} label={tierLabel} />
+                          {/* commit tier — editable */}
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <div className="space-y-0.5">
+                              <EditableSelect<CommitmentTier>
+                                value={tier}
+                                options={COMMIT_TIERS as any}
+                                onSave={v => setField(vendor.id, "commitmentTier", v as CommitmentTier | null)}
+                              />
+                              {tier && (
+                                <EditableText
+                                  value={tierLabel}
+                                  onSave={v => setField(vendor.id, "commitmentLabel", v)}
+                                  className="text-[10px] text-muted-foreground block"
+                                  placeholder="e.g. $25K/yr"
+                                />
+                              )}
+                            </div>
                           </TableCell>
 
-                          {/* pricing tldr */}
-                          <TableCell>
-                            <p className="text-xs leading-snug text-foreground line-clamp-2">
-                              {commercial?.pricingTldr ?? <span className="text-muted-foreground">TBD</span>}
-                            </p>
+                          {/* pricing tldr — editable */}
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <EditableText
+                              value={commercial?.pricingTldr ?? ""}
+                              onSave={v => setField(vendor.id, "pricingTldr", v)}
+                              className="text-xs leading-snug text-foreground"
+                              placeholder="Add pricing summary…"
+                            />
                           </TableCell>
 
-                          {/* capability */}
-                          <TableCell>
-                            <CapBadge cap={commercial?.capability ?? null} />
+                          {/* capability — editable */}
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <EditableSelect<Capability>
+                              value={commercial?.capability ?? null}
+                              options={CAPABILITIES as any}
+                              onSave={v => setField(vendor.id, "capability", v as Capability | null)}
+                            />
                           </TableCell>
 
-                          {/* next step */}
-                          <TableCell>
-                            <p className="text-xs leading-snug text-foreground line-clamp-2">
-                              {commercial?.commercialNextStep ?? <span className="text-muted-foreground">TBD</span>}
-                            </p>
+                          {/* next step — editable */}
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <EditableText
+                              value={commercial?.commercialNextStep ?? ""}
+                              onSave={v => setField(vendor.id, "commercialNextStep", v)}
+                              className="text-xs leading-snug text-foreground"
+                              placeholder="Add next step…"
+                            />
                           </TableCell>
 
-                          {/* owner */}
-                          <TableCell>
-                            <OwnerChip owner={commercial?.commercialOwner ?? null} />
+                          {/* owner — editable */}
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <EditableSelect<"haley" | "will">
+                              value={commercial?.commercialOwner ?? null}
+                              options={[
+                                { value: "", label: "—" },
+                                { value: "haley", label: "Haley" },
+                                { value: "will",  label: "Will" },
+                              ] as any}
+                              onSave={v => setField(vendor.id, "commercialOwner", v as "haley" | "will" | null)}
+                            />
                           </TableCell>
                         </TableRow>
 
@@ -266,16 +395,30 @@ export function CommercialHub() {
                                 section === "blocked" ? "bg-red-50/30" : "bg-muted/20"
                               }`}>
                                 <div className="grid grid-cols-2 gap-6">
-                                  {/* Left: pricing detail */}
+                                  {/* Left: pricing detail — editable */}
                                   <div>
                                     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Pricing detail</p>
-                                    <p className="text-sm text-foreground leading-relaxed">
-                                      {commercial?.pricingDetail ?? commercial?.pricingTldr ?? "No pricing detail available yet."}
-                                    </p>
+                                    <EditableText
+                                      value={commercial?.pricingDetail ?? commercial?.pricingTldr ?? ""}
+                                      onSave={v => setField(vendor.id, "pricingDetail", v)}
+                                      className="text-sm text-foreground leading-relaxed block w-full"
+                                      multiline
+                                      placeholder="Add detailed pricing notes…"
+                                    />
                                   </div>
 
-                                  {/* Right: meta */}
+                                  {/* Right: meta + status move */}
                                   <div className="space-y-3">
+                                    {/* Move section */}
+                                    <div>
+                                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Commercial status</p>
+                                      <EditableSelect<"ready" | "wait" | "blocked" | "tbd">
+                                        value={section}
+                                        options={STATUSES as any}
+                                        onSave={v => setField(vendor.id, "commercialStatus", v as any)}
+                                      />
+                                    </div>
+
                                     {/* Contacts */}
                                     {vendor.contacts.length > 0 && (
                                       <div>
@@ -291,14 +434,6 @@ export function CommercialHub() {
                                       </div>
                                     )}
 
-                                    {/* Capability */}
-                                    {commercial?.capability && (
-                                      <div>
-                                        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Enrichment model</p>
-                                        <p className="text-xs text-foreground">{CAP_LABELS[commercial.capability]}</p>
-                                      </div>
-                                    )}
-
                                     {/* Signal context */}
                                     <div>
                                       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Signal overview</p>
@@ -307,18 +442,28 @@ export function CommercialHub() {
                                   </div>
                                 </div>
 
-                                {/* Next step highlight */}
-                                {commercial?.commercialNextStep && (
-                                  <div className="border-t pt-3 flex items-start gap-2">
-                                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground whitespace-nowrap mt-0.5">Next step:</span>
-                                    <p className="text-sm font-medium text-foreground">{commercial.commercialNextStep}</p>
-                                    {commercial.commercialOwner && (
-                                      <span className="flex-shrink-0 mt-0.5">
-                                        <OwnerChip owner={commercial.commercialOwner} />
-                                      </span>
-                                    )}
-                                  </div>
-                                )}
+                                {/* Next step highlight + reset */}
+                                <div className="border-t pt-3 flex items-start gap-2">
+                                  <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground whitespace-nowrap mt-0.5">Next step:</span>
+                                  <p className="text-sm font-medium text-foreground flex-1">
+                                    {commercial?.commercialNextStep || <span className="text-muted-foreground italic text-xs">Click the next step cell above to add one</span>}
+                                  </p>
+                                  {commercial?.commercialOwner && (
+                                    <span className="flex-shrink-0 mt-0.5">
+                                      <OwnerChip owner={commercial.commercialOwner} />
+                                    </span>
+                                  )}
+                                  {hasOverrides(vendor.id) && (
+                                    <button
+                                      onClick={e => { e.stopPropagation(); resetVendor(vendor.id) }}
+                                      className="flex items-center gap-1 text-[10px] text-muted-foreground hover:text-red-600 transition-colors ml-auto flex-shrink-0"
+                                      title="Reset all local edits for this vendor"
+                                    >
+                                      <RotateCcw className="h-3 w-3" />
+                                      Reset edits
+                                    </button>
+                                  )}
+                                </div>
                               </div>
                             </TableCell>
                           </TableRow>
@@ -338,7 +483,8 @@ export function CommercialHub() {
         <span>✅ No commit — PAYG or monthly, no advance required</span>
         <span>⚠️ Low — $2K–$25K upfront, manageable</span>
         <span>❌ High — $50K+ upfront, requires scrutiny</span>
-        <span className="ml-auto flex items-center gap-2">
+        <span className="ml-auto flex items-center gap-3">
+          <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-violet-400 inline-block" /> locally edited</span>
           <span className="bg-violet-100 text-violet-800 border border-violet-200 rounded-full px-1.5 py-0.5 text-[10px] font-medium">Haley</span>
           <span className="bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-full px-1.5 py-0.5 text-[10px] font-medium">Will</span>
         </span>

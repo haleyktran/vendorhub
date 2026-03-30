@@ -59,6 +59,16 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialOwner: "will",
   },
 
+  storeleads: {
+    commitmentTier: "low",
+    commitmentLabel: "$25K advance",
+    pricingTldr: "$25K advance = 500K domain credits @ $0.05/credit. Usage-based after. Standard redistribution deal (same as Clay, Artisan, Genesee).",
+    pricingDetail: "$25K upfront = 500K domain credits @ $0.05/credit. Usage-based pricing beyond that. Standard redistribution partner deal — same structure as Clay, Artisan, Genesee. No flexibility claimed on structure. BYOK option for customers who already have Store Leads. 1-month dev access agreement pending from Ammar before full contract.",
+    capability: "finds-enrich",
+    commercialNextStep: "Receive and sign 1-month dev access agreement from Ammar. Then loop in eng team for integration.",
+    commercialOwner: "haley",
+  },
+
   theirstack: {
     commitmentTier: "none",
     commitmentLabel: "Zero upfront",

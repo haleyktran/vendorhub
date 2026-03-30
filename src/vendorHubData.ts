@@ -611,6 +611,7 @@ export const vendorContacts: VendorContact[] = [
     overallStatus: "active",
     commercialStatus: "ready",
     contacts: ["Ammar — ammar@storeleads.app"],
+    slackChannel: "#storeleads-unify",
     granolaLink: "https://notes.granola.ai/d/3a068c60-7c4c-4c65-9d08-4ad32180608f",
     pricing: "$25K advance = 500K domain credits ($0.05/cr); usage-based after",
   },
