@@ -127,6 +127,57 @@ function EditableSelect<T extends string>({
   )
 }
 
+// ─── status pill (inline dropdown) ────────────────────────────────────────────
+
+const STATUS_STYLES = {
+  ready:   { pill: "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200", label: "🟢 Ready" },
+  wait:    { pill: "bg-amber-100   text-amber-800   border-amber-300   hover:bg-amber-200",   label: "🟡 In motion" },
+  blocked: { pill: "bg-red-100     text-red-800     border-red-300     hover:bg-red-200",     label: "🔴 Blocked" },
+  tbd:     { pill: "bg-gray-100    text-gray-600    border-gray-300    hover:bg-gray-200",    label: "⚪ TBD" },
+}
+
+function StatusPill({
+  value, onSave,
+}: {
+  value: "ready" | "wait" | "blocked" | "tbd"
+  onSave: (v: "ready" | "wait" | "blocked" | "tbd") => void
+}) {
+  const [open, setOpen] = React.useState(false)
+  const ref = React.useRef<HTMLSelectElement>(null)
+  const cfg = STATUS_STYLES[value] ?? STATUS_STYLES.tbd
+
+  React.useEffect(() => { if (open) ref.current?.focus() }, [open])
+
+  if (open) {
+    return (
+      <select
+        ref={ref}
+        defaultValue={value}
+        autoFocus
+        onChange={e => {
+          onSave(e.target.value as "ready" | "wait" | "blocked" | "tbd")
+          setOpen(false)
+        }}
+        onBlur={() => setOpen(false)}
+        className="text-[10px] border border-violet-400 rounded-full px-2 py-0.5 bg-white outline-none ring-1 ring-violet-300 cursor-pointer"
+      >
+        {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+      </select>
+    )
+  }
+
+  return (
+    <button
+      onClick={() => setOpen(true)}
+      className={`inline-flex items-center gap-0.5 text-[10px] font-medium border rounded-full px-2 py-0.5 transition-colors cursor-pointer ${cfg.pill}`}
+      title="Click to change status"
+    >
+      {cfg.label}
+      <ChevronDown className="h-2.5 w-2.5 opacity-60 ml-0.5" />
+    </button>
+  )
+}
+
 // ─── sub-components ────────────────────────────────────────────────────────────
 
 function OwnerChip({ owner }: { owner: "haley" | "will" | null }) {
@@ -317,9 +368,15 @@ export function CommercialHub() {
                                 <span className="h-1.5 w-1.5 rounded-full bg-violet-400 flex-shrink-0" title="Locally edited" />
                               )}
                             </div>
-                            <div className="text-xs text-muted-foreground">
+                            <div className="text-xs text-muted-foreground mb-1">
                               {vendor.tier && <span className="font-medium text-foreground mr-1">{vendor.tier}</span>}
                               {vendor.category.split(" · ")[0]}
+                            </div>
+                            <div onClick={e => e.stopPropagation()}>
+                              <StatusPill
+                                value={section}
+                                onSave={v => setField(vendor.id, "commercialStatus", v as any)}
+                              />
                             </div>
                           </TableCell>
 
