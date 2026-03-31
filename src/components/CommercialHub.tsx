@@ -1,11 +1,11 @@
 import * as React from "react"
 import { vendorContacts } from "@/vendorHubData"
 import { vendorCommercialData, type CommitmentTier, type Capability } from "@/vendorCommercialData"
-import { useLocalOverrides, makeShareUrl, type CommercialOverride } from "@/hooks/useLocalOverrides"
+import { useLocalOverrides, type CommercialOverride } from "@/hooks/useLocalOverrides"
 import {
   Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
 } from "@/components/ui/table"
-import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, AlertCircle, User, Pencil, RotateCcw, ExternalLink, Share2 } from "lucide-react"
+import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, AlertCircle, User, Pencil, RotateCcw, ExternalLink } from "lucide-react"
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -230,30 +230,6 @@ function StatusSection({ status }: { status: "ready" | "wait" | "blocked" | "tbd
   )
 }
 
-// ─── share button ─────────────────────────────────────────────────────────────
-
-function ShareButton({ overrides }: { overrides: Record<string, CommercialOverride> }) {
-  const [copied, setCopied] = React.useState(false)
-
-  const copy = () => {
-    const url = makeShareUrl(overrides)
-    navigator.clipboard.writeText(url).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
-  }
-
-  return (
-    <button
-      onClick={copy}
-      className="flex items-center gap-1.5 text-xs font-medium text-violet-600 hover:text-violet-800 border border-violet-200 hover:border-violet-400 rounded-md px-2.5 py-1 transition-colors bg-violet-50 hover:bg-violet-100"
-    >
-      <Share2 className="h-3 w-3" />
-      {copied ? "Link copied!" : "Copy share link"}
-    </button>
-  )
-}
-
 // ─── main component ────────────────────────────────────────────────────────────
 
 export function CommercialHub() {
@@ -347,15 +323,12 @@ export function CommercialHub() {
         </div>
       </div>
 
-      {/* Edit hint + share */}
-      <div className="flex items-center justify-between">
-        <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-          <Pencil className="h-3 w-3" />
-          Click any field to edit inline — changes are saved locally in your browser.
-          Expand a row to edit pricing detail and move vendors between sections.
-        </p>
-        <ShareButton overrides={overrides} />
-      </div>
+      {/* Edit hint */}
+      <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+        <Pencil className="h-3 w-3" />
+        Click any field to edit inline — changes sync automatically across browsers.
+        Expand a row to edit pricing detail and move vendors between sections.
+      </p>
 
       {/* Table */}
       <div className="rounded-lg border overflow-hidden">

@@ -7,29 +7,10 @@ export type CommercialOverride = Partial<VendorCommercial> & {
 }
 
 const STORAGE_KEY = "vendor-hub-commercial-overrides-v1"
-const SHARE_PARAM = "share"
+const API_URL = "/api/overrides"
+const POLL_MS = 8000 // poll every 8 seconds
 
-// If the URL has a ?share= param, import those overrides into localStorage
-function loadFromShareParam(): Record<string, CommercialOverride> | null {
-  try {
-    const params = new URLSearchParams(window.location.search)
-    const encoded = params.get(SHARE_PARAM)
-    if (!encoded) return null
-    const data = JSON.parse(atob(encoded)) as Record<string, CommercialOverride>
-    // Save into localStorage and clean the URL
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
-    const url = new URL(window.location.href)
-    url.searchParams.delete(SHARE_PARAM)
-    window.history.replaceState(null, "", url.toString())
-    return data
-  } catch {
-    return null
-  }
-}
-
-function load(): Record<string, CommercialOverride> {
-  const shared = loadFromShareParam()
-  if (shared) return shared
+function loadLocal(): Record<string, CommercialOverride> {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     return raw ? JSON.parse(raw) : {}
@@ -38,25 +19,59 @@ function load(): Record<string, CommercialOverride> {
   }
 }
 
-function save(overrides: Record<string, CommercialOverride>) {
+function saveLocal(overrides: Record<string, CommercialOverride>) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides))
 }
 
-export function makeShareUrl(overrides: Record<string, CommercialOverride>): string {
-  const encoded = btoa(JSON.stringify(overrides))
-  const url = new URL(window.location.href)
-  url.searchParams.set(SHARE_PARAM, encoded)
-  return url.toString()
+async function fetchRemote(): Promise<Record<string, CommercialOverride>> {
+  const res = await fetch(API_URL)
+  if (!res.ok) throw new Error("fetch failed")
+  return res.json()
+}
+
+async function pushRemote(overrides: Record<string, CommercialOverride>) {
+  await fetch(API_URL, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(overrides),
+  })
 }
 
 export function useLocalOverrides() {
-  const [overrides, setOverrides] = React.useState<Record<string, CommercialOverride>>(load)
+  const [overrides, setOverrides] = React.useState<Record<string, CommercialOverride>>(loadLocal)
+
+  // Apply and persist a new overrides object
+  const apply = React.useCallback((next: Record<string, CommercialOverride>) => {
+    saveLocal(next)
+    setOverrides(next)
+  }, [])
+
+  // Poll remote every POLL_MS — update local if remote is different
+  React.useEffect(() => {
+    let cancelled = false
+
+    const poll = async () => {
+      try {
+        const remote = await fetchRemote()
+        if (!cancelled) {
+          apply(remote)
+        }
+      } catch {
+        // silently ignore — keep local state
+      }
+    }
+
+    poll() // fetch immediately on mount
+    const id = setInterval(poll, POLL_MS)
+    return () => { cancelled = true; clearInterval(id) }
+  }, [apply])
 
   const setField = React.useCallback(
     <K extends keyof CommercialOverride>(vendorId: string, field: K, value: CommercialOverride[K]) => {
       setOverrides(prev => {
         const next = { ...prev, [vendorId]: { ...prev[vendorId], [field]: value } }
-        save(next)
+        saveLocal(next)
+        pushRemote(next) // push immediately
         return next
       })
     },
@@ -67,7 +82,8 @@ export function useLocalOverrides() {
     setOverrides(prev => {
       const next = { ...prev }
       delete next[vendorId]
-      save(next)
+      saveLocal(next)
+      pushRemote(next)
       return next
     })
   }, [])
