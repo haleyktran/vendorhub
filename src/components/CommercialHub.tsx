@@ -263,7 +263,7 @@ export function CommercialHub() {
       return { vendor: v, commercial: comm, section: section as "ready" | "wait" | "review" | "blocked" | "tbd" }
     })
     .sort((a, b) => {
-      const order = { ready: 0, wait: 1, review: 2, blocked: 3, tbd: 4 }
+      const order = { review: 0, ready: 1, wait: 2, blocked: 3, tbd: 4 }
       return (order[a.section] ?? 4) - (order[b.section] ?? 4)
     })
 
@@ -273,7 +273,7 @@ export function CommercialHub() {
   const paygCount    = rows.filter(r => r.commercial?.commitmentTier === "none").length
   const highCount    = rows.filter(r => r.commercial?.commitmentTier === "high").length
 
-  const sections: Array<"ready" | "wait" | "review" | "blocked" | "tbd"> = ["ready", "wait", "review", "blocked", "tbd"]
+  const sections: Array<"ready" | "wait" | "review" | "blocked" | "tbd"> = ["review", "ready", "wait", "blocked", "tbd"]
 
   return (
     <div className="space-y-6">
