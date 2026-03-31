@@ -5,7 +5,7 @@ import { useLocalOverrides, type CommercialOverride } from "@/hooks/useLocalOver
 import {
   Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
 } from "@/components/ui/table"
-import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, AlertCircle, User, Pencil, RotateCcw, ExternalLink } from "lucide-react"
+import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, User, Pencil, RotateCcw, ExternalLink } from "lucide-react"
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -25,9 +25,10 @@ const CAPABILITIES: Array<{ value: Capability | ""; label: string }> = [
   { value: "platform",            label: "Platform" },
 ]
 
-const STATUSES: Array<{ value: "ready" | "wait" | "blocked" | "tbd"; label: string }> = [
+const STATUSES: Array<{ value: "ready" | "wait" | "review" | "blocked" | "tbd"; label: string }> = [
   { value: "ready",   label: "🟢 Ready" },
   { value: "wait",    label: "🟡 In motion" },
+  { value: "review",  label: "🔵 Negotiating" },
   { value: "blocked", label: "🔴 Blocked" },
   { value: "tbd",     label: "⚪ TBD" },
 ]
@@ -132,6 +133,7 @@ function EditableSelect<T extends string>({
 const STATUS_STYLES = {
   ready:   { pill: "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200", label: "🟢 Ready" },
   wait:    { pill: "bg-amber-100   text-amber-800   border-amber-300   hover:bg-amber-200",   label: "🟡 In motion" },
+  review:  { pill: "bg-blue-100    text-blue-800    border-blue-300    hover:bg-blue-200",    label: "🔵 Negotiating" },
   blocked: { pill: "bg-red-100     text-red-800     border-red-300     hover:bg-red-200",     label: "🔴 Blocked" },
   tbd:     { pill: "bg-gray-100    text-gray-600    border-gray-300    hover:bg-gray-200",    label: "⚪ TBD" },
 }
@@ -139,6 +141,7 @@ const STATUS_STYLES = {
 const MENU_STYLES: Record<string, string> = {
   ready:   "hover:bg-emerald-50 text-emerald-800",
   wait:    "hover:bg-amber-50   text-amber-800",
+  review:  "hover:bg-blue-50    text-blue-800",
   blocked: "hover:bg-red-50     text-red-800",
   tbd:     "hover:bg-gray-50    text-gray-600",
 }
@@ -146,8 +149,8 @@ const MENU_STYLES: Record<string, string> = {
 function StatusPill({
   value, onSave,
 }: {
-  value: "ready" | "wait" | "blocked" | "tbd"
-  onSave: (v: "ready" | "wait" | "blocked" | "tbd") => void
+  value: "ready" | "wait" | "review" | "blocked" | "tbd"
+  onSave: (v: "ready" | "wait" | "review" | "blocked" | "tbd") => void
 }) {
   const [open, setOpen] = React.useState(false)
   const containerRef = React.useRef<HTMLDivElement>(null)
@@ -182,7 +185,7 @@ function StatusPill({
               onMouseDown={e => {
                 e.preventDefault()
                 e.stopPropagation()
-                onSave(s.value as "ready" | "wait" | "blocked" | "tbd")
+                onSave(s.value as "ready" | "wait" | "review" | "blocked" | "tbd")
                 setOpen(false)
               }}
               className={`w-full text-left text-[11px] px-3 py-1.5 cursor-pointer transition-colors ${MENU_STYLES[s.value] ?? ""} ${s.value === value ? "font-semibold" : ""}`}
@@ -211,12 +214,13 @@ function OwnerChip({ owner }: { owner: "haley" | "will" | null }) {
   )
 }
 
-function StatusSection({ status }: { status: "ready" | "wait" | "blocked" | "tbd" }) {
+function StatusSection({ status }: { status: "ready" | "wait" | "review" | "blocked" | "tbd" }) {
   const map = {
-    ready:   { label: "🟢 Ready to start commercial conversation",    bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-800" },
-    wait:    { label: "🟡 In motion — follow-up or proposal pending", bg: "bg-amber-50",   border: "border-amber-200",   text: "text-amber-800"   },
-    blocked: { label: "🔴 Blocked / Deprioritized",                   bg: "bg-red-50",     border: "border-red-200",     text: "text-red-800"     },
-    tbd:     { label: "⚪ Upcoming — pricing TBD",                     bg: "bg-gray-50",    border: "border-gray-200",    text: "text-gray-600"    },
+    ready:   { label: "🟢 Ready to start commercial conversation",        bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-800" },
+    wait:    { label: "🟡 In motion — follow-up or proposal pending",     bg: "bg-amber-50",   border: "border-amber-200",   text: "text-amber-800"   },
+    review:  { label: "🔵 Negotiating — pricing proposal / legal review", bg: "bg-blue-50",    border: "border-blue-200",    text: "text-blue-800"    },
+    blocked: { label: "🔴 Blocked / Deprioritized",                       bg: "bg-red-50",     border: "border-red-200",     text: "text-red-800"     },
+    tbd:     { label: "⚪ Upcoming — pricing TBD",                         bg: "bg-gray-50",    border: "border-gray-200",    text: "text-gray-600"    },
   }
   const cfg = map[status]
   return (
@@ -256,20 +260,20 @@ export function CommercialHub() {
       const comm = merged(v.id, base)
       const statusOverride = (overrides[v.id] as CommercialOverride)?.commercialStatus
       const section = (statusOverride !== undefined ? statusOverride : v.commercialStatus) ?? "tbd"
-      return { vendor: v, commercial: comm, section: section as "ready" | "wait" | "blocked" | "tbd" }
+      return { vendor: v, commercial: comm, section: section as "ready" | "wait" | "review" | "blocked" | "tbd" }
     })
     .sort((a, b) => {
-      const order = { ready: 0, wait: 1, blocked: 2, tbd: 3 }
-      return (order[a.section] ?? 3) - (order[b.section] ?? 3)
+      const order = { ready: 0, wait: 1, review: 2, blocked: 3, tbd: 4 }
+      return (order[a.section] ?? 4) - (order[b.section] ?? 4)
     })
 
   const readyCount   = rows.filter(r => r.section === "ready").length
   const waitCount    = rows.filter(r => r.section === "wait").length
-  const blockedCount = rows.filter(r => r.section === "blocked").length
+  const reviewCount  = rows.filter(r => r.section === "review").length
   const paygCount    = rows.filter(r => r.commercial?.commitmentTier === "none").length
   const highCount    = rows.filter(r => r.commercial?.commitmentTier === "high").length
 
-  const sections: Array<"ready" | "wait" | "blocked" | "tbd"> = ["ready", "wait", "blocked", "tbd"]
+  const sections: Array<"ready" | "wait" | "review" | "blocked" | "tbd"> = ["ready", "wait", "review", "blocked", "tbd"]
 
   return (
     <div className="space-y-6">
@@ -293,7 +297,7 @@ export function CommercialHub() {
         {[
           { label: "Ready now",             value: readyCount,   color: "text-emerald-700", icon: <CheckCircle2 className="h-4 w-4" />, bg: "bg-emerald-50" },
           { label: "In motion",             value: waitCount,    color: "text-amber-700",   icon: <Clock className="h-4 w-4" />,        bg: "bg-amber-50"   },
-          { label: "Blocked / depr.",       value: blockedCount, color: "text-red-700",     icon: <AlertCircle className="h-4 w-4" />,  bg: "bg-red-50"     },
+          { label: "Negotiating",           value: reviewCount,  color: "text-blue-700",    icon: <TrendingUp className="h-4 w-4" />,   bg: "bg-blue-50"    },
           { label: "✅ PAYG / no commit",   value: paygCount,    color: "text-emerald-700", icon: <DollarSign className="h-4 w-4" />,   bg: "bg-emerald-50" },
           { label: "❌ High commit ($50K+)", value: highCount,   color: "text-red-700",     icon: <DollarSign className="h-4 w-4" />,   bg: "bg-red-50"     },
         ].map(stat => (
@@ -360,11 +364,13 @@ export function CommercialHub() {
 
                     const rowBg = section === "ready"   ? "hover:bg-emerald-50/60"
                                 : section === "wait"    ? "hover:bg-amber-50/60"
+                                : section === "review"  ? "hover:bg-blue-50/60"
                                 : section === "blocked" ? "hover:bg-red-50/40"
                                 : "hover:bg-muted/30"
 
                     const leftAccent = section === "ready"   ? "border-l-2 border-l-emerald-400"
                                      : section === "wait"    ? "border-l-2 border-l-amber-400"
+                                     : section === "review"  ? "border-l-2 border-l-blue-400"
                                      : section === "blocked" ? "border-l-2 border-l-red-300"
                                      : ""
 
@@ -494,6 +500,7 @@ export function CommercialHub() {
                               <div className={`px-6 py-4 border-t space-y-3 ${
                                 section === "ready"   ? "bg-emerald-50/40" :
                                 section === "wait"    ? "bg-amber-50/40" :
+                                section === "review"  ? "bg-blue-50/40" :
                                 section === "blocked" ? "bg-red-50/30" : "bg-muted/20"
                               }`}>
                                 <div className="grid grid-cols-2 gap-6">
@@ -514,7 +521,7 @@ export function CommercialHub() {
                                     {/* Move section */}
                                     <div>
                                       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Commercial status</p>
-                                      <EditableSelect<"ready" | "wait" | "blocked" | "tbd">
+                                      <EditableSelect<"ready" | "wait" | "review" | "blocked" | "tbd">
                                         value={section}
                                         options={STATUSES as any}
                                         onSave={v => setField(vendor.id, "commercialStatus", v as any)}

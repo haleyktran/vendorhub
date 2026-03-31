@@ -2,7 +2,7 @@ import * as React from "react"
 import type { VendorCommercial } from "@/vendorCommercialData"
 
 export type CommercialOverride = Partial<VendorCommercial> & {
-  commercialStatus?: "ready" | "wait" | "blocked" | null
+  commercialStatus?: "ready" | "wait" | "review" | "blocked" | null
   questionnaireUrl?: string
 }
 
