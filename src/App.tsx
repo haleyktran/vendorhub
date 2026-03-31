@@ -275,7 +275,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-6 py-10">
+      <div className="max-w-[1400px] mx-auto px-6 py-10">
 
         {/* Top nav */}
         <div className="flex items-center justify-between mb-8 border-b pb-4">
