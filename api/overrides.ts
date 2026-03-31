@@ -1,27 +1,25 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node"
 
 const KEY = "vendor-hub-overrides-v1"
-
 const REDIS_URL   = process.env.UPSTASH_REDIS_REST_URL
 const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN
 
+function headers() {
+  return { Authorization: `Bearer ${REDIS_TOKEN}`, "Content-Type": "application/json" }
+}
+
 async function redisGet(): Promise<Record<string, unknown>> {
-  const res = await fetch(`${REDIS_URL}/get/${KEY}`, {
-    headers: { Authorization: `Bearer ${REDIS_TOKEN}` },
-  })
+  const res = await fetch(`${REDIS_URL}/get/${KEY}`, { headers: headers() })
   const json = await res.json() as { result: string | null }
   return json.result ? JSON.parse(json.result) : {}
 }
 
 async function redisSet(data: unknown) {
-  const encoded = encodeURIComponent(JSON.stringify(data))
-  await fetch(`${REDIS_URL}/set/${KEY}?ex=2592000`, {  // 30-day TTL
+  // Use pipeline so large JSON values don't end up in the URL
+  await fetch(`${REDIS_URL}/pipeline`, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${REDIS_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify([KEY, JSON.stringify(data)]),
+    headers: headers(),
+    body: JSON.stringify([["SET", KEY, JSON.stringify(data), "EX", 2592000]]),
   })
 }
 
@@ -34,8 +32,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === "GET") {
     try {
-      const data = await redisGet()
-      return res.status(200).json(data)
+      return res.status(200).json(await redisGet())
     } catch {
       return res.status(200).json({})
     }
