@@ -23,6 +23,7 @@ export interface VendorCommercial {
   capabilityLabel?: string           // override display label if needed
   commercialNextStep: string
   commercialOwner: "haley" | "will" | null
+  questionnaireUrl?: string          // link to Google Doc vendor questionnaire
 }
 
 export const vendorCommercialData: Record<string, VendorCommercial> = {
@@ -37,6 +38,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Reach out to Mike Palmer — confirm no-caching constraint before pricing convo. Request data partner agreement in parallel.",
     commercialOwner: "will",
+    questionnaireUrl: "https://docs.google.com/document/d/1vjT5BINvN0k0yCoXp_NtVvPpUXgFXzcV/edit",
   },
 
   upriver: {
@@ -57,6 +59,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Reach out to Andrei — favorable pay-per-success model. Straightforward commercial conversation.",
     commercialOwner: "will",
+    questionnaireUrl: "https://docs.google.com/document/d/1gEKLwZfPwDLH5DdSwwD3B3fYvju98y_f/edit",
   },
 
   storeleads: {
@@ -67,6 +70,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Receive and sign 1-month dev access agreement from Ammar. Then loop in eng team for integration.",
     commercialOwner: "haley",
+    questionnaireUrl: "https://docs.google.com/document/d/1A2C1Ox2znxGLQrwBl5Jw_PK5crh4BPjS/edit",
   },
 
   theirstack: {
@@ -97,6 +101,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Negotiate $80K min down with Kathryn — expect higher per-credit rate at lower commitment.",
     commercialOwner: "will",
+    questionnaireUrl: "https://docs.google.com/document/d/1hExzGNYBfFPnN-qB151piiGsXEIUNiTR/edit",
   },
 
   // ── 🟡 WAIT ──────────────────────────────────────────────────────────────
@@ -129,6 +134,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich-dataset",
     commercialNextStep: "Will: join 3/31 pricing call with Alex Trusevich — come with volume estimates and field priorities. No upfront commitment required.",
     commercialOwner: "will",
+    questionnaireUrl: "https://docs.google.com/document/d/1cQ_IxMQSe7fRc3kHjAqr9tZSLCFbkwSh/edit",
   },
 
   cbinsights: {
@@ -139,6 +145,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich-dataset",
     commercialNextStep: "Wait — formal proposal due next week from Rawley Dawson.",
     commercialOwner: "will",
+    questionnaireUrl: "https://docs.google.com/document/d/1PuchAdmzhZ35EJY8sslcbeavHymK0Z_2/edit",
   },
 
   dealroom: {
@@ -149,6 +156,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Will: review questionnaire responses from Kjeld/Miguel, then move to commercial conversation. €12K entry is the best starting point vs. Crunchbase ($150K) or PitchBook (~$160K).",
     commercialOwner: "will",
+    questionnaireUrl: "https://docs.google.com/document/d/1XfJYV4yaO-IBs2LQwKcXcjUoxfQ2TV-L3EwgkvNXXjo/edit",
   },
 
   theswarm: {
@@ -159,6 +167,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Will: join 3/30 call with Grace + David — lock in enterprise/reseller partner structure.",
     commercialOwner: "will",
+    questionnaireUrl: "https://docs.google.com/document/d/10pDlnPwR2NHC_QKzHUoRbVTwdofAXD-XS4O2z75CJcA/edit",
   },
 
   adbeat: {
@@ -211,6 +220,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Will: await quote from Oban. Lily traveling through Fintech Meetup. 6-fig floor needs significant negotiation down.",
     commercialOwner: "will",
+    questionnaireUrl: "https://docs.google.com/document/d/1C70UsMqyC-EiufRX2EgGEMgMDFUHN4sL/edit",
   },
 
   "reodev": {
@@ -263,6 +273,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Reply to Tibor Jánoška to activate 10-day API trial, then evaluate pricing tiers.",
     commercialOwner: "haley",
+    questionnaireUrl: "https://docs.google.com/document/d/1_lY9njd9jy5wGnX0vAR-VDc8BGmyTHri/edit",
   },
 
   buyercaddy: {
@@ -272,6 +283,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Schedule intro call — pricing and commitment structure unknown.",
     commercialOwner: null,
+    questionnaireUrl: "https://docs.google.com/document/d/1JeGvBYx-TqQKzDwjbfmLsqVczsi1lkq7/edit",
   },
 
   builtwith: {

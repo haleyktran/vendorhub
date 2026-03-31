@@ -5,7 +5,7 @@ import { useLocalOverrides, type CommercialOverride } from "@/hooks/useLocalOver
 import {
   Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
 } from "@/components/ui/table"
-import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, AlertCircle, User, Pencil, RotateCcw } from "lucide-react"
+import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, AlertCircle, User, Pencil, RotateCcw, ExternalLink } from "lucide-react"
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -221,7 +221,7 @@ function StatusSection({ status }: { status: "ready" | "wait" | "blocked" | "tbd
   const cfg = map[status]
   return (
     <TableRow className="hover:bg-transparent">
-      <TableCell colSpan={7} className="p-0">
+      <TableCell colSpan={8} className="p-0">
         <div className={`px-4 py-1.5 text-xs font-semibold ${cfg.bg} ${cfg.text} border-y ${cfg.border}`}>
           {cfg.label}
         </div>
@@ -342,6 +342,7 @@ export function CommercialHub() {
               <TableHead className="w-[150px]">Capability</TableHead>
               <TableHead>Next commercial step</TableHead>
               <TableHead className="w-[70px]">Owner</TableHead>
+              <TableHead className="w-[80px]">Eval Doc</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -458,12 +459,38 @@ export function CommercialHub() {
                               onSave={v => setField(vendor.id, "commercialOwner", v as "haley" | "will" | null)}
                             />
                           </TableCell>
+
+                          {/* eval doc — link or editable URL */}
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            {(() => {
+                              const url = (overrides[vendor.id] as CommercialOverride)?.questionnaireUrl ?? commercial?.questionnaireUrl
+                              return url ? (
+                                <a
+                                  href={url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-[11px] text-violet-600 hover:text-violet-800 hover:underline font-medium"
+                                  onClick={e => e.stopPropagation()}
+                                >
+                                  <ExternalLink className="h-3 w-3" />
+                                  Open
+                                </a>
+                              ) : (
+                                <EditableText
+                                  value=""
+                                  onSave={v => setField(vendor.id, "questionnaireUrl", v)}
+                                  className="text-[11px] text-muted-foreground"
+                                  placeholder="Paste URL…"
+                                />
+                              )
+                            })()}
+                          </TableCell>
                         </TableRow>
 
                         {/* Expanded detail panel */}
                         {expanded && (
                           <TableRow className="hover:bg-transparent">
-                            <TableCell colSpan={7} className="p-0">
+                            <TableCell colSpan={8} className="p-0">
                               <div className={`px-6 py-4 border-t space-y-3 ${
                                 section === "ready"   ? "bg-emerald-50/40" :
                                 section === "wait"    ? "bg-amber-50/40" :

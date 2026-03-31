@@ -3,6 +3,7 @@ import type { VendorCommercial } from "@/vendorCommercialData"
 
 export type CommercialOverride = Partial<VendorCommercial> & {
   commercialStatus?: "ready" | "wait" | "blocked" | null
+  questionnaireUrl?: string
 }
 
 const STORAGE_KEY = "vendor-hub-commercial-overrides-v1"
