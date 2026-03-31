@@ -70,7 +70,7 @@ function EditableText({
       className: `w-full text-xs border border-violet-400 rounded px-1.5 py-1 bg-white outline-none ring-1 ring-violet-300 ${className}`,
     }
     return multiline
-      ? <textarea {...shared} rows={3} className={shared.className + " resize-none"} />
+      ? <textarea {...shared} rows={2} className={shared.className + " resize-y min-h-[3rem]"} />
       : <input {...shared} />
   }
 
@@ -431,6 +431,7 @@ export function CommercialHub() {
                               onSave={v => setField(vendor.id, "pricingTldr", v)}
                               className="text-xs leading-snug text-foreground"
                               placeholder="Add pricing summary…"
+                              multiline
                             />
                           </TableCell>
 
@@ -450,6 +451,7 @@ export function CommercialHub() {
                               onSave={v => setField(vendor.id, "commercialNextStep", v)}
                               className="text-xs leading-snug text-foreground"
                               placeholder="Add next step…"
+                              multiline
                             />
                           </TableCell>
 
