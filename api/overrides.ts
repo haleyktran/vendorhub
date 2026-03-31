@@ -1,31 +1,41 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node"
 
-const REPO = "haleyktran/vendorhub"
-const FILE = "overrides.json"
-const API  = `https://api.github.com/repos/${REPO}/contents/${FILE}`
+const KEY = "vendor-hub-overrides-v1"
 
-async function getFile() {
-  const res = await fetch(API, {
-    headers: { Authorization: `token ${process.env.GITHUB_SYNC_TOKEN}` },
+const REDIS_URL   = process.env.UPSTASH_REDIS_REST_URL
+const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN
+
+async function redisGet(): Promise<Record<string, unknown>> {
+  const res = await fetch(`${REDIS_URL}/get/${KEY}`, {
+    headers: { Authorization: `Bearer ${REDIS_TOKEN}` },
   })
-  if (!res.ok) throw new Error("GitHub GET failed")
-  const json = await res.json() as { content: string; sha: string }
-  const content = JSON.parse(Buffer.from(json.content, "base64").toString("utf8"))
-  return { content, sha: json.sha }
+  const json = await res.json() as { result: string | null }
+  return json.result ? JSON.parse(json.result) : {}
+}
+
+async function redisSet(data: unknown) {
+  const encoded = encodeURIComponent(JSON.stringify(data))
+  await fetch(`${REDIS_URL}/set/${KEY}?ex=2592000`, {  // 30-day TTL
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${REDIS_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify([KEY, JSON.stringify(data)]),
+  })
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  res.setHeader("Access-Control-Allow-Origin", "*")
-  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, OPTIONS")
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type")
   res.setHeader("Cache-Control", "no-store")
 
-  if (req.method === "OPTIONS") return res.status(200).end()
+  if (!REDIS_URL || !REDIS_TOKEN) {
+    return res.status(503).json({ error: "Redis not configured" })
+  }
 
   if (req.method === "GET") {
     try {
-      const { content } = await getFile()
-      return res.status(200).json(content)
+      const data = await redisGet()
+      return res.status(200).json(data)
     } catch {
       return res.status(200).json({})
     }
@@ -33,20 +43,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === "PUT") {
     try {
-      const { sha } = await getFile()
-      const encoded = Buffer.from(JSON.stringify(req.body)).toString("base64")
-      await fetch(API, {
-        method: "PUT",
-        headers: {
-          Authorization: `token ${process.env.GITHUB_SYNC_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: "sync overrides",
-          content: encoded,
-          sha,
-        }),
-      })
+      await redisSet(req.body)
       return res.status(200).json({ ok: true })
     } catch (e) {
       return res.status(500).json({ error: String(e) })
