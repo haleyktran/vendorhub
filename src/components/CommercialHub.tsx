@@ -136,6 +136,13 @@ const STATUS_STYLES = {
   tbd:     { pill: "bg-gray-100    text-gray-600    border-gray-300    hover:bg-gray-200",    label: "⚪ TBD" },
 }
 
+const MENU_STYLES: Record<string, string> = {
+  ready:   "hover:bg-emerald-50 text-emerald-800",
+  wait:    "hover:bg-amber-50   text-amber-800",
+  blocked: "hover:bg-red-50     text-red-800",
+  tbd:     "hover:bg-gray-50    text-gray-600",
+}
+
 function StatusPill({
   value, onSave,
 }: {
@@ -143,38 +150,49 @@ function StatusPill({
   onSave: (v: "ready" | "wait" | "blocked" | "tbd") => void
 }) {
   const [open, setOpen] = React.useState(false)
-  const ref = React.useRef<HTMLSelectElement>(null)
+  const containerRef = React.useRef<HTMLDivElement>(null)
   const cfg = STATUS_STYLES[value] ?? STATUS_STYLES.tbd
 
-  React.useEffect(() => { if (open) ref.current?.focus() }, [open])
-
-  if (open) {
-    return (
-      <select
-        ref={ref}
-        defaultValue={value}
-        autoFocus
-        onChange={e => {
-          onSave(e.target.value as "ready" | "wait" | "blocked" | "tbd")
-          setOpen(false)
-        }}
-        onBlur={() => setOpen(false)}
-        className="text-[10px] border border-violet-400 rounded-full px-2 py-0.5 bg-white outline-none ring-1 ring-violet-300 cursor-pointer"
-      >
-        {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-      </select>
-    )
-  }
+  // Close on outside click
+  React.useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [open])
 
   return (
-    <button
-      onClick={() => setOpen(true)}
-      className={`inline-flex items-center gap-0.5 text-[10px] font-medium border rounded-full px-2 py-0.5 transition-colors cursor-pointer ${cfg.pill}`}
-      title="Click to change status"
-    >
-      {cfg.label}
-      <ChevronDown className="h-2.5 w-2.5 opacity-60 ml-0.5" />
-    </button>
+    <div ref={containerRef} className="relative inline-block">
+      <button
+        onClick={e => { e.stopPropagation(); setOpen(o => !o) }}
+        className={`inline-flex items-center gap-0.5 text-[10px] font-medium border rounded-full px-2 py-0.5 transition-colors cursor-pointer ${cfg.pill}`}
+        title="Click to change status"
+      >
+        {cfg.label}
+        <ChevronDown className={`h-2.5 w-2.5 opacity-60 ml-0.5 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[130px]">
+          {STATUSES.map(s => (
+            <button
+              key={s.value}
+              onMouseDown={e => {
+                e.preventDefault()
+                e.stopPropagation()
+                onSave(s.value as "ready" | "wait" | "blocked" | "tbd")
+                setOpen(false)
+              }}
+              className={`w-full text-left text-[11px] px-3 py-1.5 cursor-pointer transition-colors ${MENU_STYLES[s.value] ?? ""} ${s.value === value ? "font-semibold" : ""}`}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
