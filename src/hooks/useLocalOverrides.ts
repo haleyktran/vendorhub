@@ -49,11 +49,28 @@ export function useLocalOverrides() {
   // Poll remote every POLL_MS — update local if remote is different
   React.useEffect(() => {
     let cancelled = false
+    let initialised = false
 
     const poll = async () => {
       try {
         const remote = await fetchRemote()
-        if (!cancelled) {
+        if (cancelled) return
+
+        if (!initialised) {
+          initialised = true
+          const local = loadLocal()
+          const localHasData = Object.keys(local).length > 0
+          const remoteEmpty = Object.keys(remote).length === 0
+
+          if (localHasData && remoteEmpty) {
+            // First load: local has edits but remote is blank — push local up
+            await pushRemote(local)
+          } else {
+            // Remote has data (or both empty) — remote wins
+            apply(remote)
+          }
+        } else {
+          // Subsequent polls — remote always wins
           apply(remote)
         }
       } catch {
@@ -61,7 +78,7 @@ export function useLocalOverrides() {
       }
     }
 
-    poll() // fetch immediately on mount
+    poll()
     const id = setInterval(poll, POLL_MS)
     return () => { cancelled = true; clearInterval(id) }
   }, [apply])
