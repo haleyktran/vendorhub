@@ -1,4 +1,62 @@
 import * as React from "react"
+
+// ─── Passcode gate ─────────────────────────────────────────────────────────────
+
+const PASSCODE = "unifyvendorrocks"
+const AUTH_KEY = "vendor-hub-auth"
+
+function PasscodeGate({ children }: { children: React.ReactNode }) {
+  const [authed, setAuthed] = React.useState(() => localStorage.getItem(AUTH_KEY) === "1")
+  const [input, setInput] = React.useState("")
+  const [error, setError] = React.useState(false)
+
+  if (authed) return <>{children}</>
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (input === PASSCODE) {
+      localStorage.setItem(AUTH_KEY, "1")
+      setAuthed(true)
+    } else {
+      setError(true)
+      setInput("")
+      setTimeout(() => setError(false), 1500)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="w-full max-w-sm mx-auto px-6">
+        <div className="rounded-xl border bg-card shadow-sm px-8 py-10 space-y-6">
+          <div className="space-y-1 text-center">
+            <h1 className="text-xl font-semibold tracking-tight">Vendor Hub</h1>
+            <p className="text-sm text-muted-foreground">Enter the passcode to continue</p>
+          </div>
+          <form onSubmit={submit} className="space-y-3">
+            <input
+              type="password"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="Passcode"
+              autoFocus
+              className={`w-full rounded-md border px-3 py-2 text-sm outline-none ring-offset-background transition-colors
+                focus:ring-2 focus:ring-violet-400 focus:border-violet-400
+                ${error ? "border-red-400 ring-2 ring-red-200" : "border-input"}`}
+            />
+            {error && <p className="text-xs text-red-500 text-center">Incorrect passcode</p>}
+            <button
+              type="submit"
+              className="w-full rounded-md bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium py-2 transition-colors"
+            >
+              Unlock
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
@@ -274,6 +332,7 @@ export default function App() {
   const [view, setView] = React.useState<AppView>("commercial")
 
   return (
+    <PasscodeGate>
     <div className="min-h-screen bg-background">
       <div className="max-w-[1400px] mx-auto px-6 py-10">
 
@@ -399,5 +458,6 @@ export default function App() {
         )}
       </div>
     </div>
+    </PasscodeGate>
   )
 }
