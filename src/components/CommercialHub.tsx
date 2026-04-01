@@ -272,7 +272,6 @@ export function CommercialHub() {
   const waitCount    = rows.filter(r => r.section === "wait").length
   const reviewCount  = rows.filter(r => r.section === "review").length
   const paygCount    = rows.filter(r => r.commercial?.commitmentTier === "none").length
-  const mediumCount  = rows.filter(r => r.commercial?.commitmentTier === "medium").length
   const highCount    = rows.filter(r => r.commercial?.commitmentTier === "high").length
 
   const sections: Array<"ready" | "wait" | "review" | "blocked" | "tbd"> = ["review", "ready", "wait", "blocked", "tbd"]
