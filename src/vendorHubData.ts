@@ -561,9 +561,11 @@ export const vendorContacts: VendorContact[] = [
     hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
-      { id: "exp-1", text: "Attend Explorium meeting Tue Mar 31 9–9:30am PT (rescheduled from Mar 25)", owner: "me", done: false },
-      { id: "exp-2", text: "Add eng team member to Mar 31 Explorium demo", owner: "me", done: false },
+      { id: "exp-1", text: "Attend Explorium meeting Tue Mar 31 9–9:30am PT (rescheduled from Mar 25)", owner: "me", done: true },
+      { id: "exp-2", text: "Add eng team member to Mar 31 Explorium demo", owner: "me", done: true },
       { id: "exp-3", text: "Use 100 trial credits + 1K bonus credits for POC file enrichment test starting week of Mar 30", owner: "me", done: false },
+      { id: "exp-4", text: "Receive pricing options (API-only vs bulk+API) from Roy/Omer", owner: "them", done: false },
+      { id: "exp-5", text: "Intro data engineer to Explorium team for bulk data evaluation", owner: "me", done: false },
     ],
     notes: [
       "Met Mar 18 with Omer Har (CEO/Co-founder, Tel Aviv) + Roy Yarkoni (NC)",
@@ -1043,7 +1045,7 @@ export const vendorContacts: VendorContact[] = [
       "API reference: buyercaddy-api.readme.io/reference/quick-start",
     ],
     overallStatus: "active",
-    commercialStatus: null,
+    commercialStatus: "wait",
     contacts: ["Craig Harris (CEO) — craig@buyercaddy.com","Pawan Nachnani (CTO) — pawan@buyercaddy.com","Mitch Warren — mitch@buyercaddy.com"],
     slackChannel: "#buyercaddy-unify",
   },
@@ -1412,8 +1414,10 @@ export const vendorContacts: VendorContact[] = [
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
-      { id: "sem-1", text: "Attend partnership call Tue Mar 31 11:30am–12pm PT with Erin Cook + Michael Dellamura", owner: "me", done: false },
-      { id: "sem-2", text: "Capture signal / pricing / API format details from call", owner: "me", done: false },
+      { id: "sem-1", text: "Attend partnership call Tue Mar 31 11:30am–12pm PT with Erin Cook + Michael Dellamura", owner: "me", done: true },
+      { id: "sem-2", text: "Discuss 6-figure annual minimum with finance team", owner: "me", done: false },
+      { id: "sem-3", text: "Schedule demo / workflow presentation to Semrush team", owner: "me", done: false },
+      { id: "sem-4", text: "Submit exec summary to Semrush leadership (required due to Adobe acquisition)", owner: "me", done: false },
     ],
     notes: [
       "Inbound: Erin Cook (erin.cook@semrush.com) reached out Mar 30 re: partnership",
@@ -1423,8 +1427,8 @@ export const vendorContacts: VendorContact[] = [
       "Category: SEO, Competitive Intelligence",
       "All details TBD — post-call",
     ],
-    overallStatus: "meeting-booked",
-    commercialStatus: null,
+    overallStatus: "active",
+    commercialStatus: "wait",
     contacts: ["Erin Cook — erin.cook@semrush.com", "Michael Dellamura — michael.dellamura@semrush.com"],
   },
 ]

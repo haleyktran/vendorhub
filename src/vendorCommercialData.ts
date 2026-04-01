@@ -236,12 +236,13 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
 
   explorium: {
     commitmentTier: "high",
-    commitmentLabel: "$60K min",
-    pricingTldr: "$60K min commitment (~6M credits). Deprioritized until clearer product use case.",
-    pricingDetail: "$60K min upfront commitment. 1 credit/company enrichment, 5 credits/contact enrichment. Standard 200 QPM; partners get 1,000 QPM. More of a broad B2B data layer than a typical enrichment vendor — push until clearer use case defined.",
-    capability: "finds-enrich",
-    commercialNextStep: "Deprioritized — push until clearer product use case. Not a typical enrichment vendor.",
-    commercialOwner: null,
+    commitmentLabel: "$60K/yr min",
+    pricingTldr: "$60K/yr = 6M credits ($0.0125/cr). 1cr/company, 2cr/tech, 5cr/contact. Preview before charge — only billed on used results. Only provider with intent-based list building (Bombora).",
+    pricingDetail: "$60K/yr minimum = 6M credits at $0.0125/credit. Credit breakdown: 1cr/company enrichment, 2cr/technographics, 2-3cr/events, 5cr/contact enrichment. Standard 200 QPM; partners get 1,000 QPM. Preview functionality included — results shown before credits are charged. Can combine bulk data + API credits. Bulk flat file needed for on-demand filtering. Data page: companyenrich.com/our-data.",
+    capability: "finds-enrich-dataset",
+    commercialNextStep: "Awaiting pricing options (API-only vs bulk+API) from Roy/Omer. Haley to intro data engineer for bulk data evaluation. Target: commercial agreements signed within a few weeks.",
+    commercialOwner: "haley",
+    questionnaireUrl: "https://docs.google.com/document/d/1JeGvBYx-TqQKzDwjbfmLsqVczsi1lkq7/edit",
   },
 
   crustdata: {
@@ -278,13 +279,13 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
   },
 
   buyercaddy: {
-    commitmentTier: null,
-    commitmentLabel: "TBD",
-    pricingTldr: "Pricing TBD — intro call needed.",
-    capability: "enrich-only",
-    commercialNextStep: "Schedule intro call — pricing and commitment structure unknown.",
-    commercialOwner: null,
-    questionnaireUrl: "https://docs.google.com/document/d/1JeGvBYx-TqQKzDwjbfmLsqVczsi1lkq7/edit",
+    commitmentTier: "high",
+    commitmentLabel: "$50K min",
+    pricingTldr: "$50K min partnership = few million credits. 1cr/firmographic, 2cr/technographic, 5cr/contact. 50% off website rates. 180K products tracked. 6-figure annual target.",
+    pricingDetail: "Partnership deal minimum: $50K (few million credits). Target annual: 6-figures. Credit tiers: 1cr firmographic, 2cr technographic, 5cr contact/social. 50% discount from public website rates. Can combine bulk data (S3/Snowflake monthly distribution) + API credits + contact enrichment. 180K IT products, 92K vendors, 31.2M+ companies across 55 countries. MCP server available. AI-native stack, lean 10-engineer team — claims most competitive partnership pricing in market.",
+    capability: "finds-enrich-dataset",
+    commercialNextStep: "Engage Craig/Mitch via #buyercaddy-unify Slack — get trial API access and evaluate vs HG Insights for technographic coverage. Lock in partnership structure.",
+    commercialOwner: "haley",
   },
 
   builtwith: {
@@ -312,6 +313,16 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "Intro call Mar 24 — details TBD from call notes.",
     capability: "enrich-only",
     commercialNextStep: "Fill in pricing + structure from call notes. Send follow-up to Ed Field.",
+    commercialOwner: "haley",
+  },
+
+  semrush: {
+    commitmentTier: "high",
+    commitmentLabel: "6-fig/yr min",
+    pricingTldr: "6-fig annual minimum. Volume-based pricing grid across traffic, backlinks, and AI visibility APIs. Bundling multiple APIs gets better rates. Adobe acquisition adds exec approval overhead.",
+    pricingDetail: "Six-figure annual minimum — similar structure to Clay partnership model. Cost drivers: API access fees + usage volume. Economies of scale when bundling multiple APIs. Recommended phase 1: (1) traffic & engagement data (domain-level), (2) backlinks DB (2nd largest after Google, Authority Score 0–100), (3) AI/LLM visibility (share of voice, brand mentions in LLMs). Approval process: Haley discusses 6-fig min with finance → demo to Semrush → exec summary required by Semrush leadership (Adobe acquisition) → final proposal with pricing breakdown.",
+    capability: "enrich-only",
+    commercialNextStep: "Haley: discuss 6-fig annual minimum with finance team. Then: schedule demo/workflow presentation to Semrush team → submit exec summary (required for Adobe acquisition) → receive final partnership proposal.",
     commercialOwner: "haley",
   },
 

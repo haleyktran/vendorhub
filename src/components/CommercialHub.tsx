@@ -319,12 +319,12 @@ export function CommercialHub() {
           <p className="text-muted-foreground">TheirStack, Adyntel, UpRiver, Serpstat, SE Ranking, The Swarm, BuiltWith, Retention.com</p>
         </div>
         <div>
-          <p className="font-semibold text-amber-700 mb-1">⚠️ Low commit ($2K–$25K)</p>
-          <p className="text-muted-foreground">Harmonic ($10K), Dealroom (€12K/yr), Crustdata ($4K/mo), HitHorizons (€3.5K/60K), Store Leads ($25K), Beauhurst (£20–40K)</p>
+          <p className="font-semibold text-yellow-700 mb-1">🟡 Medium commit ($10K–$50K)</p>
+          <p className="text-muted-foreground">Harmonic ($10K), Dealroom (€12K/yr), Store Leads ($25K), Beauhurst (£20–40K), Crustdata ($4K/mo), HitHorizons (€3.5K/60K calls)</p>
         </div>
         <div>
           <p className="font-semibold text-red-700 mb-1">❌ High commit ($50K+)</p>
-          <p className="text-muted-foreground">Crunchbase ($150K), PitchBook (~$160K), CB Insights (6-fig), Spade (6-fig), SimilarWeb ($50K+), Openmart ($80K), Explorium ($60K)</p>
+          <p className="text-muted-foreground">Crunchbase ($150K), PitchBook (~$160K), CB Insights (6-fig), Spade (6-fig), SimilarWeb ($50K+), Openmart ($80K), Explorium ($60K), BuyerCaddy ($50K+), Semrush (6-fig)</p>
         </div>
       </div>
 
