@@ -2,10 +2,11 @@
 // Source: Signal Vendor Commercial Brief (Notion, updated 2026-03-27)
 // Keyed by vendorContact.id
 
-export type CommitmentTier = "none" | "low" | "high"
-// none = ✅ PAYG / no advance required
-// low  = ⚠️  $2K–$25K upfront (manageable)
-// high = ❌  $50K+ upfront (requires scrutiny)
+export type CommitmentTier = "none" | "low" | "medium" | "high"
+// none   = ✅ No commit / PAYG
+// low    = 🟡 <$10K upfront
+// medium = ⚠️  $10K–$50K upfront
+// high   = ❌  $50K+ upfront (requires scrutiny)
 
 export type Capability =
   | "finds-enrich"         // company finder + enrichment API
@@ -31,7 +32,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
   // ── 🟢 READY ─────────────────────────────────────────────────────────────
 
   harmonic: {
-    commitmentTier: "low",
+    commitmentTier: "medium",
     commitmentLabel: "$10K min",
     pricingTldr: "$0.04/credit, $10K upfront min. API enrichment only — no bulk, no caching.",
     pricingDetail: "$10K credit commitment required upfront, then quarterly true-up at $0.04/credit. No data caching allowed — each end-customer call must be a unique live API call. No bulk dataset available for partners.",
@@ -63,7 +64,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
   },
 
   storeleads: {
-    commitmentTier: "low",
+    commitmentTier: "medium",
     commitmentLabel: "$25K advance",
     pricingTldr: "$25K advance = 500K domain credits @ $0.05/credit. Usage-based after. Standard redistribution deal (same as Clay, Artisan, Genesee).",
     pricingDetail: "$25K upfront = 500K domain credits @ $0.05/credit. Usage-based pricing beyond that. Standard redistribution partner deal — same structure as Clay, Artisan, Genesee. No flexibility claimed on structure. BYOK option for customers who already have Store Leads. 1-month dev access agreement pending from Ammar before full contract.",
@@ -149,7 +150,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
   },
 
   dealroom: {
-    commitmentTier: "low",
+    commitmentTier: "medium",
     commitmentLabel: "€12K/yr",
     pricingTldr: "€12K/yr entry → €45K/yr unlimited. Best price point in the fundraising category. 2-week trial API available.",
     pricingDetail: "Annual license, tiered by API call volume. €12K/yr entry (limited calls) → €45K/yr unlimited OEM. Apollo uses the unlimited OEM model. €12K entry is the right starting point — gives access to evaluate before scaling. Questionnaire being filled by Kjeld + Miguel as of 3/27.",
@@ -181,7 +182,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
   },
 
   beauhurst: {
-    commitmentTier: "low",
+    commitmentTier: "medium",
     commitmentLabel: "£20–40K/yr",
     pricingTldr: "£20–40K/yr seat-based + API. Awaiting CEO approval on their side.",
     pricingDetail: "Annual seat-based license + API integration. UK and German private company data (5M+ UK private companies from Companies House filings). Strong niche for EU coverage.",
@@ -244,7 +245,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
   },
 
   crustdata: {
-    commitmentTier: "low",
+    commitmentTier: "medium",
     commitmentLabel: "$4K/mo min",
     pricingTldr: "$4K/mo = 40K credits. Full dataset $20K/mo. Deprioritized — better for on-prem evaluation.",
     pricingDetail: "API: $4K/mo = 40K credits. Real-time: $0.10/credit (1 company/credit). Cached: $0.001/company (100 companies/credit). Full people dataset: $20K/mo ($240K/yr). Better suited for on-prem dataset evaluation vs. API enrichment vendor.",

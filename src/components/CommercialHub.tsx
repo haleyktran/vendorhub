@@ -10,10 +10,11 @@ import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2,
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
 const COMMIT_TIERS: Array<{ value: CommitmentTier | ""; label: string }> = [
-  { value: "",     label: "TBD" },
-  { value: "none", label: "✅ No commit" },
-  { value: "low",  label: "⚠️ Low ($2K–$25K)" },
-  { value: "high", label: "❌ High ($50K+)" },
+  { value: "",       label: "TBD" },
+  { value: "none",   label: "✅ No commit / PAYG" },
+  { value: "low",    label: "🟡 Low (<$10K)" },
+  { value: "medium", label: "⚠️ Medium ($10K–$50K)" },
+  { value: "high",   label: "❌ High ($50K+)" },
 ]
 
 const CAPABILITIES: Array<{ value: Capability | ""; label: string }> = [
@@ -271,6 +272,7 @@ export function CommercialHub() {
   const waitCount    = rows.filter(r => r.section === "wait").length
   const reviewCount  = rows.filter(r => r.section === "review").length
   const paygCount    = rows.filter(r => r.commercial?.commitmentTier === "none").length
+  const mediumCount  = rows.filter(r => r.commercial?.commitmentTier === "medium").length
   const highCount    = rows.filter(r => r.commercial?.commitmentTier === "high").length
 
   const sections: Array<"ready" | "wait" | "review" | "blocked" | "tbd"> = ["review", "ready", "wait", "blocked", "tbd"]
@@ -298,8 +300,8 @@ export function CommercialHub() {
           { label: "Ready now",             value: readyCount,   color: "text-emerald-700", icon: <CheckCircle2 className="h-4 w-4" />, bg: "bg-emerald-50" },
           { label: "In motion",             value: waitCount,    color: "text-amber-700",   icon: <Clock className="h-4 w-4" />,        bg: "bg-amber-50"   },
           { label: "Negotiating",           value: reviewCount,  color: "text-blue-700",    icon: <TrendingUp className="h-4 w-4" />,   bg: "bg-blue-50"    },
-          { label: "✅ PAYG / no commit",   value: paygCount,    color: "text-emerald-700", icon: <DollarSign className="h-4 w-4" />,   bg: "bg-emerald-50" },
-          { label: "❌ High commit ($50K+)", value: highCount,   color: "text-red-700",     icon: <DollarSign className="h-4 w-4" />,   bg: "bg-red-50"     },
+          { label: "✅ PAYG / no commit",      value: paygCount,   color: "text-emerald-700", icon: <DollarSign className="h-4 w-4" />, bg: "bg-emerald-50" },
+          { label: "❌ High commit ($50K+)",  value: highCount,   color: "text-red-700",     icon: <DollarSign className="h-4 w-4" />, bg: "bg-red-50"     },
         ].map(stat => (
           <div key={stat.label} className={`rounded-lg border px-4 py-3 flex items-center gap-3 ${stat.bg}`}>
             <span className={stat.color}>{stat.icon}</span>
