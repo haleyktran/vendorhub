@@ -15,6 +15,12 @@ export type Capability =
   | "finds-enrich-dataset" // all three
   | "platform"             // not a traditional data vendor
 
+export type BudgetStatus = "excluded" | "exploring" | "tentative" | "signed"
+// excluded  = PAYG / not budgeting for this vendor
+// exploring = evaluating — include as possible upside
+// tentative = likely to sign — include in base budget
+// signed    = contract executed
+
 export interface VendorCommercial {
   commitmentTier: CommitmentTier | null
   commitmentLabel: string            // human-readable amount, e.g. "$150K/yr"
@@ -25,6 +31,8 @@ export interface VendorCommercial {
   commercialNextStep: string
   commercialOwner: "haley" | "will" | null
   questionnaireUrl?: string          // link to Google Doc vendor questionnaire
+  annualBudgetUsd: number | null     // tentative annual spend in USD
+  budgetStatus: BudgetStatus         // how firm this number is
 }
 
 export const vendorCommercialData: Record<string, VendorCommercial> = {
@@ -40,6 +48,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Reach out to Mike Palmer — confirm no-caching constraint before pricing convo. Request data partner agreement in parallel.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1vjT5BINvN0k0yCoXp_NtVvPpUXgFXzcV/edit",
+    annualBudgetUsd: 10000,
+    budgetStatus: "tentative",
   },
 
   upriver: {
@@ -50,6 +60,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Reach out to Lulu Zhang — demo done 3/24, API key shared. Clear path to commercial conversation.",
     commercialOwner: "will",
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   adyntel: {
@@ -61,6 +73,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Reach out to Andrei — favorable pay-per-success model. Straightforward commercial conversation.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1gEKLwZfPwDLH5DdSwwD3B3fYvju98y_f/edit",
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   storeleads: {
@@ -72,6 +86,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Receive and sign 1-month dev access agreement from Ammar. Then loop in eng team for integration.",
     commercialOwner: "haley",
     questionnaireUrl: "https://docs.google.com/document/d/1A2C1Ox2znxGLQrwBl5Jw_PK5crh4BPjS/edit",
+    annualBudgetUsd: 25000,
+    budgetStatus: "tentative",
   },
 
   theirstack: {
@@ -82,6 +98,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Reach out to Xoel López — strongest commercial profile: zero upfront, pure PAYG. Get trial API invite + loop in finance for pricing above 1M credits.",
     commercialOwner: "will",
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   serpstat: {
@@ -92,6 +110,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich-dataset",
     commercialNextStep: "Reach out to Eugene Romanuk — $9–10K one-time dataset is a standout low-commitment option. Loop Will into email thread (Eugene flagged this specifically).",
     commercialOwner: "will",
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   openmart: {
@@ -103,6 +123,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Negotiate $80K min down with Kathryn — expect higher per-credit rate at lower commitment.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1hExzGNYBfFPnN-qB151piiGsXEIUNiTR/edit",
+    annualBudgetUsd: 80000,
+    budgetStatus: "exploring",
   },
 
   // ── 🟡 WAIT ──────────────────────────────────────────────────────────────
@@ -115,6 +137,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Follow up with Alex once reply received. Option A (PAYG/no upfront) is the preferred path.",
     commercialOwner: "will",
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   similarweb: {
@@ -125,6 +149,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Haley: send URL volume estimate + endpoint list to Miriam to unblock pricing quote. Will already on thread.",
     commercialOwner: "haley",
+    annualBudgetUsd: 50000,
+    budgetStatus: "exploring",
   },
 
   seranking: {
@@ -136,6 +162,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Will: join 3/31 pricing call with Alex Trusevich — come with volume estimates and field priorities. No upfront commitment required.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1cQ_IxMQSe7fRc3kHjAqr9tZSLCFbkwSh/edit",
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   cbinsights: {
@@ -147,6 +175,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Wait — formal proposal due next week from Rawley Dawson.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1PuchAdmzhZ35EJY8sslcbeavHymK0Z_2/edit",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
   },
 
   dealroom: {
@@ -158,6 +188,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Will: review questionnaire responses from Kjeld/Miguel, then move to commercial conversation. €12K entry is the best starting point vs. Crunchbase ($150K) or PitchBook (~$160K).",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1XfJYV4yaO-IBs2LQwKcXcjUoxfQ2TV-L3EwgkvNXXjo/edit",
+    annualBudgetUsd: 13000,
+    budgetStatus: "tentative",
   },
 
   theswarm: {
@@ -169,6 +201,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Will: join 3/30 call with Grace + David — lock in enterprise/reseller partner structure.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/10pDlnPwR2NHC_QKzHUoRbVTwdofAXD-XS4O2z75CJcA/edit",
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   adbeat: {
@@ -179,6 +213,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Will: wait for VP Ops approval. Reference Adyntel pricing as anchor when terms come.",
     commercialOwner: "will",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
   },
 
   beauhurst: {
@@ -189,6 +225,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Wait — CEO approval pending on their side.",
     commercialOwner: null,
+    annualBudgetUsd: 38000,
+    budgetStatus: "exploring",
   },
 
   // ── 🔴 BLOCKED / DEPRIORITIZED ───────────────────────────────────────────
@@ -201,6 +239,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Will: review $150K advance terms vs. expected volume. Decide if worth signing — consider Dealroom (€12K) as lower-cost alternative for overlapping signals.",
     commercialOwner: "will",
+    annualBudgetUsd: 150000,
+    budgetStatus: "excluded",
   },
 
   pitchbook: {
@@ -211,6 +251,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Hold — wait for Charlie Weiss to share data eval contacts. High price requires careful evaluation vs. Dealroom before progressing.",
     commercialOwner: "will",
+    annualBudgetUsd: 160000,
+    budgetStatus: "excluded",
   },
 
   spade: {
@@ -222,6 +264,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Will: await quote from Oban. Lily traveling through Fintech Meetup. 6-fig floor needs significant negotiation down.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1C70UsMqyC-EiufRX2EgGEMgMDFUHN4sL/edit",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
   },
 
   "reodev": {
@@ -232,6 +276,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Will: send formal partnership proposal before re-engaging — include high-level pricing structure and Unify's differentiation vs. Clay.",
     commercialOwner: "will",
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   explorium: {
@@ -243,6 +289,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Awaiting pricing options (API-only vs bulk+API) from Roy/Omer. Haley to intro data engineer for bulk data evaluation. Target: commercial agreements signed within a few weeks.",
     commercialOwner: "haley",
     questionnaireUrl: "https://docs.google.com/document/d/1JeGvBYx-TqQKzDwjbfmLsqVczsi1lkq7/edit",
+    annualBudgetUsd: 60000,
+    budgetStatus: "tentative",
   },
 
   crustdata: {
@@ -253,6 +301,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich-dataset",
     commercialNextStep: "Deprioritized — better suited for on-prem dataset evaluation. No immediate action.",
     commercialOwner: null,
+    annualBudgetUsd: 48000,
+    budgetStatus: "exploring",
   },
 
   retentiondotcom: {
@@ -263,6 +313,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Skip for now — deprioritized.",
     commercialOwner: null,
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   // ── TBD / UPCOMING ────────────────────────────────────────────────────────
@@ -276,6 +328,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Reply to Tibor Jánoška to activate 10-day API trial, then evaluate pricing tiers.",
     commercialOwner: "haley",
     questionnaireUrl: "https://docs.google.com/document/d/1_lY9njd9jy5wGnX0vAR-VDc8BGmyTHri/edit",
+    annualBudgetUsd: 4000,
+    budgetStatus: "exploring",
   },
 
   buyercaddy: {
@@ -286,6 +340,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich-dataset",
     commercialNextStep: "Engage Craig/Mitch via #buyercaddy-unify Slack — get trial API access and evaluate vs HG Insights for technographic coverage. Lock in partnership structure.",
     commercialOwner: "haley",
+    annualBudgetUsd: 50000,
+    budgetStatus: "tentative",
   },
 
   builtwith: {
@@ -296,6 +352,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Evaluate Domain API pricing tiers for our expected volume vs. BuyerCaddy.",
     commercialOwner: null,
+    annualBudgetUsd: null,
+    budgetStatus: "excluded",
   },
 
   dealfront: {
@@ -305,6 +363,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: null,
     commercialNextStep: "Attend intro call Fri 3/27 9am PDT with Matthew Fairey.",
     commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
   },
 
   hginsights: {
@@ -314,6 +374,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Fill in pricing + structure from call notes. Send follow-up to Ed Field.",
     commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
   },
 
   semrush: {
@@ -324,6 +386,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Haley: discuss 6-fig annual minimum with finance team. Then: schedule demo/workflow presentation to Semrush team → submit exec summary (required for Adobe acquisition) → receive final partnership proposal.",
     commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
   },
 
 }

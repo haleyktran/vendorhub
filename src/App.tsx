@@ -63,6 +63,7 @@ import { Badge } from "@/components/ui/badge"
 import { summaryData, tierData, burstData, runLog, type Status } from "./data"
 import { VendorHub } from "@/components/VendorHub"
 import { CommercialHub } from "@/components/CommercialHub"
+import { BudgetHub } from "@/components/BudgetHub"
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -326,7 +327,7 @@ const VENDOR_STATUS: [string, Status][] = [
   ["HG Insights","pending"],
 ]
 
-type AppView = "latency" | "followups" | "commercial"
+type AppView = "latency" | "followups" | "commercial" | "budget"
 
 export default function App() {
   const [view, setView] = React.useState<AppView>("commercial")
@@ -358,6 +359,16 @@ export default function App() {
               }`}
             >
               💰 Commercial
+            </button>
+            <button
+              onClick={() => setView("budget")}
+              className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${
+                view === "budget"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              📊 Budget
             </button>
             <button
               onClick={() => setView("latency")}
@@ -398,6 +409,20 @@ export default function App() {
               </p>
             </div>
             <CommercialHub />
+          </>
+        )}
+
+        {/* ── Budget view ───────────────────────────────────────────────────── */}
+        {view === "budget" && (
+          <>
+            <div className="mb-6">
+              <h1 className="text-2xl font-semibold tracking-tight mb-1">📊 Vendor Budget Tracker</h1>
+              <p className="text-sm text-muted-foreground max-w-2xl">
+                Tentative annual spend commitments across all vendors. Use this to give finance a range for data vendor costs.
+                Mark vendors as <strong>Tentative</strong> (likely to sign) or <strong>Exploring</strong> (possible upside).
+              </p>
+            </div>
+            <BudgetHub />
           </>
         )}
 
