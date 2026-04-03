@@ -85,11 +85,11 @@ export const vendorContacts: VendorContact[] = [
     emailStatus: "needs-response",
     emailSubject: "Kegan asking what advance range works for Unify — respond in #crunchbase-unify",
     signal:
-      "Best-in-class funding/M&A signals. Kegan sent one-pager + enrichment schedule Mar 23. Haley asked about company finder/query capability Mar 25. Apr 1: Kegan following up asking what advance range makes sense for Unify (advance = prepaid against expected usage). Needs response.",
+      "Best-in-class funding/M&A signals. Kegan sent one-pager + enrichment schedule Mar 23. Haley asked about company finder/query capability Mar 25 — Kegan confirmed list-build and enrichment are the same event (all returned fields count as enrichment). Mar 30: Haley pushed back on $150K minimum, asked about pay-as-you-go or flexible minimum. Mar 31 + Apr 1: Kegan following up — says commit is just an advance against expected usage, asking what range works for Unify. Needs response.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
-      { id: "cb-1", text: "Reply to Kegan in #crunchbase-unify with advance range preference (what commit amount makes sense for Unify)", owner: "me", done: false },
+      { id: "cb-1", text: "Reply to Kegan in #crunchbase-unify with advance range preference — Haley already said $150K is a nonstarter, Kegan says it's just an advance against usage (not a hard minimum); propose a starting range", owner: "me", done: false },
       { id: "cb-2", text: "Clarify company finder/query capability vs enrichment-only model", owner: "them", done: false },
     ],
     notes: [
@@ -150,17 +150,18 @@ export const vendorContacts: VendorContact[] = [
     name: "Harmonic.ai",
     tier: "P0",
     category: "Fundraising & Company Intelligence",
-    lastContactDate: "2026-03-24",
+    lastContactDate: "2026-04-02",
     emailStatus: "waiting-on-them",
     emailSubject: "Mike Palmer to finalize fields; then will spin up API key",
     signal:
-      "Existing Unify customer. 33M+ companies globally, very strong on private companies and startups. Early detection via legal filings. Real-time signals: funding, departmental headcount, founder tracking. $0.04/API call, $10K upfront commit. No data caching — each end-customer needs a unique call. Partnership terms posted in #harmonic-unify by Mike on Mar 19. Waiting on Mike to finalize which fields to expose.",
+      "Existing Unify customer. 33M+ companies globally, very strong on private companies and startups. Early detection via legal filings. Real-time signals: funding, departmental headcount, founder tracking. $0.04/API call, $10K upfront commit. No data caching — each end-customer needs a unique call. Partnership terms posted in #harmonic-unify by Mike on Mar 19. Waiting on Mike to finalize which fields to expose. Apr 2: Haley asked Mike to spin up trial API key in the meantime, and asked about OpenAPI spec/CLI.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
       { id: "harm-1", text: "Mike Palmer to finalize fields Harmonic is comfortable exposing via API", owner: "them", done: false },
       { id: "harm-2", text: "Review partnership structure posted by Mike in #harmonic-unify and confirm if terms work", owner: "me", done: false },
-      { id: "harm-3", text: "Receive API key from Mike once fields are finalized", owner: "them", done: false },
+      { id: "harm-3", text: "Receive trial API key from Mike (Haley asked Apr 2 — don't wait for field finalization)", owner: "them", done: false },
+      { id: "harm-4", text: "Ask Mike about OpenAPI spec or CLI reference (asked Apr 2)", owner: "them", done: false },
     ],
     notes: [
       "Slack channel: #harmonic-unify",
@@ -396,14 +397,15 @@ export const vendorContacts: VendorContact[] = [
     name: "RB2B",
     tier: "P1",
     category: "Website Visitor",
-    lastContactDate: "2026-03-20",
+    lastContactDate: "2026-04-02",
     emailStatus: "none",
     signal:
-      "Person-level website de-anonymization. US: 40–45% person-level, 70–80% total. Global: 30–35% company only. Real-time webhook. OEM-ready multi-tenant model. $0.08/resolution. GDPR consent-gated; cookie notice required.",
+      "Person-level website de-anonymization. US: 40–45% person-level, 70–80% total. Global: 30–35% company only. Real-time webhook. OEM-ready multi-tenant model. $0.08/resolution. GDPR consent-gated; cookie notice required. Apr 2: Haley signed up at app.rb2b.com — account created, welcome email received. Still need to notify Robb/Kaley to flip to OEM mode.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
-      { id: "rb2b-1", text: "Sign up at app.rb2b.com → notify Robb/Kaley to flip account to OEM mode", owner: "me", done: false },
+      { id: "rb2b-1", text: "Sign up at app.rb2b.com → notify Robb/Kaley to flip account to OEM mode", owner: "me", done: true },
+      { id: "rb2b-3", text: "Notify Robb/Kaley to flip newly created RB2B account to OEM mode (signed up Apr 2)", owner: "me", done: false },
       { id: "rb2b-2", text: "Estimate customer web traffic volume for pricing model", owner: "me", done: false },
     ],
     notes: [
