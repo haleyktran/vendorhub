@@ -1212,8 +1212,6 @@ export const vendorContacts: VendorContact[] = [
     name: "Dealfront",
     tier: null,
     category: "Website Visitor · Company Intelligence",
-    lastContactDate: null,
-    emailStatus: "none",
     signal:
       "Meeting still rescheduling. Original meeting Mar 27 no-show; rescheduled to Mar 31 but wrong time booked. Apr 1: Matthew apologized + offered to reschedule. Haley asked for 9:30am PT slot Apr 2 or 3. Waiting for confirmation. Note: Matthew's actual email is matthew.fairey@leadfeeder.com.",
     hasApiKey: false,
