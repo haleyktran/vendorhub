@@ -21,6 +21,13 @@ export type BudgetStatus = "excluded" | "exploring" | "tentative" | "signed"
 // tentative = likely to sign — include in base budget
 // signed    = contract executed
 
+export type LegalStatus = "not-started" | "nda-out" | "nda-signed" | "contract-review" | "contract-signed"
+// not-started     = no legal work yet
+// nda-out         = NDA sent, awaiting signature
+// nda-signed      = NDA executed
+// contract-review = contract / MSA under legal review
+// contract-signed = fully executed
+
 export interface VendorCommercial {
   commitmentTier: CommitmentTier | null
   commitmentLabel: string            // human-readable amount, e.g. "$150K/yr"
@@ -36,6 +43,7 @@ export interface VendorCommercial {
   estimatedAnnualVolume: number | null  // rough annual enrichments/lookups at budgeted spend
   coverageNote: string               // what data this vendor provides, finance-facing
   financeNote: string                // justification / context for finance
+  legalStatus: LegalStatus | null    // where are we in NDA / contract process
 }
 
 export const vendorCommercialData: Record<string, VendorCommercial> = {
@@ -56,6 +64,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: 250000,
     coverageNote: "Company enrichment — firmographics, funding rounds, employee count",
     financeNote: "API-only; no data caching allowed. Strong US startup coverage.",
+    legalStatus: null,
   },
 
   upriver: {
@@ -71,6 +80,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Company finder + enrichment — PAYG",
     financeNote: "PAYG — no upfront commitment; pay as we use",
+    legalStatus: null,
   },
 
   adyntel: {
@@ -87,6 +97,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Contact + company enrichment — pay-per-success model",
     financeNote: "PAYG — charged only on successful returns; no upfront risk",
+    legalStatus: null,
   },
 
   storeleads: {
@@ -103,6 +114,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: 500000,
     coverageNote: "E-commerce domain data — Shopify/WooCommerce stores, traffic, tech stack",
     financeNote: "One-time $25K advance = 500K domain credits. Same deal structure as Clay and Artisan.",
+    legalStatus: null,
   },
 
   theirstack: {
@@ -118,6 +130,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Job posting signals + tech stack lookup — PAYG",
     financeNote: "PAYG — zero upfront, best commercial model in eval. No budget line needed.",
+    legalStatus: null,
   },
 
   serpstat: {
@@ -133,6 +146,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "SEO + web traffic data, 1.8M domain dataset",
     financeNote: "$9-10K one-time dataset option if needed; PAYG API otherwise. No recurring commitment.",
+    legalStatus: null,
   },
 
   openmart: {
@@ -149,6 +163,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: 13000000,
     coverageNote: "Company lookup + email + phone enrichment",
     financeNote: "~13M company lookups at $80K minimum. Negotiating minimum down; per-credit cost rises at lower volume.",
+    legalStatus: null,
   },
 
   // ── 🟡 WAIT ──────────────────────────────────────────────────────────────
@@ -166,6 +181,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Company finder + enrichment — PAYG preferred",
     financeNote: "PAYG option being negotiated; no budget commitment expected",
+    legalStatus: null,
   },
 
   similarweb: {
@@ -181,6 +197,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: 10000,
     coverageNote: "Web traffic + engagement metrics per domain — competitive intelligence",
     financeNote: "Volume TBD — final price depends on # of URLs × metrics chosen. Entry tier ~10K credit-queries.",
+    legalStatus: null,
   },
 
   seranking: {
@@ -197,6 +214,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "SEO data + AI/LLM brand visibility tracking — PAYG",
     financeNote: "PAYG — no upfront. Unique differentiator: AI/LLM brand visibility data.",
+    legalStatus: null,
   },
 
   cbinsights: {
@@ -213,6 +231,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Mosaic scores, funding intelligence, company health signals",
     financeNote: "Awaiting formal proposal. 6-fig license is a significant line item; evaluate vs. Crunchbase for overlap.",
+    legalStatus: null,
   },
 
   dealroom: {
@@ -229,6 +248,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Fundraising data — rounds, investors, valuations, European startup coverage",
     financeNote: "Replaces Crunchbase ($150K) at ~12x lower cost for overlapping signals. Entry tier covers our expected call volume.",
+    legalStatus: null,
   },
 
   theswarm: {
@@ -245,6 +265,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Contact enrichment, professional network graph",
     financeNote: "PAYG partner tier; no upfront. Budget line only needed if we commit to flat file.",
+    legalStatus: null,
   },
 
   adbeat: {
@@ -260,6 +281,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Contact enrichment — Clay-style credit model",
     financeNote: "Pricing TBD pending vendor internal approval. No budget line until terms received.",
+    legalStatus: null,
   },
 
   beauhurst: {
@@ -275,6 +297,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "UK + German private company data — 5M+ companies from Companies House filings",
     financeNote: "Only vendor with deep UK private company data. Niche but high-value for EU coverage gap.",
+    legalStatus: null,
   },
 
   // ── 🔴 BLOCKED / DEPRIORITIZED ───────────────────────────────────────────
@@ -292,6 +315,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Global company data — funding rounds, investors, financials",
     financeNote: "Deprioritized. $150K non-refundable advance. Dealroom covers ~80% of use case at 12x lower cost.",
+    legalStatus: null,
   },
 
   pitchbook: {
@@ -307,6 +331,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Venture + PE data — deep fundraising and private market intelligence",
     financeNote: "Deprioritized. Seat-based ~$160K/yr. Does not justify 3–13x premium over Dealroom for overlapping signals.",
+    legalStatus: null,
   },
 
   spade: {
@@ -323,6 +348,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Transaction + merchant data enrichment — fintech-specific",
     financeNote: "6-fig OEM floor needs significant negotiation. Niche fintech use case. Awaiting quote.",
+    legalStatus: "nda-signed",
   },
 
   "reodev": {
@@ -338,6 +364,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Company enrichment — terms not yet discussed",
     financeNote: "No commercial terms yet. Needs formal proposal before re-engaging.",
+    legalStatus: null,
   },
 
   explorium: {
@@ -354,6 +381,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: 6000000,
     coverageNote: "Company enrichment + technographics + intent signals (Bombora partnership)",
     financeNote: "Only vendor with Bombora intent data. 6M credits = ~6M company enrichments or ~1.2M contact enrichments at min tier.",
+    legalStatus: null,
   },
 
   crustdata: {
@@ -369,6 +397,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: 480000,
     coverageNote: "Company + contact enrichment, bulk dataset option",
     financeNote: "Deprioritized for API use; better suited for bulk dataset evaluation. $4K/mo = 40K enrichments/mo.",
+    legalStatus: null,
   },
 
   retentiondotcom: {
@@ -384,6 +413,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Website visitor de-anonymization",
     financeNote: "Deprioritized. Niche use case (visitor ID only). PAYG if ever needed.",
+    legalStatus: null,
   },
 
   // ── TBD / UPCOMING ────────────────────────────────────────────────────────
@@ -402,6 +432,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: 60000,
     coverageNote: "European company data — 80M+ companies across EU",
     financeNote: "Entry tier ~60K enrichments for €3.5K. Scales with usage. Best EU coverage option evaluated.",
+    legalStatus: null,
   },
 
   buyercaddy: {
@@ -417,6 +448,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: 2000000,
     coverageNote: "Technographics — 180K IT products tracked, tech stack, IT spend, churn signals",
     financeNote: "Primary alternative to HG Insights for tech stack data. Founded by ex-HG Insights CEO. ~2M enrichments at min tier.",
+    legalStatus: null,
   },
 
   builtwith: {
@@ -432,6 +464,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Tech stack data — public Domain API",
     financeNote: "PAYG — standard public API, no partnership needed. No budget line required.",
+    legalStatus: null,
   },
 
   dealfront: {
@@ -446,6 +479,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "European B2B data — company + contact",
     financeNote: "Pricing TBD post-intro call. No budget line yet.",
+    legalStatus: null,
   },
 
   hginsights: {
@@ -460,6 +494,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Technographics — tech intelligence, IT spend data",
     financeNote: "Pricing TBD. Competing with BuyerCaddy for tech stack coverage — only one likely to be signed.",
+    legalStatus: null,
   },
 
   semrush: {
@@ -475,6 +510,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     estimatedAnnualVolume: null,
     coverageNote: "Web traffic, backlinks, AI/LLM brand visibility per domain",
     financeNote: "6-fig minimum TBD; exact amount depends on API bundle selected. Evaluating vs. SE Ranking (PAYG) for cost efficiency.",
+    legalStatus: null,
   },
 
 }

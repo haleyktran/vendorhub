@@ -1,6 +1,6 @@
 import * as React from "react"
 import { vendorContacts } from "@/vendorHubData"
-import { vendorCommercialData, type CommitmentTier, type Capability } from "@/vendorCommercialData"
+import { vendorCommercialData, type CommitmentTier, type Capability, type LegalStatus } from "@/vendorCommercialData"
 import { useLocalOverrides, type CommercialOverride } from "@/hooks/useLocalOverrides"
 import {
   Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
@@ -24,6 +24,15 @@ const CAPABILITIES: Array<{ value: Capability | ""; label: string }> = [
   { value: "dataset",             label: "Buy dataset" },
   { value: "finds-enrich-dataset",label: "Finds + enrich + dataset" },
   { value: "platform",            label: "Platform" },
+]
+
+const LEGAL_STATUSES: Array<{ value: LegalStatus | ""; label: string }> = [
+  { value: "",                 label: "—" },
+  { value: "not-started",     label: "⚪ Not started" },
+  { value: "nda-out",         label: "📤 NDA out" },
+  { value: "nda-signed",      label: "🤝 NDA signed" },
+  { value: "contract-review", label: "🔵 Contract review" },
+  { value: "contract-signed", label: "✅ Contract signed" },
 ]
 
 const STATUSES: Array<{ value: "ready" | "wait" | "review" | "blocked" | "tbd"; label: string }> = [
@@ -226,7 +235,7 @@ function StatusSection({ status }: { status: "ready" | "wait" | "review" | "bloc
   const cfg = map[status]
   return (
     <TableRow className="hover:bg-transparent">
-      <TableCell colSpan={8} className="p-0">
+      <TableCell colSpan={9} className="p-0">
         <div className={`px-4 py-1.5 text-xs font-semibold ${cfg.bg} ${cfg.text} border-y ${cfg.border}`}>
           {cfg.label}
         </div>
@@ -347,6 +356,7 @@ export function CommercialHub() {
               <TableHead className="w-[150px]">Capability</TableHead>
               <TableHead>Next commercial step</TableHead>
               <TableHead className="w-[70px]">Owner</TableHead>
+              <TableHead className="w-[130px]">Legal / Contract</TableHead>
               <TableHead className="w-[80px]">Eval Doc</TableHead>
             </TableRow>
           </TableHeader>
@@ -469,6 +479,15 @@ export function CommercialHub() {
                             />
                           </TableCell>
 
+                          {/* legal status — editable */}
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <EditableSelect<LegalStatus>
+                              value={commercial?.legalStatus ?? null}
+                              options={LEGAL_STATUSES as any}
+                              onSave={v => setField(vendor.id, "legalStatus", v as LegalStatus | null)}
+                            />
+                          </TableCell>
+
                           {/* eval doc — link or editable URL */}
                           <TableCell onClick={e => e.stopPropagation()}>
                             {(() => {
@@ -499,7 +518,7 @@ export function CommercialHub() {
                         {/* Expanded detail panel */}
                         {expanded && (
                           <TableRow className="hover:bg-transparent">
-                            <TableCell colSpan={8} className="p-0">
+                            <TableCell colSpan={9} className="p-0">
                               <div className={`px-6 py-4 border-t space-y-3 ${
                                 section === "ready"   ? "bg-emerald-50/40" :
                                 section === "wait"    ? "bg-amber-50/40" :
