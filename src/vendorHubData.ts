@@ -12,6 +12,9 @@ export type VendorStatus =
 export type CommercialStatus =
   | "ready"           // 🟢 pricing clear, start commercial conversation now
   | "wait"            // 🟡 follow-up / proposal already in motion
+  | "review"          // 🔵 negotiating / legal review
+  | "committed"       // 🟣 commercially committed, contract in progress
+  | "signed"          // ✅ contract fully signed
   | "blocked"         // 🔴 blocked on us (need to send proposal/estimate) or deprioritized
   | null              // not yet assessed
 

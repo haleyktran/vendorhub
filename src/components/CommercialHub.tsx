@@ -35,12 +35,14 @@ const LEGAL_STATUSES: Array<{ value: LegalStatus | ""; label: string }> = [
   { value: "contract-signed", label: "✅ Contract signed" },
 ]
 
-const STATUSES: Array<{ value: "ready" | "wait" | "review" | "blocked" | "tbd"; label: string }> = [
-  { value: "ready",   label: "🟢 Ready" },
-  { value: "wait",    label: "🟡 In motion" },
-  { value: "review",  label: "🔵 Negotiating" },
-  { value: "blocked", label: "🔴 Blocked" },
-  { value: "tbd",     label: "⚪ TBD" },
+const STATUSES: Array<{ value: "ready" | "wait" | "review" | "committed" | "signed" | "blocked" | "tbd"; label: string }> = [
+  { value: "ready",     label: "🟢 Ready" },
+  { value: "wait",      label: "🟡 In motion" },
+  { value: "review",    label: "🔵 Negotiating" },
+  { value: "committed", label: "🟣 Committed" },
+  { value: "signed",    label: "✅ Signed" },
+  { value: "blocked",   label: "🔴 Blocked" },
+  { value: "tbd",       label: "⚪ TBD" },
 ]
 
 // ─── inline edit primitives ────────────────────────────────────────────────────
@@ -141,26 +143,30 @@ function EditableSelect<T extends string>({
 // ─── status pill (inline dropdown) ────────────────────────────────────────────
 
 const STATUS_STYLES = {
-  ready:   { pill: "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200", label: "🟢 Ready" },
-  wait:    { pill: "bg-amber-100   text-amber-800   border-amber-300   hover:bg-amber-200",   label: "🟡 In motion" },
-  review:  { pill: "bg-blue-100    text-blue-800    border-blue-300    hover:bg-blue-200",    label: "🔵 Negotiating" },
-  blocked: { pill: "bg-red-100     text-red-800     border-red-300     hover:bg-red-200",     label: "🔴 Blocked" },
-  tbd:     { pill: "bg-gray-100    text-gray-600    border-gray-300    hover:bg-gray-200",    label: "⚪ TBD" },
+  ready:     { pill: "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200", label: "🟢 Ready" },
+  wait:      { pill: "bg-amber-100   text-amber-800   border-amber-300   hover:bg-amber-200",   label: "🟡 In motion" },
+  review:    { pill: "bg-blue-100    text-blue-800    border-blue-300    hover:bg-blue-200",    label: "🔵 Negotiating" },
+  committed: { pill: "bg-purple-100  text-purple-800  border-purple-300  hover:bg-purple-200", label: "🟣 Committed" },
+  signed:    { pill: "bg-teal-100    text-teal-800    border-teal-300    hover:bg-teal-200",    label: "✅ Signed" },
+  blocked:   { pill: "bg-red-100     text-red-800     border-red-300     hover:bg-red-200",     label: "🔴 Blocked" },
+  tbd:       { pill: "bg-gray-100    text-gray-600    border-gray-300    hover:bg-gray-200",    label: "⚪ TBD" },
 }
 
 const MENU_STYLES: Record<string, string> = {
-  ready:   "hover:bg-emerald-50 text-emerald-800",
-  wait:    "hover:bg-amber-50   text-amber-800",
-  review:  "hover:bg-blue-50    text-blue-800",
-  blocked: "hover:bg-red-50     text-red-800",
-  tbd:     "hover:bg-gray-50    text-gray-600",
+  ready:     "hover:bg-emerald-50 text-emerald-800",
+  wait:      "hover:bg-amber-50   text-amber-800",
+  review:    "hover:bg-blue-50    text-blue-800",
+  committed: "hover:bg-purple-50  text-purple-800",
+  signed:    "hover:bg-teal-50    text-teal-800",
+  blocked:   "hover:bg-red-50     text-red-800",
+  tbd:       "hover:bg-gray-50    text-gray-600",
 }
 
 function StatusPill({
   value, onSave,
 }: {
-  value: "ready" | "wait" | "review" | "blocked" | "tbd"
-  onSave: (v: "ready" | "wait" | "review" | "blocked" | "tbd") => void
+  value: "ready" | "wait" | "review" | "committed" | "signed" | "blocked" | "tbd"
+  onSave: (v: "ready" | "wait" | "review" | "committed" | "signed" | "blocked" | "tbd") => void
 }) {
   const [open, setOpen] = React.useState(false)
   const containerRef = React.useRef<HTMLDivElement>(null)
@@ -195,7 +201,7 @@ function StatusPill({
               onMouseDown={e => {
                 e.preventDefault()
                 e.stopPropagation()
-                onSave(s.value as "ready" | "wait" | "review" | "blocked" | "tbd")
+                onSave(s.value as "ready" | "wait" | "review" | "committed" | "signed" | "blocked" | "tbd")
                 setOpen(false)
               }}
               className={`w-full text-left text-[11px] px-3 py-1.5 cursor-pointer transition-colors ${MENU_STYLES[s.value] ?? ""} ${s.value === value ? "font-semibold" : ""}`}
@@ -224,13 +230,15 @@ function OwnerChip({ owner }: { owner: "haley" | "will" | null }) {
   )
 }
 
-function StatusSection({ status }: { status: "ready" | "wait" | "review" | "blocked" | "tbd" }) {
+function StatusSection({ status }: { status: "ready" | "wait" | "review" | "committed" | "signed" | "blocked" | "tbd" }) {
   const map = {
-    ready:   { label: "🟢 Ready to start commercial conversation",        bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-800" },
-    wait:    { label: "🟡 In motion — follow-up or proposal pending",     bg: "bg-amber-50",   border: "border-amber-200",   text: "text-amber-800"   },
-    review:  { label: "🔵 Negotiating — pricing proposal / legal review", bg: "bg-blue-50",    border: "border-blue-200",    text: "text-blue-800"    },
-    blocked: { label: "🔴 Blocked / Deprioritized",                       bg: "bg-red-50",     border: "border-red-200",     text: "text-red-800"     },
-    tbd:     { label: "⚪ Upcoming — pricing TBD",                         bg: "bg-gray-50",    border: "border-gray-200",    text: "text-gray-600"    },
+    ready:     { label: "🟢 Ready to start commercial conversation",        bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-800" },
+    wait:      { label: "🟡 In motion — follow-up or proposal pending",     bg: "bg-amber-50",   border: "border-amber-200",   text: "text-amber-800"   },
+    review:    { label: "🔵 Negotiating — pricing proposal / legal review", bg: "bg-blue-50",    border: "border-blue-200",    text: "text-blue-800"    },
+    committed: { label: "🟣 Committed — commercially agreed, finalizing",   bg: "bg-purple-50",  border: "border-purple-200",  text: "text-purple-800"  },
+    signed:    { label: "✅ Signed — contract fully executed",               bg: "bg-teal-50",    border: "border-teal-200",    text: "text-teal-800"    },
+    blocked:   { label: "🔴 Blocked / Deprioritized",                       bg: "bg-red-50",     border: "border-red-200",     text: "text-red-800"     },
+    tbd:       { label: "⚪ Upcoming — pricing TBD",                         bg: "bg-gray-50",    border: "border-gray-200",    text: "text-gray-600"    },
   }
   const cfg = map[status]
   return (
@@ -270,11 +278,11 @@ export function CommercialHub() {
       const comm = merged(v.id, base)
       const statusOverride = (overrides[v.id] as CommercialOverride)?.commercialStatus
       const section = (statusOverride !== undefined ? statusOverride : v.commercialStatus) ?? "tbd"
-      return { vendor: v, commercial: comm, section: section as "ready" | "wait" | "review" | "blocked" | "tbd" }
+      return { vendor: v, commercial: comm, section: section as "ready" | "wait" | "review" | "committed" | "signed" | "blocked" | "tbd" }
     })
     .sort((a, b) => {
-      const order = { review: 0, ready: 1, wait: 2, blocked: 3, tbd: 4 }
-      return (order[a.section] ?? 4) - (order[b.section] ?? 4)
+      const order = { signed: 0, committed: 1, review: 2, ready: 3, wait: 4, blocked: 5, tbd: 6 }
+      return (order[a.section] ?? 6) - (order[b.section] ?? 6)
     })
 
   const readyCount   = rows.filter(r => r.section === "ready").length
@@ -283,7 +291,7 @@ export function CommercialHub() {
   const paygCount    = rows.filter(r => r.commercial?.commitmentTier === "none").length
   const highCount    = rows.filter(r => r.commercial?.commitmentTier === "high").length
 
-  const sections: Array<"ready" | "wait" | "review" | "blocked" | "tbd"> = ["review", "ready", "wait", "blocked", "tbd"]
+  const sections: Array<"ready" | "wait" | "review" | "committed" | "signed" | "blocked" | "tbd"> = ["signed", "committed", "review", "ready", "wait", "blocked", "tbd"]
 
   return (
     <div className="space-y-6">
@@ -373,16 +381,20 @@ export function CommercialHub() {
                     const tier = commercial?.commitmentTier ?? null
                     const tierLabel = commercial?.commitmentLabel ?? "TBD"
 
-                    const rowBg = section === "ready"   ? "hover:bg-emerald-50/60"
-                                : section === "wait"    ? "hover:bg-amber-50/60"
-                                : section === "review"  ? "hover:bg-blue-50/60"
-                                : section === "blocked" ? "hover:bg-red-50/40"
+                    const rowBg = section === "ready"     ? "hover:bg-emerald-50/60"
+                                : section === "wait"      ? "hover:bg-amber-50/60"
+                                : section === "review"    ? "hover:bg-blue-50/60"
+                                : section === "committed" ? "hover:bg-purple-50/60"
+                                : section === "signed"    ? "hover:bg-teal-50/60"
+                                : section === "blocked"   ? "hover:bg-red-50/40"
                                 : "hover:bg-muted/30"
 
-                    const leftAccent = section === "ready"   ? "border-l-2 border-l-emerald-400"
-                                     : section === "wait"    ? "border-l-2 border-l-amber-400"
-                                     : section === "review"  ? "border-l-2 border-l-blue-400"
-                                     : section === "blocked" ? "border-l-2 border-l-red-300"
+                    const leftAccent = section === "ready"     ? "border-l-2 border-l-emerald-400"
+                                     : section === "wait"      ? "border-l-2 border-l-amber-400"
+                                     : section === "review"    ? "border-l-2 border-l-blue-400"
+                                     : section === "committed" ? "border-l-2 border-l-purple-400"
+                                     : section === "signed"    ? "border-l-2 border-l-teal-400"
+                                     : section === "blocked"   ? "border-l-2 border-l-red-300"
                                      : ""
 
                     return (
@@ -520,10 +532,12 @@ export function CommercialHub() {
                           <TableRow className="hover:bg-transparent">
                             <TableCell colSpan={9} className="p-0">
                               <div className={`px-6 py-4 border-t space-y-3 ${
-                                section === "ready"   ? "bg-emerald-50/40" :
-                                section === "wait"    ? "bg-amber-50/40" :
-                                section === "review"  ? "bg-blue-50/40" :
-                                section === "blocked" ? "bg-red-50/30" : "bg-muted/20"
+                                section === "ready"     ? "bg-emerald-50/40" :
+                                section === "wait"      ? "bg-amber-50/40" :
+                                section === "review"    ? "bg-blue-50/40" :
+                                section === "committed" ? "bg-purple-50/40" :
+                                section === "signed"    ? "bg-teal-50/40" :
+                                section === "blocked"   ? "bg-red-50/30" : "bg-muted/20"
                               }`}>
                                 <div className="grid grid-cols-2 gap-6">
                                   {/* Left: pricing detail — editable */}
@@ -543,7 +557,7 @@ export function CommercialHub() {
                                     {/* Move section */}
                                     <div>
                                       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Commercial status</p>
-                                      <EditableSelect<"ready" | "wait" | "review" | "blocked" | "tbd">
+                                      <EditableSelect<"ready" | "wait" | "review" | "committed" | "signed" | "blocked" | "tbd">
                                         value={section}
                                         options={STATUSES as any}
                                         onSave={v => setField(vendor.id, "commercialStatus", v as any)}
