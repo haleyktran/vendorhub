@@ -85,17 +85,17 @@ export const vendorContacts: VendorContact[] = [
     name: "Crunchbase",
     tier: "P0",
     category: "Fundraising & Company Intelligence",
-    lastContactDate: "2026-04-07",
+    lastContactDate: "2026-04-08",
     emailStatus: "waiting-on-them",
-    emailSubject: "Haley proposed PAYG in #crunchbase-unify Apr 7 — Brett confirmed willing to negotiate on range; awaiting counter",
+    emailSubject: "Brett requested 15-min call Apr 8 to discuss range — Haley proposed PAYG Apr 7; awaiting counter",
     signal:
-      "Best-in-class funding/M&A signals. Kegan sent one-pager + enrichment schedule Mar 23. Kegan confirmed list-build and enrichment are the same event. Mar 30: Haley pushed back on $150K minimum. Apr 7: Brett Collins stepped in — confirmed 'happy to work with Unify to get to a position that makes sense for both sides,' asked for a starting range. Haley replied proposing PAYG/lower-commitment starting tier. Awaiting counter from Brett/Kegan.",
+      "Best-in-class funding/M&A signals. Kegan sent one-pager + enrichment schedule Mar 23. Kegan confirmed list-build and enrichment are the same event. Mar 30: Haley pushed back on $150K minimum. Apr 7: Brett Collins stepped in — confirmed 'happy to work with Unify to get to a position that makes sense for both sides,' asked for a starting range. Haley replied proposing PAYG/lower-commitment starting tier. Apr 8: Brett followed up in #crunchbase-unify asking for a 15-min call to discuss (offered times today/tomorrow). Awaiting Haley to book the call.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
       { id: "cb-1", text: "Reply to Kegan in #crunchbase-unify with advance range preference — Haley already said $150K is a nonstarter, Kegan says it's just an advance against usage (not a hard minimum); propose a starting range", owner: "me", done: true },
       { id: "cb-2", text: "Clarify company finder/query capability vs enrichment-only model", owner: "them", done: true },
-      { id: "cb-3", text: "Await counter from Brett/Kegan on PAYG or lower-commitment starting tier (Haley proposed Apr 7)", owner: "them", done: false },
+      { id: "cb-3", text: "Book 15-min call with Brett Collins — he offered times Apr 8 (today/tomorrow) to discuss PAYG range", owner: "me", done: false },
     ],
     notes: [
       "Category: Fundraising & Company Intelligence",
@@ -155,12 +155,12 @@ export const vendorContacts: VendorContact[] = [
     name: "Harmonic.ai",
     tier: "P0",
     category: "Fundraising & Company Intelligence",
-    lastContactDate: "2026-04-07",
+    lastContactDate: "2026-04-08",
     emailStatus: "waiting-on-them",
-    emailSubject: "Mike booked Thu Apr 9 1–1:30pm PDT Zoom — trial API key kickoff call",
+    emailSubject: "Mike sent API key + onboarding notes Apr 8 — Zoom call Thu Apr 9 1–1:30pm PDT still on",
     signal:
-      "Existing Unify customer. 33M+ companies globally, very strong on private companies and startups. Early detection via legal filings. Real-time signals: funding, departmental headcount, founder tracking. $0.04/API call, $10K upfront commit. No data caching — each end-customer needs a unique call. Apr 3: Mike confirmed ready to start. Apr 7: Mike booked Zoom call Thu Apr 9 1–1:30pm PDT for trial API key kickoff.",
-    hasApiKey: false,
+      "Existing Unify customer. 33M+ companies globally, very strong on private companies and startups. Early detection via legal filings. Real-time signals: funding, departmental headcount, founder tracking. $0.04/API call, $10K upfront commit. No data caching — each end-customer needs a unique call. Apr 3: Mike confirmed ready to start. Apr 7: Mike booked Zoom call Thu Apr 9 1–1:30pm PDT for trial API key kickoff. Apr 8: Mike sent Harmonic account invite + full API onboarding notes (auth, core endpoints, MCP guide). API key now accessible via Usage Dashboard.",
+    hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
       { id: "harm-1", text: "Mike Palmer to finalize fields Harmonic is comfortable exposing via API", owner: "them", done: false },
@@ -738,17 +738,17 @@ export const vendorContacts: VendorContact[] = [
     name: "Dealroom",
     tier: "P1",
     category: "Fundraising & Company Intelligence",
-    lastContactDate: "2026-04-07",
+    lastContactDate: "2026-04-08",
     emailStatus: "none",
     signal:
-      "Very strong EU coverage + strong US via city-level gov partnerships (Austin, Miami, Las Vegas). Funding + headcount + website traffic signals. Real-time/hourly refresh. Used by Clay + Apollo. Confirmed pricing: €12K/yr = 50K API calls (~$13-14K USD); €45K/yr = unlimited. Apr 7: Miguel sent calendar invite — meeting confirmed Thu Apr 9 9:00–9:30am PDT ('Dealroom catch up' with Miguel + Kjeld Roos).",
+      "Very strong EU coverage + strong US via city-level gov partnerships (Austin, Miami, Las Vegas). Funding + headcount + website traffic signals. Real-time/hourly refresh. Used by Clay + Apollo. Confirmed pricing: €12K/yr = 50K API calls (~$13-14K USD); €45K/yr = unlimited. Apr 7: Miguel sent calendar invite — originally Thu Apr 9 9am. Apr 8: rescheduled to Fri Apr 10 9:30–10:00am PDT ('Dealroom catch up' with Miguel + Kjeld Roos).",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
       { id: "dr-1", text: "Create shared Slack channel (invite miguel.gustavosaa@dealroom.co)", owner: "me", done: true },
       { id: "dr-2", text: "Send eval questions to Miguel before Thu Mar 26 9am meeting", owner: "me", done: true },
       { id: "dr-3", text: "Join technical trial call Thu Mar 26 9:00 AM PT", owner: "me", done: true },
-      { id: "dr-7", text: "Join Dealroom follow-up call Thu Apr 9 9:00am PST with Miguel (loop in Will)", owner: "me", done: false },
+      { id: "dr-7", text: "Join Dealroom follow-up call Fri Apr 10 9:30am PDT with Miguel + Kjeld Roos (loop in Will) — rescheduled from Thu Apr 9", owner: "me", done: false },
       { id: "dr-4", text: "Share eval doc with CTO / eng team (agreed on call)", owner: "me", done: false },
       { id: "dr-5", text: "Request 2-week trial API key from Kjeld Roos (API lead)", owner: "me", done: false },
       { id: "dr-6", text: "Await commercial follow-up from Will async", owner: "them", done: false },
@@ -832,11 +832,11 @@ export const vendorContacts: VendorContact[] = [
     name: "SerpStat",
     tier: "P1",
     category: "Tech Stack & Technographics · SEO",
-    lastContactDate: "2026-04-07",
+    lastContactDate: "2026-04-08",
     emailStatus: "waiting-on-them",
-    emailSubject: "Eugene preparing reseller/data partnership agreement draft (Apr 7) — Haley sent specific contract requirements",
+    emailSubject: "Eugene preparing reseller/data partnership agreement draft (Apr 7) — Haley sent specific contract requirements; Sam Seiler met Apr 8",
     signal:
-      "SEO analytics platform. 1.8M domains globally. Core signals: visibility/traffic estimates, 7B keywords, domain authority, backlinks, 1,200+ industry categories, ad spend tracking. Full DB dump: $9K one-time. JSON-RPC 2.0 (non-standard). Coverage eval: 64% overall; Pre-Series A 29%; UK/Germany 44-45%. Apr 6: Haley asked for formal reseller/data partnership agreement. Apr 7: Eugene confirmed preparing draft today. Haley sent specific contract requirements (IP warranty + indemnification clauses). Commercial direction: volume pricing preferred.",
+      "SEO analytics platform. 1.8M domains globally. Core signals: visibility/traffic estimates, 7B keywords, domain authority, backlinks, 1,200+ industry categories, ad spend tracking. Full DB dump: $9K one-time. JSON-RPC 2.0 (non-standard). Coverage eval: 64% overall; Pre-Series A 29%; UK/Germany 44-45%. Apr 6: Haley asked for formal reseller/data partnership agreement. Apr 7: Eugene confirmed preparing draft; Haley sent specific contract requirements (IP warranty + indemnification). Apr 8: Sam Seiler (new contact) met with Haley — thanked for 'great meeting today'; Haley also requested test API key from Eugene. Contract + test key both pending.",
     hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
@@ -1094,18 +1094,18 @@ export const vendorContacts: VendorContact[] = [
     name: "BuyerCaddy",
     tier: "P1",
     category: "Technographics · Tech Stack",
-    lastContactDate: "2026-04-07",
+    lastContactDate: "2026-04-08",
     emailStatus: "waiting-on-them",
-    emailSubject: "Mitch preparing formal partner/reseller agreement (Apr 7) — asked which pricing option to outline; awaiting doc",
+    emailSubject: "Mitch built starter plan ($12K/250K credits) Apr 8 — will send DocuSign if it looks good",
     signal:
-      "Technographic data platform with 172K IT products, 92K vendors, 31.2M+ companies across 55 countries. G2 taxonomy, 10+ years of history, all data timestamped. Founded by former HG Insights founder (Craig Harris) + former Salesforce/Data.com CTO (Pawan Nachnani). Apr 3 meeting done with Craig, Mitch + Will. BuyerCaddy willing to build custom APIs exclusive to Unify. Pricing: $12K=250K credits OR $36K=2M credits (both annual). Apr 7: Haley asked for formal reseller agreement; Mitch confirmed he'll send it shortly — asked which pricing option to outline.",
+      "Technographic data platform with 172K IT products, 92K vendors, 31.2M+ companies across 55 countries. G2 taxonomy, 10+ years of history, all data timestamped. Founded by former HG Insights founder (Craig Harris) + former Salesforce/Data.com CTO (Pawan Nachnani). Apr 3 meeting done with Craig, Mitch + Will. BuyerCaddy willing to build custom APIs exclusive to Unify. Pricing: $12K=250K credits OR $36K=2M credits (both annual). Apr 7: Haley asked for formal reseller agreement; Mitch asked which pricing option to include. Apr 8: Mitch emailed — built out the starter plan ($12K/250K credits); will send DocuSign directly once Haley confirms it looks good.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
       { id: "bc-3", text: "Attend BuyerCaddy meeting Fri Apr 3 10–10:45am PT with Craig Harris, Pawan Nachnani, Mitch Warren + Will", owner: "me", done: true },
       { id: "bc-1", text: "Review BuyerCaddy partnership notes + API reference in #buyercaddy-unify", owner: "me", done: false },
       { id: "bc-2", text: "Review pricing proposals from Mitch: $12K=250K credits or $36K=2M credits — decide on tier to outline in agreement", owner: "me", done: false },
-      { id: "bc-5", text: "Await formal partner/reseller agreement from Mitch (confirmed sending Apr 7 — reply with which pricing option to include)", owner: "them", done: false },
+      { id: "bc-5", text: "Review starter plan Mitch built (Apr 8) and confirm — he'll send DocuSign once you approve the $12K/250K credits option", owner: "me", done: false },
       { id: "bc-4", text: "Will to connect with Mitch next week for commercial discussion and finance questions", owner: "will", done: false },
     ],
     notes: [
@@ -1132,15 +1132,15 @@ export const vendorContacts: VendorContact[] = [
     name: "HitHorizons",
     tier: "P1",
     category: "Company Data · European Coverage",
-    lastContactDate: "2026-04-02",
+    lastContactDate: "2026-04-08",
     emailStatus: "needs-response",
-    emailSubject: "Tibor wants Teams call next week to activate trial (Easter Fri-Mon Apr 3-6)",
+    emailSubject: "Tibor followed up Apr 8 post-Easter — checking if still interested in API trial",
     signal:
-      "European company database — 80M+ companies across Europe (Slovakia-based via FinStat). US data also deliverable. API pricing: €3,500/60K calls (€0.058/call) to €33K/6M calls. Bulk data €220K/yr for all Europe. 10-day free trial available (300 calls/day). Tibor emailed Apr 2 — Easter holidays Fri-Mon (Apr 3-6); wants Teams call week of Apr 7 to activate trial.",
+      "European company database — 80M+ companies across Europe (Slovakia-based via FinStat). US data also deliverable. API pricing: €3,500/60K calls (€0.058/call) to €33K/6M calls. Bulk data €220K/yr for all Europe. 10-day free trial available (300 calls/day). Tibor emailed Apr 2 — Easter holidays Fri-Mon (Apr 3-6); wanted Teams call week of Apr 7. Apr 8: Tibor followed up again asking if Haley is still interested in the API trial. Needs reply.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
-      { id: "hh-1", text: "Reply to Tibor — confirm Teams call next week to activate trial (or reply with trial info: email, start/end dates, feedback call time)", owner: "me", done: false },
+      { id: "hh-1", text: "Reply to Tibor's Apr 8 follow-up — confirm interest in API trial and book Teams call to activate (email, start/end dates, feedback call time needed)", owner: "me", done: false },
       { id: "hh-2", text: "Review HitHorizons API docs + sample export (Sweden sample attached to email)", owner: "me", done: false },
     ],
     notes: [
@@ -1226,14 +1226,15 @@ export const vendorContacts: VendorContact[] = [
     name: "HG Insights",
     tier: null,
     category: "Tech Intelligence",
-    lastContactDate: "2026-03-24",
+    lastContactDate: "2026-04-08",
     emailStatus: "needs-response",
-    emailSubject: "Follow up after intro call (Tue Mar 24 2pm)",
+    emailSubject: "Katrina Cho (HG Insights) declined Apr 15 meeting — she's OOO; needs rescheduling",
     signal:
-      "Intro call Tue Mar 24 2:00pm with Ed Field (ed.field@hginsights.com). Tech intelligence data. Env var: HGINSIGHTS_KEY. All details TBD — capture from call notes.",
+      "Intro call Tue Mar 24 2:00pm with Ed Field. Tech intelligence data. A meeting was scheduled with Katrina Cho (HG Insights) for Wed Apr 15 10:30–11am PDT but she declined Apr 8 citing OOO. Needs to be rescheduled. Ed Field still the primary contact for follow-up.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
+      { id: "hgi-4", text: "Reschedule with Katrina Cho — she declined Apr 15 meeting (OOO); find new time", owner: "me", done: false },
       { id: "hgi-1", text: "Send follow-up email to Ed Field with next steps from Mar 24 call", owner: "me", done: false },
       { id: "hgi-2", text: "Fill in signal / pricing / API format details from call notes", owner: "me", done: false },
       { id: "hgi-3", text: "Get API key (env var: HGINSIGHTS_KEY) and run smoke test", owner: "me", done: false },
@@ -1248,7 +1249,7 @@ export const vendorContacts: VendorContact[] = [
     ],
     overallStatus: "active",
     commercialStatus: null,
-    contacts: ["Ed Field — ed.field@hginsights.com"],
+    contacts: ["Ed Field — ed.field@hginsights.com", "Katrina Cho — katrina.cho@hginsights.com"],
   },
 
   // ── UPCOMING MEETINGS ────────────────────────────────────────────────────────
@@ -1259,11 +1260,11 @@ export const vendorContacts: VendorContact[] = [
     tier: null,
     category: "Website Visitor · Company Intelligence",
     signal:
-      "Meeting still rescheduling. Original meeting Mar 27 no-show; rescheduled to Mar 31 but wrong time booked. Apr 1: Matthew apologized + offered to reschedule. Haley asked for 9:30am PT slot Apr 2 or 3. Waiting for confirmation. Note: Matthew's actual email is matthew.fairey@leadfeeder.com.",
+      "Meeting still rescheduling. Original meeting Mar 27 no-show; rescheduled to Mar 31 but wrong time booked. Apr 1: Matthew apologized + offered to reschedule. Haley asked for 9:30am PT slot Apr 2 or 3. Apr 8: Matthew emailed again post-Easter (UK holidays) — apologized for delay, asking about Thu/Fri this week or early next week availability. Note: Matthew's actual email is matthew.fairey@leadfeeder.com.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
-      { id: "df-1", text: "Reschedule meeting with Matthew Fairey — Haley asked for 9:30am PT; waiting for confirmation", owner: "them", done: false },
+      { id: "df-1", text: "Reply to Matthew Fairey's Apr 8 email — offer Thu Apr 9 or Fri Apr 10 or early next week times to finally book this call", owner: "me", done: false },
     ],
     notes: [
       "Meeting still being rescheduled — original Mar 27 9am PDT, then Mar 31 2pm (wrong timezone), still pending",
@@ -1274,8 +1275,8 @@ export const vendorContacts: VendorContact[] = [
     overallStatus: "meeting-booked",
     commercialStatus: null,
     contacts: ["Matthew Fairey — matthew.fairey@leadfeeder.com"],
-    lastContactDate: "2026-04-01",
-    emailStatus: "waiting-on-them",
+    lastContactDate: "2026-04-08",
+    emailStatus: "needs-response",
   },
 
   // ── DEPRIORITIZED ────────────────────────────────────────────────────────────
