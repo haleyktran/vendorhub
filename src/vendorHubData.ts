@@ -1426,11 +1426,11 @@ export const vendorContacts: VendorContact[] = [
     name: "Trigify",
     tier: "P1",
     category: "Social Listening · Intent Signals",
-    lastContactDate: "2026-04-10",
+    lastContactDate: "2026-04-13",
     emailStatus: "waiting-on-them",
-    emailSubject: "Haley asked for OEM/reseller agreement Apr 10 — Max hasn't replied yet",
+    emailSubject: "OEM/reseller agreement expected from Max today (Apr 13) — Max confirmed Apr 12 he'd send 'tomorrow'",
     signal:
-      "Social signal intelligence: LinkedIn, X, Reddit, YouTube, podcasts, TikTok, GitHub, HackerNews. Key signals: topic-based engagement search (who's engaging with keywords/topics/competitors), boolean queries. Two key endpoints: Social Topics (live, what Clay uses) + Social Mapping (database). Clay integration live. API key provisioned (trig_AM57K-7cFwTYROlLgdqMVSKLc4i3F6mU). PAYG pricing confirmed: $0.012/credit (no minimum). Kunal (eng) testing API. Apr 10: Haley asked for OEM/reseller agreement; Max hasn't replied yet.",
+      "Social signal intelligence: LinkedIn, X, Reddit, YouTube, podcasts, TikTok, GitHub, HackerNews. Key signals: topic-based engagement search (who's engaging with keywords/topics/competitors), boolean queries. Two key endpoints: Social Topics (live, what Clay uses) + Social Mapping (database). Clay integration live. API key provisioned (trig_AM57K-7cFwTYROlLgdqMVSKLc4i3F6mU). PAYG pricing confirmed: $0.012/credit (no minimum). Max sent pricing sheet Apr 10. Apr 11: API key subscription was inactive — Haley reported in Slack, Max fixed same day. Apr 12: Max sent Clay integration use case examples + confirmed sending OEM agreement 'tomorrow' (Apr 13). Apr 13: Austin (co-founder) actively testing and raising questions about LinkedIn ToS compliance, scraping strategy, and data quality.",
     hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
