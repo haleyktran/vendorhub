@@ -851,7 +851,7 @@ export const vendorContacts: VendorContact[] = [
     emailStatus: "waiting-on-them",
     emailSubject: "Haley reviewed contract v3 in Slack Apr 14 — legal updates look good; asking Eugene to repurpose crawling credits → API credits on $2K annual plan; subscription expires Apr 15",
     signal:
-      "SEO analytics platform. 1.8M domains globally. Core signals: visibility/traffic estimates, 7B keywords, domain authority, backlinks, 1,200+ industry categories, ad spend tracking. Full DB dump: $9K one-time. JSON-RPC 2.0 (non-standard). Coverage eval: 64% overall; Pre-Series A 29%; UK/Germany 44-45%. Apr 7: Haley sent specific contract requirements (IP warranty + indemnification). Apr 8: Eugene sent contract v3 with both clauses added as tracked insertions for legal review. Eugene also sent test API token (API Standard plan active through Apr 15). Sam Seiler (Unify AE) met with Eugene Apr 8. Apr 9: Legal team reviewed contract v3 — data rights warranty ✅, no liability cap (favorable) ✅, unilateral indemnification (they indemnify us only) ✅. BUT: final disclaimer paragraph must be struck — it negates the warranty protections. Will + ADL doing side-by-side comparison with Ocean agreement before final approval. Apr 12: Renewal notice — API Standard plan expires Apr 15. Apr 14: Haley reviewed contract v3 in Slack — legal updates look good; asked Eugene to repurpose crawling credits → API credits on $2K annual API plan; ready to sign once confirmed.",
+      "SEO analytics platform. 1.8M domains globally. Core signals: visibility/traffic estimates, 7B keywords, domain authority, backlinks, 1,200+ industry categories, ad spend tracking. Full DB dump: $9K one-time. JSON-RPC 2.0 (non-standard). Coverage eval: 64% overall; Pre-Series A 29%; UK/Germany 44-45%. Apr 7: Haley sent specific contract requirements (IP warranty + indemnification). Apr 8: Eugene sent contract v3 with both clauses added as tracked insertions for legal review. Eugene also sent test API token (API Standard plan active through Apr 15). Sam Seiler (Unify AE) met with Eugene Apr 8. Apr 9: Legal team reviewed contract v3 — data rights warranty ✅, no liability cap (favorable) ✅, unilateral indemnification (they indemnify us only) ✅. BUT: final disclaimer paragraph must be struck — it negates the warranty protections. Will + ADL doing side-by-side comparison with Ocean agreement before final approval. Apr 12: Renewal notice — API Standard plan expires Apr 15. Apr 14: Haley reviewed contract v3 in Slack — legal updates look good; asked Eugene to repurpose crawling credits → API credits on $2K annual API plan; ready to sign once confirmed. Apr 15: API Standard plan trial period expired. Apr 16: Legal review meeting (Will + Alex) to formally review Serpstat agreement markup.",
     hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
@@ -940,7 +940,7 @@ export const vendorContacts: VendorContact[] = [
     lastContactDate: "2026-04-14",
     emailStatus: "none",
     signal:
-      "Only social intelligence vendor using YouTube sponsorship data to reveal brand audience targeting. Input: company domain → output: sponsorship activity, brand details, products. Creator engagement data (YouTube primary, Instagram secondary). API key provided. Kunal Rai (eng) joined channel Apr 5. Apr 7: Joe Tam sent OEM/reseller agreement. Apr 8: Joe fixed /creators endpoint provisioning. Apr 9: Legal team did first pass — needs Ocean-style indemnification + explicit data rights statement. Apr 10: Lulu checked in on the agreement; Haley said sending notes today or Monday. Apr 14: Haley shared legal notes in Slack. Joe accepted multiple edits: indemnification carve-out (removed 'Partner Product itself' from scope), end-user export clarification added. Lulu reviewing remaining edits.",
+      "Only social intelligence vendor using YouTube sponsorship data to reveal brand audience targeting. Input: company domain → output: sponsorship activity, brand details, products. Creator engagement data (YouTube primary, Instagram secondary). API key provided. Kunal Rai (eng) joined channel Apr 5. Apr 7: Joe Tam sent OEM/reseller agreement. Apr 8: Joe fixed /creators endpoint provisioning. Apr 9: Legal team did first pass — needs Ocean-style indemnification + explicit data rights statement. Apr 10: Lulu checked in on the agreement; Haley said sending notes today or Monday. Apr 14: Haley shared legal notes in Slack. Joe accepted multiple edits: indemnification carve-out (removed 'Partner Product itself' from scope), end-user export clarification added. Lulu reviewing remaining edits. Apr 16: Legal review meeting (Will + Alex) to review Haley's marked-up Upriver agreement.",
     hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
@@ -1185,10 +1185,10 @@ export const vendorContacts: VendorContact[] = [
     name: "TheirStack",
     tier: null,
     category: "Tech Stack · Job Posting Signals",
-    lastContactDate: "2026-04-09",
+    lastContactDate: "2026-04-15",
     emailStatus: "none",
     signal:
-      "Intro call Tue Mar 24 12:00pm with Xoel López + Christian. Apr 9: Team purchased a TheirStack plan (receipt received) and used 100% of API credits — active evaluation underway. Need to review results and request additional credits.",
+      "Intro call Tue Mar 24 12:00pm with Xoel López + Christian. Apr 9: Team purchased a TheirStack plan (receipt received) and used 100% of API credits — active evaluation underway. Apr 15: Second plan purchased (receipt #2655-9429) — team continuing evaluation with fresh credits.",
     hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
@@ -1248,15 +1248,15 @@ export const vendorContacts: VendorContact[] = [
     name: "HG Insights",
     tier: null,
     category: "Tech Intelligence",
-    lastContactDate: "2026-04-08",
-    emailStatus: "needs-response",
-    emailSubject: "Katrina Cho (HG Insights) declined Apr 15 meeting — she's OOO; needs rescheduling",
+    lastContactDate: "2026-04-15",
+    emailStatus: "none",
     signal:
-      "Intro call Tue Mar 24 2:00pm with Ed Field. Tech intelligence data. Calendar confirms meeting on Wed Apr 15 10:30am PDT with Katrina Cho (katrina.cho@hginsights.com) + ted@springdb.io. Join today.",
+      "Intro call Tue Mar 24 2:00pm with Ed Field. Tech intelligence data. Apr 15: Meeting with Katrina Cho happened — Katrina was OOO but Ted West (ted@springdb.io) and Haley connected as planned. Ted is familiar with Unify and provided context; Hayden Smith (HG Insights) confirmed 'glad this all got worked out.' NDA being sent. Follow-up meeting scheduled Tue Apr 22 noon–2pm PT with Will (finance) + David Crossman joining for deeper technical and commercial discussion.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
-      { id: "hgi-4", text: "Join HG Insights call TODAY Wed Apr 15 10:30am PDT with Katrina Cho (katrina.cho@hginsights.com) — ted@springdb.io also attending", owner: "me", done: false },
+      { id: "hgi-4", text: "Join HG Insights call TODAY Wed Apr 15 10:30am PDT with Katrina Cho (katrina.cho@hginsights.com) — ted@springdb.io also attending", owner: "me", done: true },
+      { id: "hgi-5", text: "Join HG Insights follow-up meeting Tue Apr 22 noon–2pm PT with Will + David Crossman — NDA review + deeper technical/commercial discussion", owner: "me", done: false },
       { id: "hgi-1", text: "Send follow-up email to Ed Field with next steps from Mar 24 call", owner: "me", done: false },
       { id: "hgi-2", text: "Fill in signal / pricing / API format details from call notes", owner: "me", done: false },
       { id: "hgi-3", text: "Get API key (env var: HGINSIGHTS_KEY) and run smoke test", owner: "me", done: false },
@@ -1267,11 +1267,14 @@ export const vendorContacts: VendorContact[] = [
       "Category: P1 Enrichment — tech intelligence",
       "Env var needed: HGINSIGHTS_KEY",
       "Endpoints to test: Tech Intelligence",
-      "All details TBD from call notes",
+      "Apr 15: Met with Ted West (ted@springdb.io) — Katrina OOO but Ted provided Unify context to HG Insights; NDA being sent",
+      "Apr 22: Follow-up meeting noon–2pm PT with Will + David Crossman",
+      "Granola (Apr 14): https://notes.granola.ai/d/ca4ff312-253d-4449-bc10-e06362d0310a",
     ],
     overallStatus: "active",
     commercialStatus: null,
-    contacts: ["Ed Field — ed.field@hginsights.com", "Katrina Cho — katrina.cho@hginsights.com"],
+    contacts: ["Ed Field — ed.field@hginsights.com", "Katrina Cho — katrina.cho@hginsights.com", "Hayden Smith — hayden.smith@hginsights.com"],
+    granolaLink: "https://notes.granola.ai/d/ca4ff312-253d-4449-bc10-e06362d0310a",
   },
 
   // ── UPCOMING MEETINGS ────────────────────────────────────────────────────────
@@ -1392,11 +1395,11 @@ export const vendorContacts: VendorContact[] = [
     name: "NewsCatcher API",
     tier: null,
     category: "News & Media Intelligence",
-    lastContactDate: "2026-04-07",
+    lastContactDate: "2026-04-14",
     emailStatus: "needs-response",
-    emailSubject: "Dima following up Apr 7 asking about trial + new CSV upload feature; needs response (confirm YC status + trial decision)",
+    emailSubject: "Dima announced Company Search feature Apr 14 (upload company list → run queries like 'funding rounds') — needs response",
     signal:
-      "High-recall news search API. Two delivery modes: (1) data dump — entity list → pre-clustered articles (scalable to 1M+ names); (2) signal search — NL query → enriched events (~10–15 min). NOT real-time. Pricing: $60–80K/yr min; reduced rate if YC. Apr 7: Dima followed up asking if Unify wants to proceed with trial. Mentions new CSV upload feature (upload company list → receive pre-clustered articles). Needs response.",
+      "High-recall news search API. Two delivery modes: (1) data dump — entity list → pre-clustered articles (scalable to 1M+ names); (2) signal search — NL query → enriched events (~10–15 min). NOT real-time. Pricing: $60–80K/yr min; reduced rate if YC. Apr 7: Dima followed up asking if Unify wants to proceed with trial. Apr 14: Dima emailed with new Company Search feature — upload a list of companies, run a query like 'funding rounds' or similar, receive results. Needs response.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
@@ -1434,7 +1437,7 @@ export const vendorContacts: VendorContact[] = [
     emailStatus: "waiting-on-them",
     emailSubject: "OEM/reseller agreement expected from Max today (Apr 13) — Max confirmed Apr 12 he'd send 'tomorrow'",
     signal:
-      "Social signal intelligence: LinkedIn, X, Reddit, YouTube, podcasts, TikTok, GitHub, HackerNews. Key signals: topic-based engagement search (who's engaging with keywords/topics/competitors), boolean queries. Two key endpoints: Social Topics (live, what Clay uses) + Social Mapping (database). Clay integration live. API key provisioned (trig_AM57K-7cFwTYROlLgdqMVSKLc4i3F6mU). PAYG pricing confirmed: $0.012/credit (no minimum). Max sent pricing sheet Apr 10. Apr 11: API key subscription was inactive — Haley reported in Slack, Max fixed same day. Apr 12: Max sent Clay integration use case examples + confirmed sending OEM agreement 'tomorrow' (Apr 13). Apr 13: Austin (co-founder) actively testing and raised three concerns in #trigify-unify: (1) LinkedIn ToS compliance — are they compliant with underlying vendor terms? (2) Scraping strategy — polling frequency per platform? (3) Data quality — only 3 Clay mentions found in the past week (seems skimpy).",
+      "Social signal intelligence: LinkedIn, X, Reddit, YouTube, podcasts, TikTok, GitHub, HackerNews. Key signals: topic-based engagement search (who's engaging with keywords/topics/competitors), boolean queries. Two key endpoints: Social Topics (live, what Clay uses) + Social Mapping (database). Clay integration live. API key provisioned (trig_AM57K-7cFwTYROlLgdqMVSKLc4i3F6mU). PAYG pricing confirmed: $0.012/credit (no minimum). Max sent pricing sheet Apr 10. Apr 11: API key subscription was inactive — Haley reported in Slack, Max fixed same day. Apr 12: Max sent Clay integration use case examples + confirmed sending OEM agreement 'tomorrow' (Apr 13). Apr 13: Austin (co-founder) actively testing and raised three concerns in #trigify-unify: (1) LinkedIn ToS compliance — are they compliant with underlying vendor terms? (2) Scraping strategy — polling frequency per platform? (3) Data quality — only 3 Clay mentions found in the past week (seems skimpy). Apr 15: Substack integration launched — can now track publications and Substack authors for market intelligence.",
     hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
@@ -1697,24 +1700,29 @@ export const vendorContacts: VendorContact[] = [
     name: "RocketReach",
     tier: null,
     category: "People Data · Contact Enrichment",
-    lastContactDate: null,
+    lastContactDate: "2026-04-15",
     emailStatus: "none",
     signal:
-      "Meeting scheduled TODAY Wed Apr 15 12:30pm PDT with Vithuson Raveenthiran (vithuson@rocketreach.co). First call — details TBD.",
+      "First call Apr 15 with Vithuson Raveenthiran. Exploring as 3rd/4th waterfall vendor for contact enrichment. Technical call scheduled Fri Apr 17 12pm PT with Emily Gleeson (emily@rocketreach.co) + Ross + Varad. Trial account + test credits to be set up.",
     hasApiKey: false,
     latencyTestRun: false,
     actionItems: [
-      { id: "rr-1", text: "Join RocketReach call TODAY Wed Apr 15 12:30pm PDT with Vithuson Raveenthiran", owner: "me", done: false },
+      { id: "rr-1", text: "Join RocketReach call TODAY Wed Apr 15 12:30pm PDT with Vithuson Raveenthiran", owner: "me", done: true },
+      { id: "rr-3", text: "Join Unify x RocketReach technical call Fri Apr 17 12pm PT with Emily Gleeson + Ross + Varad", owner: "me", done: false },
+      { id: "rr-4", text: "Set up trial account + test credits with RocketReach (to be arranged post-Apr 17 call)", owner: "them", done: false },
       { id: "rr-2", text: "Fill in signal / pricing / API details from call notes", owner: "me", done: false },
     ],
     notes: [
-      "Meeting: Wed Apr 15 12:30pm PDT with Vithuson Raveenthiran (vithuson@rocketreach.co)",
-      "Category: People Data, Contact Enrichment — TBD from call",
-      "All details TBD",
+      "First call Wed Apr 15 12:30pm PDT with Vithuson Raveenthiran (vithuson@rocketreach.co)",
+      "Category: People Data, Contact Enrichment — 3rd/4th waterfall vendor candidate",
+      "Technical call Apr 17 12pm PT: Emily Gleeson + Ross + Varad attending",
+      "Trial account + test credits to be set up post-Apr 17 call",
+      "Granola (Apr 15): https://notes.granola.ai/d/18be7659-ff82-46e8-aec4-2b5e2ae78949",
     ],
-    overallStatus: "meeting-booked",
+    overallStatus: "active",
     commercialStatus: null,
-    contacts: ["Vithuson Raveenthiran — vithuson@rocketreach.co"],
+    contacts: ["Vithuson Raveenthiran — vithuson@rocketreach.co", "Emily Gleeson — emily@rocketreach.co"],
+    granolaLink: "https://notes.granola.ai/d/18be7659-ff82-46e8-aec4-2b5e2ae78949",
   },
 
   {
@@ -1740,5 +1748,120 @@ export const vendorContacts: VendorContact[] = [
     overallStatus: "meeting-booked",
     commercialStatus: null,
     contacts: ["Jack Caspino — jack@contactlevel.com"],
+  },
+
+  // ── APR 15 NEW VENDORS ───────────────────────────────────────────────────────
+
+  {
+    id: "leadiq",
+    name: "LeadIQ",
+    tier: null,
+    category: "People Data · Contact Enrichment",
+    lastContactDate: "2026-04-15",
+    emailStatus: "none",
+    signal:
+      "First call Apr 15 with Elena Nestor. API partnership discussion for contact data enrichment. Follow-up call scheduled Fri Apr 17 1pm PT with Nabil Ahmed (Head of Partnerships) — contingent on confirming reseller model is available (not BYOA-only). Trial account to be arranged.",
+    hasApiKey: false,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "liq-1", text: "Join Unify + LeadIQ Partnership call Fri Apr 17 1pm PT with Elena Nestor + Nabil Ahmed (Head of Partnerships)", owner: "me", done: false },
+      { id: "liq-2", text: "Confirm reseller model is available (not BYOA only) — key gate for proceeding", owner: "them", done: false },
+      { id: "liq-3", text: "Fill in signal / pricing / API details from call notes", owner: "me", done: false },
+    ],
+    notes: [
+      "First call Wed Apr 15 1pm PDT with Elena Nestor (elena@leadiq.com)",
+      "Category: People Data, Contact Enrichment",
+      "Follow-up Apr 17 1pm PT with Nabil Ahmed (nabeel.ahmed@leadiq.com) — Head of Partnerships",
+      "Key question: is reseller model available (not just BYOA)?",
+      "Granola (Apr 15): https://notes.granola.ai/d/c5ee4a7b-0470-4073-aa3e-9420bf4704a4",
+    ],
+    overallStatus: "active",
+    commercialStatus: null,
+    contacts: ["Elena Nestor — elena@leadiq.com", "Nabil Ahmed — nabeel.ahmed@leadiq.com"],
+    granolaLink: "https://notes.granola.ai/d/c5ee4a7b-0470-4073-aa3e-9420bf4704a4",
+  },
+
+  // ── APR 16 NEW VENDORS ───────────────────────────────────────────────────────
+
+  {
+    id: "lusha",
+    name: "Lusha",
+    tier: null,
+    category: "People Data · Contact Enrichment",
+    lastContactDate: "2026-04-16",
+    emailStatus: "none",
+    signal:
+      "First call Apr 16 with Nick Colson. Contact enrichment platform. Meeting transcript corrupted — no business details captured. Follow-up call with Nick needed to cover DB size, pricing, API structure, and compliance.",
+    hasApiKey: false,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "lsh-1", text: "Schedule follow-up call with Nick Colson — discuss DB size, pricing, API structure, compliance (Apr 16 transcript corrupted)", owner: "me", done: false },
+      { id: "lsh-2", text: "Fill in signal / pricing / API details from follow-up call", owner: "me", done: false },
+    ],
+    notes: [
+      "First call Thu Apr 16 11am PDT with Nick Colson (nick.colson@lusha.com)",
+      "Category: People Data, Contact Enrichment",
+      "Apr 16 transcript corrupted — no business discussion captured; all details TBD",
+      "Outstanding questions: DB size, pricing, API structure, compliance",
+      "Granola (Apr 16): https://notes.granola.ai/d/aa3a3eab-bb30-4c34-b007-2aa0c5327106",
+    ],
+    overallStatus: "active",
+    commercialStatus: null,
+    contacts: ["Nick Colson — nick.colson@lusha.com"],
+    granolaLink: "https://notes.granola.ai/d/aa3a3eab-bb30-4c34-b007-2aa0c5327106",
+  },
+
+  // ── APR 20–22 UPCOMING MEETINGS ──────────────────────────────────────────────
+
+  {
+    id: "foragerai",
+    name: "Forager.ai",
+    tier: null,
+    category: "Company Data",
+    lastContactDate: null,
+    emailStatus: "none",
+    signal:
+      "Meeting booked Mon Apr 20 7–7:30pm PDT with Peter Friis (peter@forager.ai). Topic: Forager.ai Data Offering. First call — details TBD.",
+    hasApiKey: false,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "fai-1", text: "Join Forager.ai call Mon Apr 20 7pm PDT with Peter Friis", owner: "me", done: false },
+      { id: "fai-2", text: "Fill in signal / pricing / API details from call notes", owner: "me", done: false },
+    ],
+    notes: [
+      "Meeting: Mon Apr 20 7–7:30pm PDT with Peter Friis (peter@forager.ai)",
+      "Topic: Forager.ai Data Offering",
+      "Category: TBD from call",
+      "All details TBD",
+    ],
+    overallStatus: "meeting-booked",
+    commercialStatus: null,
+    contacts: ["Peter Friis — peter@forager.ai"],
+  },
+
+  {
+    id: "swordfishai",
+    name: "Swordfish.ai",
+    tier: null,
+    category: "People Data · Contact Enrichment",
+    lastContactDate: null,
+    emailStatus: "none",
+    signal:
+      "Meeting booked Wed Apr 22 11:30am–11:50am PDT with Drew Clark — VP (drew@swordfishapp.com). Topic: exclusive contact data. First call — details TBD.",
+    hasApiKey: false,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "sw22-1", text: "Join Swordfish.ai call Wed Apr 22 11:30am PDT with Drew Clark — VP", owner: "me", done: false },
+      { id: "sw22-2", text: "Fill in signal / pricing / API details from call notes", owner: "me", done: false },
+    ],
+    notes: [
+      "Meeting: Wed Apr 22 11:30–11:50am PDT with Drew Clark — VP (drew@swordfishapp.com)",
+      "Topic: exclusive contact data, pipeline enrichment",
+      "Category: People Data, Contact Enrichment — TBD from call",
+      "All details TBD",
+    ],
+    overallStatus: "meeting-booked",
+    commercialStatus: null,
+    contacts: ["Drew Clark (VP) — drew@swordfishapp.com"],
   },
 ]
