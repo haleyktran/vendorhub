@@ -18,6 +18,7 @@ interface VendorEvalResult {
   workEmailCoverage: number | null     // /1000 — corporate/work email only
   personalEmailCoverage: number | null // /1000 — webmail/personal email only
   phoneCoverage: number | null         // /134-contact subset
+  phoneCoverageFull: number | null     // /1000 — full dataset phone run (select vendors)
   wfRescueEmail: number | null
   combinedEmail: number | null
   recall: number | null
@@ -47,6 +48,7 @@ const linkedInVendors: VendorEvalResult[] = [
     workEmailCoverage: 20,
     personalEmailCoverage: 470,
     phoneCoverage: 40,
+    phoneCoverageFull: 279,
     wfRescueEmail: 200,
     combinedEmail: 673,
     recall: 93.5,
@@ -69,6 +71,7 @@ const linkedInVendors: VendorEvalResult[] = [
     workEmailCoverage: 373,
     personalEmailCoverage: 625,
     phoneCoverage: 101,
+    phoneCoverageFull: 644,
     wfRescueEmail: 311,
     combinedEmail: 786,
     recall: 88.0,
@@ -91,6 +94,7 @@ const linkedInVendors: VendorEvalResult[] = [
     workEmailCoverage: 283,
     personalEmailCoverage: 0,
     phoneCoverage: 84,
+    phoneCoverageFull: 502,
     wfRescueEmail: 57,
     combinedEmail: 529,
     recall: 80.0,
@@ -113,6 +117,7 @@ const linkedInVendors: VendorEvalResult[] = [
     workEmailCoverage: 480,
     personalEmailCoverage: 0,
     phoneCoverage: 38,
+    phoneCoverageFull: null,
     wfRescueEmail: 121,
     combinedEmail: 596,
     recall: 76.2,
@@ -135,6 +140,7 @@ const linkedInVendors: VendorEvalResult[] = [
     workEmailCoverage: 184,
     personalEmailCoverage: 326,
     phoneCoverage: 0,
+    phoneCoverageFull: null,
     wfRescueEmail: 223,
     combinedEmail: 698,
     recall: 64.0,
@@ -157,6 +163,7 @@ const linkedInVendors: VendorEvalResult[] = [
     workEmailCoverage: 275,
     personalEmailCoverage: 230,
     phoneCoverage: 38,
+    phoneCoverageFull: 209,
     wfRescueEmail: 127,
     combinedEmail: 600,
     recall: 48.2,
@@ -179,6 +186,7 @@ const linkedInVendors: VendorEvalResult[] = [
     workEmailCoverage: 17,
     personalEmailCoverage: 152,
     phoneCoverage: 23,
+    phoneCoverageFull: null,
     wfRescueEmail: 69,
     combinedEmail: 542,
     recall: 23.4,
@@ -204,6 +212,7 @@ const nameDomainVendors: VendorEvalResult[] = [
     workEmailCoverage: 86,
     personalEmailCoverage: 0,
     phoneCoverage: 3,
+    phoneCoverageFull: null,
     wfRescueEmail: 26,
     combinedEmail: 498,
     recall: 12.8,
@@ -226,6 +235,7 @@ const nameDomainVendors: VendorEvalResult[] = [
     workEmailCoverage: 56,
     personalEmailCoverage: 0,
     phoneCoverage: 0,
+    phoneCoverageFull: null,
     wfRescueEmail: 11,
     combinedEmail: 483,
     recall: 18.7,
@@ -248,6 +258,7 @@ const nameDomainVendors: VendorEvalResult[] = [
     workEmailCoverage: 62,
     personalEmailCoverage: 0,
     phoneCoverage: 0,
+    phoneCoverageFull: null,
     wfRescueEmail: 18,
     combinedEmail: 490,
     recall: 14.5,
@@ -387,8 +398,8 @@ const RANK_CATEGORIES: RankCategory[] = [
     getValue: v => v.emailCoverage,
   },
   {
-    label: "Phone",
-    subtitle: "134-contact apples-to-apples subset",
+    label: "Phone (subset)",
+    subtitle: "134-contact apples-to-apples · all vendors",
     barColor: "bg-orange-400",
     headerBg: "bg-orange-50/60 border-orange-200",
     badgeCls: "bg-orange-100 text-orange-800",
@@ -397,11 +408,22 @@ const RANK_CATEGORIES: RankCategory[] = [
     wfBaseline: 71,
     getValue: v => v.phoneCoverage,
   },
+  {
+    label: "Phone (all 1,000)",
+    subtitle: "Full dataset run · ContactOut, Prospeo, Forager, Wiza",
+    barColor: "bg-amber-500",
+    headerBg: "bg-amber-50/60 border-amber-200",
+    badgeCls: "bg-amber-100 text-amber-800",
+    outOf: 1000,
+    outOfLabel: "/ 1,000",
+    wfBaseline: 0,
+    getValue: v => v.phoneCoverageFull,
+  },
 ]
 
 function RankingsSection() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
       {RANK_CATEGORIES.map(cat => {
         const ranked = ALL_VENDORS
           .map(v => ({ v, val: cat.getValue(v) ?? 0 }))
@@ -585,6 +607,12 @@ function VendorCard({ v, emailMax, phoneMax }: { v: VendorEvalResult; emailMax: 
             ? bar(v.phoneCoverage, phoneMax, "bg-orange-400")
             : <div className="text-xs text-muted-foreground mt-0.5 italic">Not offered</div>
           }
+          {v.phoneCoverageFull !== null && v.phoneCoverageFull !== undefined && (
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="text-xs text-amber-700 w-16 shrink-0">All 1,000</span>
+              {bar(v.phoneCoverageFull, 1000, "bg-amber-500")}
+            </div>
+          )}
         </div>
 
         {/* Recall + Precision */}
