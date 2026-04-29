@@ -174,6 +174,29 @@ const linkedInVendors: VendorEvalResult[] = [
     waterfallNote: "Speed-first use cases. Moderate email coverage — stronger as a phone or latency layer than primary email source.",
   },
   {
+    id: "bettercontact",
+    name: "BetterContact",
+    status: "evaluated",
+    inputMethod: "linkedin-url",
+    worksEmail: true,
+    personalEmail: false,
+    phone: true,
+    matchRate: 13.5,
+    emailCoverage: 42,
+    workEmailCoverage: 42,
+    personalEmailCoverage: 0,
+    phoneCoverage: 99,
+    phoneCoverageFull: null,
+    wfRescueEmail: 10,
+    combinedEmail: 482,
+    recall: 17.3,
+    precisionLabel: "31% deliverable (of 14 w/ status; 28 unverified bonus emails)",
+    latencyLabel: "~2–3min async (batches of 100)",
+    notionUrl: "https://app.notion.com/p/351d5e4e099a81fc941df6b548bf3dd7",
+    commentary: "Phone is the headline: 99/134 (73.9%) on the phone subset — nearly tied with ContactOut (75.4%) and rescues 52% of WF phone misses. Email coverage is very low (42/1,000, 4.2%) and not competitive. Dramatically stronger on UBE traffic (59.8% person match) vs CSV/async (8.2%). Only returns work email.",
+    waterfallNote: "Phone-first vendor. Use as a phone enrichment layer after Waterfall. Not viable for email enrichment.",
+  },
+  {
     id: "crustdata",
     name: "Crustdata",
     status: "evaluated",
@@ -281,7 +304,6 @@ const pendingVendors: { name: string; type: string }[] = [
   { name: "Swordfish", type: "phone" },
   { name: "RocketReach", type: "phone" },
   { name: "SignalHire", type: "both" },
-  { name: "BetterContact", type: "phone" },
   { name: "Signaliz", type: "both" },
   { name: "LeadIQ", type: "both" },
   { name: "Lusha", type: "both" },
@@ -320,18 +342,6 @@ function rankBar(value: number, max: number, barColor: string, isWinner: boolean
   )
 }
 
-function bar(value: number | null, max: number, color: string) {
-  if (value === null) return null
-  const w = Math.round((value / max) * 100)
-  return (
-    <div className="flex items-center gap-2 mt-0.5">
-      <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
-        <div className={`h-full rounded-full ${color}`} style={{ width: `${w}%` }} />
-      </div>
-      <span className="text-xs tabular-nums text-muted-foreground w-10 text-right">{value}</span>
-    </div>
-  )
-}
 
 function typePills(v: VendorEvalResult) {
   return (
@@ -542,8 +552,42 @@ function WaterfallStrategy() {
 
 // ─── Vendor card ──────────────────────────────────────────────────────────────
 
-function VendorCard({ v, emailMax, phoneMax }: { v: VendorEvalResult; emailMax: number; phoneMax: number }) {
+function VendorCard({ v }: { v: VendorEvalResult }) {
   const isFailed = v.status === "failed"
+
+  function pct(n: number | null, total: number): string {
+    if (n === null) return "—"
+    return `${Math.round((n / total) * 100)}%`
+  }
+
+  function CoverageRow({
+    label, value, outOf, color, note,
+  }: {
+    label: string; value: number | null; outOf: number; color: string; note?: string
+  }) {
+    if (value === null) return null
+    const w = Math.round((value / outOf) * 100)
+    return (
+      <div>
+        <div className="flex justify-between items-baseline mb-0.5">
+          <span className={`text-xs font-medium ${color}`}>{label}</span>
+          <span className="text-xs tabular-nums text-muted-foreground">
+            <span className="font-semibold text-foreground">{value}</span>
+            <span className="text-muted-foreground"> / {outOf.toLocaleString()}</span>
+            <span className={`ml-1.5 font-semibold ${color}`}>({pct(value, outOf)})</span>
+          </span>
+        </div>
+        <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+          <div className={`h-full rounded-full ${color.replace("text-", "bg-").replace("-600", "-400").replace("-700", "-500")}`} style={{ width: `${w}%` }} />
+        </div>
+        {note && <div className="text-xs text-muted-foreground mt-0.5">{note}</div>}
+      </div>
+    )
+  }
+
+  const hasWorkEmail = (v.workEmailCoverage ?? 0) > 0
+  const hasPersonalEmail = (v.personalEmailCoverage ?? 0) > 0
+  const hasBothEmailTypes = hasWorkEmail && hasPersonalEmail
 
   return (
     <div className={`rounded-lg border bg-card shadow-sm overflow-hidden ${isFailed ? "opacity-75" : ""}`}>
@@ -569,77 +613,95 @@ function VendorCard({ v, emailMax, phoneMax }: { v: VendorEvalResult; emailMax: 
         </div>
       </div>
 
-      {/* Metrics */}
-      <div className="px-5 py-4 space-y-3">
-        {/* Email — split by type */}
+      {/* Coverage */}
+      <div className="px-5 py-4 space-y-4">
+
+        {/* ── Email ── */}
         <div>
-          <div className="flex justify-between text-xs mb-1">
-            <span className="text-muted-foreground font-medium">Email coverage</span>
-            <span className="text-muted-foreground">WF baseline: {WF_EMAIL}</span>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Email</span>
+            <span className="text-xs text-muted-foreground">WF baseline: {WF_EMAIL} / 1,000 (47%)</span>
           </div>
-          {(v.workEmailCoverage ?? 0) > 0 && (
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="text-xs text-blue-600 w-16 shrink-0">Work</span>
-              {bar(v.workEmailCoverage, emailMax, "bg-blue-400")}
-            </div>
-          )}
-          {(v.personalEmailCoverage ?? 0) > 0 && (
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="text-xs text-purple-600 w-16 shrink-0">Personal</span>
-              {bar(v.personalEmailCoverage, emailMax, "bg-purple-400")}
+          <div className="space-y-2">
+            {hasWorkEmail && (
+              <CoverageRow label="Work" value={v.workEmailCoverage} outOf={1000} color="text-blue-600" />
+            )}
+            {hasPersonalEmail && (
+              <CoverageRow label="Personal" value={v.personalEmailCoverage} outOf={1000} color="text-purple-600" />
+            )}
+            {!hasWorkEmail && !hasPersonalEmail && (v.emailCoverage ?? 0) > 0 && (
+              <CoverageRow label="Email" value={v.emailCoverage} outOf={1000} color="text-violet-600" />
+            )}
+          </div>
+          {hasBothEmailTypes && (
+            <div className="text-xs text-muted-foreground mt-1.5">
+              {v.emailCoverage} total unique · {v.workEmailCoverage! + v.personalEmailCoverage! - v.emailCoverage!} contacts have both
             </div>
           )}
           {v.wfRescueEmail !== null && (
-            <div className="text-xs text-muted-foreground mt-1">
-              Rescued <span className="font-medium text-foreground">{v.wfRescueEmail}</span> WF misses ·{" "}
-              Combined <span className="font-medium text-foreground">{v.combinedEmail}</span> with WF
+            <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+              <span>
+                Rescued <span className="font-semibold text-foreground">{v.wfRescueEmail}</span> WF misses ·{" "}
+                Combined with WF: <span className="font-semibold text-foreground">{v.combinedEmail} / 1,000</span>{" "}
+                <span className="text-emerald-700 font-semibold">({pct(v.combinedEmail, 1000)})</span>
+              </span>
             </div>
           )}
         </div>
 
-        {/* Phone */}
-        <div>
-          <div className="flex justify-between text-xs mb-0.5">
-            <span className="text-muted-foreground font-medium">Phone coverage</span>
-            <span className="text-muted-foreground">134-contact subset · WF {WF_PHONE}</span>
-          </div>
-          {v.phone
-            ? bar(v.phoneCoverage, phoneMax, "bg-orange-400")
-            : <div className="text-xs text-muted-foreground mt-0.5 italic">Not offered</div>
-          }
-          {v.phoneCoverageFull !== null && v.phoneCoverageFull !== undefined && (
-            <div className="flex items-center gap-1.5 mt-1">
-              <span className="text-xs text-amber-700 w-16 shrink-0">All 1,000</span>
-              {bar(v.phoneCoverageFull, 1000, "bg-amber-500")}
+        {/* ── Phone ── */}
+        <div className="border-t pt-3">
+          <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Phone</div>
+          {v.phone ? (
+            <div className="space-y-2">
+              <CoverageRow
+                label="134-contact subset"
+                value={v.phoneCoverage}
+                outOf={134}
+                color="text-orange-600"
+                note={`WF baseline: ${WF_PHONE} / 134 (53%)`}
+              />
+              {v.phoneCoverageFull !== null && v.phoneCoverageFull !== undefined && (
+                <CoverageRow
+                  label="All 1,000 contacts"
+                  value={v.phoneCoverageFull}
+                  outOf={1000}
+                  color="text-amber-700"
+                />
+              )}
             </div>
+          ) : (
+            <div className="text-xs text-muted-foreground italic">Not offered</div>
           )}
         </div>
 
-        {/* Recall + Precision */}
-        <div className="grid grid-cols-2 gap-3 pt-1">
+        {/* ── Stats strip ── */}
+        <div className="grid grid-cols-3 gap-2 border-t pt-3">
           <div>
-            <div className="text-xs text-muted-foreground mb-0.5">Recall vs. WF baseline</div>
+            <div className="text-xs text-muted-foreground mb-0.5">Recall vs. WF</div>
             <div className={`text-sm font-semibold tabular-nums ${v.recall === null ? "text-muted-foreground" : v.recall >= 70 ? "text-emerald-700" : v.recall >= 40 ? "text-amber-700" : "text-red-600"}`}>
               {v.recall !== null ? `${v.recall.toFixed(1)}%` : "—"}
             </div>
           </div>
-          <div>
+          <div className="col-span-2">
             <div className="text-xs text-muted-foreground mb-0.5">Precision</div>
-            <div className="text-sm font-medium text-foreground">{v.precisionLabel ?? "—"}</div>
+            <div className="text-xs font-medium text-foreground leading-tight">{v.precisionLabel ?? "—"}</div>
           </div>
         </div>
 
-        {/* Latency */}
-        <div className="text-xs text-muted-foreground pt-0.5">
-          <span className="font-medium text-foreground">Latency:</span> {v.latencyLabel ?? "—"} ·{" "}
+        {/* ── Latency + input ── */}
+        <div className="text-xs text-muted-foreground">
+          <span className="font-medium text-foreground">Latency:</span> {v.latencyLabel ?? "—"}
+          {" · "}
           <span className="font-medium text-foreground">Input:</span>{" "}
           {v.inputMethod === "linkedin-url" ? "LinkedIn URL" : v.inputMethod === "linkedin-slug" ? "LinkedIn slug" : "Name + domain"}
         </div>
       </div>
 
       {/* Commentary */}
-      <div className="px-5 pb-4">
-        <p className="text-xs text-muted-foreground leading-relaxed border-t pt-3">{v.commentary}</p>
+      <div className="px-5 pb-4 border-t">
+        <p className="text-xs text-muted-foreground leading-relaxed pt-3">{v.commentary}</p>
         {v.waterfallNote && (
           <p className="text-xs font-medium text-foreground mt-1.5">
             <span className="text-muted-foreground">Waterfall fit:</span> {v.waterfallNote}
@@ -653,9 +715,6 @@ function VendorCard({ v, emailMax, phoneMax }: { v: VendorEvalResult; emailMax: 
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function EvalResultsHub() {
-  const emailMax = Math.max(...ALL_VENDORS.map(v => v.emailCoverage ?? 0), WF_EMAIL)
-  const phoneMax = Math.max(...ALL_VENDORS.map(v => v.phoneCoverage ?? 0), WF_PHONE)
-
   const typeFilter: Record<string, string> = {
     both: "bg-slate-100 text-slate-700 border-slate-200",
     email: "bg-blue-50 text-blue-700 border-blue-200",
@@ -713,7 +772,7 @@ export function EvalResultsHub() {
           {[...linkedInVendors]
             .sort((a, b) => (b.emailCoverage ?? -1) - (a.emailCoverage ?? -1))
             .map(v => (
-              <VendorCard key={v.id} v={v} emailMax={emailMax} phoneMax={phoneMax} />
+              <VendorCard key={v.id} v={v}  />
             ))}
         </div>
       </div>
@@ -730,7 +789,7 @@ export function EvalResultsHub() {
         </p>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {nameDomainVendors.map(v => (
-            <VendorCard key={v.id} v={v} emailMax={emailMax} phoneMax={phoneMax} />
+            <VendorCard key={v.id} v={v}  />
           ))}
         </div>
       </div>
