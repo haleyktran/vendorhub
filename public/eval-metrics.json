@@ -1,49 +1,11 @@
 {
-  "generated_at": "2026-04-29T23:35:17.245779Z",
+  "generated_at": "2026-04-29T23:36:20.017368Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
     "phone_subset_total": 134
   },
   "vendors": {
-    "prospeo": {
-      "matched": 728,
-      "total": 1000,
-      "email_count": 283,
-      "phone_subset": 84,
-      "wf_email": 472,
-      "wf_phone_subset": 71,
-      "rescued_email": 57,
-      "combined_email": 529,
-      "combined_phone": 100,
-      "recall_pct": "80.0%",
-      "avg_latency_ms": 449,
-      "p95_latency_ms": 955,
-      "precision": {
-        "VERIFIED": 283
-      },
-      "cost_notes": "$39/mo for 1,000 credits; +10 credits for mobile"
-    },
-    "wiza": {
-      "matched": 461,
-      "total": 1000,
-      "email_count": 339,
-      "phone_subset": 38,
-      "wf_email": 472,
-      "wf_phone_subset": 71,
-      "rescued_email": 127,
-      "combined_email": 600,
-      "combined_phone": 81,
-      "recall_pct": "48.2%",
-      "avg_latency_ms": 205,
-      "p95_latency_ms": 360,
-      "precision": {
-        "VALID": 306,
-        "UNKNOWN": 26,
-        "RISKY": 7
-      },
-      "cost_notes": "Contact sales / pay-per-reveal model"
-    },
     "aviato": {
       "matched": 527,
       "total": 1000,
@@ -63,6 +25,84 @@
         "STUDENT": 17
       },
       "cost_notes": "Contact sales for pricing"
+    },
+    "bettercontact": {
+      "matched": 135,
+      "total": 1000,
+      "email_count": 42,
+      "phone_subset": 99,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 10,
+      "combined_email": 482,
+      "combined_phone": 104,
+      "recall_pct": "17.3%",
+      "avg_latency_ms": 0,
+      "p95_latency_ms": 0,
+      "precision": {
+        "UNKNOWN": 28,
+        "DELIVERABLE": 5,
+        "CATCH_ALL_SAFE": 8,
+        "UNDELIVERABLE": 1
+      },
+      "cost_notes": "Unknown"
+    },
+    "bettercontact_phoneall": {
+      "matched": 870,
+      "total": 1000,
+      "email_count": 42,
+      "phone_subset": 99,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 10,
+      "combined_email": 482,
+      "combined_phone": 104,
+      "recall_pct": "96.0%",
+      "avg_latency_ms": 0,
+      "p95_latency_ms": 0,
+      "precision": {
+        "UNKNOWN": 28,
+        "DELIVERABLE": 5,
+        "CATCH_ALL_SAFE": 8,
+        "UNDELIVERABLE": 1
+      },
+      "cost_notes": "Unknown"
+    },
+    "contactout": {
+      "matched": 734,
+      "total": 1000,
+      "email_count": 721,
+      "phone_subset": 101,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 311,
+      "combined_email": 786,
+      "combined_phone": 108,
+      "recall_pct": "88.0%",
+      "avg_latency_ms": 195,
+      "p95_latency_ms": 199,
+      "precision": {
+        "FOUND": 721
+      },
+      "cost_notes": "Unknown"
+    },
+    "crustdata": {
+      "matched": 219,
+      "total": 1000,
+      "email_count": 169,
+      "phone_subset": 23,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 69,
+      "combined_email": 542,
+      "combined_phone": 77,
+      "recall_pct": "23.4%",
+      "avg_latency_ms": 4853,
+      "p95_latency_ms": 15794,
+      "precision": {
+        "FOUND": 169
+      },
+      "cost_notes": "Unknown"
     },
     "enrow": {
       "matched": 88,
@@ -119,6 +159,25 @@
       },
       "cost_notes": "Unknown"
     },
+    "kitt": {
+      "matched": 373,
+      "total": 1000,
+      "email_count": 373,
+      "phone_subset": 0,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 71,
+      "combined_email": 545,
+      "combined_phone": 71,
+      "recall_pct": "63.6%",
+      "avg_latency_ms": 4486,
+      "p95_latency_ms": 11305,
+      "precision": {
+        "VALID": 231,
+        "VALID-RISKY": 142
+      },
+      "cost_notes": "Unknown"
+    },
     "limadata": {
       "matched": 491,
       "total": 1000,
@@ -137,40 +196,38 @@
       },
       "cost_notes": "Unknown"
     },
-    "crustdata": {
-      "matched": 219,
+    "prospeo": {
+      "matched": 728,
       "total": 1000,
-      "email_count": 169,
-      "phone_subset": 23,
+      "email_count": 283,
+      "phone_subset": 84,
       "wf_email": 472,
       "wf_phone_subset": 71,
-      "rescued_email": 69,
-      "combined_email": 542,
-      "combined_phone": 77,
-      "recall_pct": "23.4%",
-      "avg_latency_ms": 4853,
-      "p95_latency_ms": 15794,
+      "rescued_email": 57,
+      "combined_email": 529,
+      "combined_phone": 100,
+      "recall_pct": "80.0%",
+      "avg_latency_ms": 449,
+      "p95_latency_ms": 955,
       "precision": {
-        "FOUND": 169
+        "VERIFIED": 283
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "$39/mo for 1,000 credits; +10 credits for mobile"
     },
-    "contactout": {
-      "matched": 734,
-      "total": 1000,
-      "email_count": 721,
-      "phone_subset": 101,
-      "wf_email": 472,
-      "wf_phone_subset": 71,
-      "rescued_email": 311,
-      "combined_email": 786,
-      "combined_phone": 108,
-      "recall_pct": "88.0%",
-      "avg_latency_ms": 195,
-      "p95_latency_ms": 199,
-      "precision": {
-        "FOUND": 721
-      },
+    "rocketreach": {
+      "matched": 114,
+      "total": 125,
+      "email_count": 0,
+      "phone_subset": 83,
+      "wf_email": 72,
+      "wf_phone_subset": 66,
+      "rescued_email": 0,
+      "combined_email": 72,
+      "combined_phone": 94,
+      "recall_pct": "97.2%",
+      "avg_latency_ms": 689,
+      "p95_latency_ms": 990,
+      "precision": null,
       "cost_notes": "Unknown"
     },
     "snov": {
@@ -192,82 +249,25 @@
       },
       "cost_notes": "Unknown"
     },
-    "bettercontact": {
-      "matched": 135,
+    "wiza": {
+      "matched": 461,
       "total": 1000,
-      "email_count": 42,
-      "phone_subset": 99,
+      "email_count": 339,
+      "phone_subset": 38,
       "wf_email": 472,
       "wf_phone_subset": 71,
-      "rescued_email": 10,
-      "combined_email": 482,
-      "combined_phone": 104,
-      "recall_pct": "17.3%",
-      "avg_latency_ms": 0,
-      "p95_latency_ms": 0,
+      "rescued_email": 127,
+      "combined_email": 600,
+      "combined_phone": 81,
+      "recall_pct": "48.2%",
+      "avg_latency_ms": 205,
+      "p95_latency_ms": 360,
       "precision": {
-        "UNKNOWN": 28,
-        "DELIVERABLE": 5,
-        "CATCH_ALL_SAFE": 8,
-        "UNDELIVERABLE": 1
+        "VALID": 306,
+        "UNKNOWN": 26,
+        "RISKY": 7
       },
-      "cost_notes": "Unknown"
-    },
-    "bettercontact_phoneall": {
-      "matched": 870,
-      "total": 1000,
-      "email_count": 42,
-      "phone_subset": 99,
-      "wf_email": 472,
-      "wf_phone_subset": 71,
-      "rescued_email": 10,
-      "combined_email": 482,
-      "combined_phone": 104,
-      "recall_pct": "96.0%",
-      "avg_latency_ms": 0,
-      "p95_latency_ms": 0,
-      "precision": {
-        "UNKNOWN": 28,
-        "DELIVERABLE": 5,
-        "CATCH_ALL_SAFE": 8,
-        "UNDELIVERABLE": 1
-      },
-      "cost_notes": "Unknown"
-    },
-    "kitt": {
-      "matched": 373,
-      "total": 1000,
-      "email_count": 373,
-      "phone_subset": 0,
-      "wf_email": 472,
-      "wf_phone_subset": 71,
-      "rescued_email": 71,
-      "combined_email": 545,
-      "combined_phone": 71,
-      "recall_pct": "63.6%",
-      "avg_latency_ms": 4486,
-      "p95_latency_ms": 11305,
-      "precision": {
-        "VALID": 231,
-        "VALID-RISKY": 142
-      },
-      "cost_notes": "Unknown"
-    },
-    "rocketreach": {
-      "matched": 114,
-      "total": 125,
-      "email_count": 0,
-      "phone_subset": 83,
-      "wf_email": 72,
-      "wf_phone_subset": 66,
-      "rescued_email": 0,
-      "combined_email": 72,
-      "combined_phone": 94,
-      "recall_pct": "97.2%",
-      "avg_latency_ms": 689,
-      "p95_latency_ms": 990,
-      "precision": null,
-      "cost_notes": "Unknown"
+      "cost_notes": "Contact sales / pay-per-reveal model"
     }
   }
 }
