@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-29T23:32:10.326666Z",
+  "generated_at": "2026-04-29T23:35:17.245779Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -101,21 +101,21 @@
       "cost_notes": "Contact sales for pricing"
     },
     "icypeas": {
-      "matched": 142,
+      "matched": 679,
       "total": 1000,
-      "email_count": 56,
+      "email_count": 234,
       "phone_subset": 0,
       "wf_email": 472,
       "wf_phone_subset": 71,
-      "rescued_email": 11,
-      "combined_email": 483,
+      "rescued_email": 45,
+      "combined_email": 519,
       "combined_phone": 71,
-      "recall_pct": "18.7%",
+      "recall_pct": "77.9%",
       "avg_latency_ms": 0,
       "p95_latency_ms": 0,
       "precision": {
-        "PROBABLE": 22,
-        "ULTRA_SURE": 34
+        "PROBABLE": 69,
+        "ULTRA_SURE": 165
       },
       "cost_notes": "Unknown"
     },
