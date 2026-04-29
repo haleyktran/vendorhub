@@ -14,8 +14,10 @@ interface VendorEvalResult {
   personalEmail: boolean
   phone: boolean
   matchRate: number | null
-  emailCoverage: number | null        // /1000
-  phoneCoverage: number | null        // /134
+  emailCoverage: number | null         // /1000 — any email (work + personal, deduped)
+  workEmailCoverage: number | null     // /1000 — corporate/work email only
+  personalEmailCoverage: number | null // /1000 — webmail/personal email only
+  phoneCoverage: number | null         // /134-contact subset
   wfRescueEmail: number | null
   combinedEmail: number | null
   recall: number | null
@@ -23,13 +25,13 @@ interface VendorEvalResult {
   latencyLabel: string | null
   notionUrl: string | null
   commentary: string
-  waterfallNote?: string              // where this fits in the waterfall
+  waterfallNote?: string
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
-// Dataset: 1,000 contacts, primary ID = LinkedIn slug
-// Waterfall baseline: 472 emails found, 71 phones found (from 134-contact phone subset)
-// Name+domain vendors: only 142/1,000 contacts have name+domain — capped at 14.2%
+// Dataset: 1,000 contacts, primary ID = LinkedIn slug (982/1,000 have one)
+// Waterfall baseline: 472 emails + 71 phones (134-contact phone subset)
+// Name+domain vendors: only 142/1,000 contacts eligible — capped at 14.2%
 
 const linkedInVendors: VendorEvalResult[] = [
   {
@@ -42,6 +44,8 @@ const linkedInVendors: VendorEvalResult[] = [
     phone: true,
     matchRate: 87.3,
     emailCoverage: 474,
+    workEmailCoverage: 20,
+    personalEmailCoverage: 470,
     phoneCoverage: 40,
     wfRescueEmail: 200,
     combinedEmail: 673,
@@ -50,7 +54,7 @@ const linkedInVendors: VendorEvalResult[] = [
     latencyLabel: "~1,022ms avg (sync)",
     notionUrl: "https://app.notion.com/p/34fd5e4e099a8189a9a1c52feaf73b57",
     commentary: "Highest match rate (87.3%) and 100% VALID precision — but 470/474 emails are personal (webmail), only 20 are work. Not a work email source despite the headline coverage. Best use case: personal email enrichment and identity resolution. 93.5% recall vs WF-confirmed contacts.",
-    waterfallNote: "Strong P1 for personal email. Not a work email source — pair with Limadata for work email coverage.",
+    waterfallNote: "P1 for personal email. Not a work email source — pair with Limadata for work email coverage.",
   },
   {
     id: "contactout",
@@ -62,6 +66,8 @@ const linkedInVendors: VendorEvalResult[] = [
     phone: true,
     matchRate: 73.4,
     emailCoverage: 721,
+    workEmailCoverage: 373,
+    personalEmailCoverage: 625,
     phoneCoverage: 101,
     wfRescueEmail: 311,
     combinedEmail: 786,
@@ -69,8 +75,8 @@ const linkedInVendors: VendorEvalResult[] = [
     precisionLabel: "No signal (V2 batch)",
     latencyLabel: "~195ms avg (phone); ~7min (work email batch)",
     notionUrl: "https://app.notion.com/p/350d5e4e099a81dcb828c9c18251b5a2",
-    commentary: "Best phone coverage (101/134, 75.4%) and highest recall (88.0%). Email coverage of 721 is any-email (work + personal combined) — work email alone is 373 (37.3%), which trails Waterfall. Dominant personal email source at 62.5%. Two API keys required (work vs. personal billed separately). Work email batch is slow (~7 min for 1,000 contacts).",
-    waterfallNote: "Best-in-class for phone and personal email. Not a work-email replacement — use for phone-first or personal email enrichment.",
+    commentary: "Best phone (101/134, 75.4%) and highest recall (88.0%). 721 total emails = 373 work + 625 personal (some contacts have both). Dominant personal email source. Two API keys required (work vs. personal billed separately). Work email batch is slow (~7 min for 1,000).",
+    waterfallNote: "Best-in-class for phone and personal email. Work email trails Limadata — use for phone-first or personal email enrichment.",
   },
   {
     id: "prospeo",
@@ -82,6 +88,8 @@ const linkedInVendors: VendorEvalResult[] = [
     phone: true,
     matchRate: 72.8,
     emailCoverage: 283,
+    workEmailCoverage: 283,
+    personalEmailCoverage: 0,
     phoneCoverage: 84,
     wfRescueEmail: 57,
     combinedEmail: 529,
@@ -89,7 +97,7 @@ const linkedInVendors: VendorEvalResult[] = [
     precisionLabel: "100% VERIFIED",
     latencyLabel: "~449ms avg (bulk, 50/batch)",
     notionUrl: "https://app.notion.com/p/350d5e4e099a81399eb6dca318edca2d",
-    commentary: "Re-eval after account upgrade — 728/1,000 matched. Best-in-class email precision: 100% VERIFIED on all 283 returned emails (zero CATCHALL or RISKY). Strong phone (84/134, 62.7%). Email coverage is conservative (28.3%) because Prospeo only returns emails it is highly confident in. Uses bulk endpoint (50/batch, synchronous).",
+    commentary: "Best-in-class email precision: 100% VERIFIED on all 283 returned emails (zero CATCHALL or RISKY). Strong phone (84/134, 62.7%). Coverage is conservative because Prospeo only returns emails it is highly confident in. Uses bulk endpoint (50/batch, synchronous).",
     waterfallNote: "Best precision of any vendor. Strong phone. Use as a high-confidence email layer — not for maximum coverage.",
   },
   {
@@ -102,15 +110,17 @@ const linkedInVendors: VendorEvalResult[] = [
     phone: true,
     matchRate: 49.1,
     emailCoverage: 480,
+    workEmailCoverage: 480,
+    personalEmailCoverage: 0,
     phoneCoverage: 38,
     wfRescueEmail: 121,
     combinedEmail: 596,
     recall: 76.2,
     precisionLabel: "No signal (email or 404)",
     latencyLabel: "~200ms avg targeted (async batch)",
-    notionUrl: "https://app.notion.com/p/350d5e4e099a81d88e99f345e2a1d1a3",
-    commentary: "Strong work email coverage (480/1,000, 48%) with 76.2% recall. Rescued 121 contacts Waterfall missed. No email validity signal — you get an email or nothing. Tail latency issue (~5% of requests hit 10–22s) flagged with vendor.",
-    waterfallNote: "Strong P1 for work email volume. Pair with Forager for precision or ContactOut for phone.",
+    notionUrl: null,
+    commentary: "Highest work email coverage (480/1,000, 48%) with 76.2% recall. Rescued 121 contacts Waterfall missed. No email validity signal — you get an email or nothing. Tail latency issue (~5% of requests hit 10–22s) flagged with vendor.",
+    waterfallNote: "P1 for work email volume. Pair with Forager for personal email or ContactOut for phone.",
   },
   {
     id: "aviato",
@@ -122,6 +132,8 @@ const linkedInVendors: VendorEvalResult[] = [
     phone: false,
     matchRate: 52.7,
     emailCoverage: 527,
+    workEmailCoverage: 184,
+    personalEmailCoverage: 326,
     phoneCoverage: 0,
     wfRescueEmail: 223,
     combinedEmail: 698,
@@ -129,7 +141,7 @@ const linkedInVendors: VendorEvalResult[] = [
     precisionLabel: "No signal (work + personal mixed)",
     latencyLabel: "Async batch (100/call)",
     notionUrl: null,
-    commentary: "527 emails returned (184 work, 326 personal, 17 student) — headline coverage is inflated vs. pure-work vendors. Best combined email coverage at 69.8% when added to Waterfall. No phone. Work/personal type available in response for post-filtering.",
+    commentary: "527 emails returned (184 work, 326 personal, 17 student) — headline coverage is inflated vs. pure-work vendors. Best combined email coverage at 69.8% when added to Waterfall. No phone. Work/personal type field available for post-filtering.",
     waterfallNote: "Best if you want both email types in one call. No phone. Filter by type post-fetch.",
   },
   {
@@ -142,14 +154,16 @@ const linkedInVendors: VendorEvalResult[] = [
     phone: true,
     matchRate: 46.1,
     emailCoverage: 339,
+    workEmailCoverage: 275,
+    personalEmailCoverage: 230,
     phoneCoverage: 38,
     wfRescueEmail: 127,
     combinedEmail: 600,
     recall: 48.2,
     precisionLabel: "90% VALID (7 risky, 26 unknown)",
-    latencyLabel: "~205ms avg ⚡",
+    latencyLabel: "~205ms avg",
     notionUrl: "https://www.notion.so/unifygtm/34fd5e4e099a81f3b141f3c96cffcdc3",
-    commentary: "Returns both work (275/1,000) and personal (230/1,000) emails — 339 total with some overlap. 90% VALID; 7 RISKY and 26 UNKNOWN in the remainder. Async with up to 380s resolution time for work email — requires ≥600s poll timeout. Phone (38/134) underperforms Clay's Wiza attribution (287/1,000), likely a data tier gap.",
+    commentary: "Returns both work (275/1,000) and personal (230/1,000) emails — 339 total with some overlap. 90% VALID; 7 RISKY and 26 UNKNOWN. Async with up to 380s resolution for work email — requires >=600s poll timeout. Phone (38/134) underperforms Clay's Wiza attribution, likely a data tier gap.",
     waterfallNote: "Speed-first use cases. Moderate email coverage — stronger as a phone or latency layer than primary email source.",
   },
   {
@@ -162,14 +176,16 @@ const linkedInVendors: VendorEvalResult[] = [
     phone: true,
     matchRate: 21.9,
     emailCoverage: 169,
+    workEmailCoverage: 17,
+    personalEmailCoverage: 152,
     phoneCoverage: 23,
     wfRescueEmail: 69,
     combinedEmail: 542,
     recall: 23.4,
     precisionLabel: "No signal",
-    latencyLabel: "~4,853ms avg ⚠️ (p95: 15.8s)",
+    latencyLabel: "~4,853ms avg (p95: 15.8s)",
     notionUrl: "https://app.notion.com/p/350d5e4e099a812da77cf7bd6385b625",
-    commentary: "Low match rate (21.9%) and weak email coverage (169/1,000). 90% of email hits are personal (gmail/yahoo) — work email effective coverage is only 8.4% (84/1,000). Latency is a critical concern — avg ~4.8s with p95 at 15.8s and p99 at 24s. Not viable as an inline enrichment source at these speeds. Phone coverage (23/134) is lowest of any vendor tested.",
+    commentary: "Low match rate (21.9%) and weak email coverage (169/1,000). ~90% of email hits are personal (gmail/yahoo) — work email is only ~17/1,000. Latency is prohibitive — avg ~4.8s, p95 15.8s, p99 24s. Phone (23/134) is lowest of any vendor tested.",
     waterfallNote: "Not recommended for inline use — latency is prohibitive. Only viable for async/batch enrichment at low priority.",
   },
 ]
@@ -185,6 +201,8 @@ const nameDomainVendors: VendorEvalResult[] = [
     phone: true,
     matchRate: 8.8,
     emailCoverage: 86,
+    workEmailCoverage: 86,
+    personalEmailCoverage: 0,
     phoneCoverage: 3,
     wfRescueEmail: 26,
     combinedEmail: 498,
@@ -192,7 +210,7 @@ const nameDomainVendors: VendorEvalResult[] = [
     precisionLabel: "100% VALID",
     latencyLabel: "Async batch",
     notionUrl: null,
-    commentary: "Only 142/1,000 contacts are eligible (requires name+domain). Within those, quality is high — 100% VALID emails. Phone at $50/lookup is cost-prohibitive at scale. Not viable as a primary waterfall vendor for this dataset.",
+    commentary: "Only 142/1,000 contacts eligible (requires name+domain). Within those, quality is high — 100% VALID emails. Phone at $50/lookup is cost-prohibitive at scale.",
     waterfallNote: "High quality but wrong input type for our dataset. Skip unless we shift to name+domain-first.",
   },
   {
@@ -205,6 +223,8 @@ const nameDomainVendors: VendorEvalResult[] = [
     phone: false,
     matchRate: 14.2,
     emailCoverage: 56,
+    workEmailCoverage: 56,
+    personalEmailCoverage: 0,
     phoneCoverage: 0,
     wfRescueEmail: 11,
     combinedEmail: 483,
@@ -212,8 +232,8 @@ const nameDomainVendors: VendorEvalResult[] = [
     precisionLabel: "ultra_sure / probable tiers",
     latencyLabel: "Async",
     notionUrl: null,
-    commentary: "Email-only vendor capped by name+domain input (same 142-contact ceiling). Proprietary confidence tiers instead of SMTP verification. Lowest email coverage in the eval.",
-    waterfallNote: "Same cap as Enrow — email only, no phone. Limited value for LinkedIn-slug-first workflows.",
+    commentary: "Email-only vendor capped at the same 142-contact ceiling. Proprietary confidence tiers instead of SMTP verification. Lowest email coverage in the eval.",
+    waterfallNote: "Email only, no phone. Limited value for LinkedIn-slug-first workflows.",
   },
   {
     id: "snov",
@@ -225,6 +245,8 @@ const nameDomainVendors: VendorEvalResult[] = [
     phone: false,
     matchRate: 11.2,
     emailCoverage: 62,
+    workEmailCoverage: 62,
+    personalEmailCoverage: 0,
     phoneCoverage: 0,
     wfRescueEmail: 18,
     combinedEmail: 490,
@@ -261,14 +283,30 @@ const pendingVendors: { name: string; type: string }[] = [
   { name: "SMARTe", type: "both" },
 ]
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────────────────
 
 const WF_EMAIL = 472
 const WF_PHONE = 71
+const PHONE_SUBSET = 134
+const ALL_VENDORS = [...linkedInVendors, ...nameDomainVendors]
 
-function pct(n: number | null, decimals = 1): string {
-  if (n === null) return "—"
-  return `${n.toFixed(decimals)}%`
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function coveragePct(n: number | null, total: number): string {
+  if (n === null) return ""
+  return `${Math.round((n / total) * 100)}%`
+}
+
+function rankBar(value: number, max: number, barColor: string, isWinner: boolean) {
+  const w = Math.max(4, Math.round((value / max) * 100))
+  return (
+    <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+      <div
+        className={`h-full rounded-full transition-all ${barColor} ${isWinner ? "" : "opacity-40"}`}
+        style={{ width: `${w}%` }}
+      />
+    </div>
+  )
 }
 
 function bar(value: number | null, max: number, color: string) {
@@ -300,52 +338,131 @@ function statusDot(s: EvalStatus) {
   return <span className="inline-block w-2 h-2 rounded-full bg-muted-foreground/30" title="Pending" />
 }
 
-// ─── Best-in-class cards ──────────────────────────────────────────────────────
+// ─── Rankings section ─────────────────────────────────────────────────────────
 
-function BestInClass() {
+interface RankCategory {
+  label: string
+  subtitle: string
+  barColor: string
+  headerBg: string
+  badgeCls: string
+  outOf: number
+  outOfLabel: string
+  wfBaseline: number
+  getValue: (v: VendorEvalResult) => number | null
+}
+
+const RANK_CATEGORIES: RankCategory[] = [
+  {
+    label: "Work Email",
+    subtitle: "Corporate / professional address",
+    barColor: "bg-blue-400",
+    headerBg: "bg-blue-50/60 border-blue-200",
+    badgeCls: "bg-blue-100 text-blue-800",
+    outOf: 1000,
+    outOfLabel: "/ 1,000",
+    wfBaseline: 472,
+    getValue: v => v.workEmailCoverage,
+  },
+  {
+    label: "Personal Email",
+    subtitle: "Webmail — gmail, yahoo, etc.",
+    barColor: "bg-purple-400",
+    headerBg: "bg-purple-50/60 border-purple-200",
+    badgeCls: "bg-purple-100 text-purple-800",
+    outOf: 1000,
+    outOfLabel: "/ 1,000",
+    wfBaseline: 0,
+    getValue: v => v.personalEmailCoverage,
+  },
+  {
+    label: "Any Email",
+    subtitle: "Work + personal combined",
+    barColor: "bg-violet-400",
+    headerBg: "bg-violet-50/60 border-violet-200",
+    badgeCls: "bg-violet-100 text-violet-800",
+    outOf: 1000,
+    outOfLabel: "/ 1,000",
+    wfBaseline: 472,
+    getValue: v => v.emailCoverage,
+  },
+  {
+    label: "Phone",
+    subtitle: "134-contact apples-to-apples subset",
+    barColor: "bg-orange-400",
+    headerBg: "bg-orange-50/60 border-orange-200",
+    badgeCls: "bg-orange-100 text-orange-800",
+    outOf: PHONE_SUBSET,
+    outOfLabel: "/ 134",
+    wfBaseline: 71,
+    getValue: v => v.phoneCoverage,
+  },
+]
+
+function RankingsSection() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-      {[
-        {
-          label: "Best work email",
-          winner: "Limadata",
-          stat: "480 / 1,000",
-          sub: "48% coverage, 76% recall",
-          color: "border-blue-200 bg-blue-50/40",
-          badge: "bg-blue-100 text-blue-800",
-        },
-        {
-          label: "Best personal email",
-          winner: "Forager",
-          stat: "470 / 1,000",
-          sub: "87% match, 100% VALID",
-          color: "border-purple-200 bg-purple-50/40",
-          badge: "bg-purple-100 text-purple-800",
-        },
-        {
-          label: "Best phone",
-          winner: "ContactOut",
-          stat: "101 / 134",
-          sub: "75.4% of phone subset",
-          color: "border-orange-200 bg-orange-50/40",
-          badge: "bg-orange-100 text-orange-800",
-        },
-        {
-          label: "Best combined email",
-          winner: "ContactOut",
-          stat: "786 / 1,000",
-          sub: "Work + personal, 88% recall",
-          color: "border-violet-200 bg-violet-50/40",
-          badge: "bg-violet-100 text-violet-800",
-        },
-      ].map(c => (
-        <div key={c.label} className={`rounded-lg border p-4 ${c.color}`}>
-          <div className="text-xs text-muted-foreground mb-1">{c.label}</div>
-          <div className={`inline-block text-xs font-semibold px-2 py-0.5 rounded mb-2 ${c.badge}`}>{c.winner}</div>
-          <div className="text-lg font-bold tabular-nums leading-tight">{c.stat}</div>
-          <div className="text-xs text-muted-foreground mt-0.5">{c.sub}</div>
-        </div>
-      ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      {RANK_CATEGORIES.map(cat => {
+        const ranked = ALL_VENDORS
+          .map(v => ({ v, val: cat.getValue(v) ?? 0 }))
+          .filter(x => x.val > 0)
+          .sort((a, b) => b.val - a.val)
+          .slice(0, 5)
+        const max = Math.max(ranked[0]?.val ?? 1, cat.outOf * 0.75)
+        const winner = ranked[0]?.v
+
+        return (
+          <div key={cat.label} className="rounded-lg border overflow-hidden">
+            {/* Column header */}
+            <div className={`px-4 py-3 border-b ${cat.headerBg}`}>
+              <div className="text-xs text-muted-foreground">{cat.subtitle}</div>
+              <div className="font-semibold text-sm mt-0.5">{cat.label}</div>
+              {winner && (
+                <div className="mt-2 flex items-baseline gap-2 flex-wrap">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded ${cat.badgeCls}`}>
+                    {winner.name}
+                  </span>
+                  <span className="text-sm font-bold tabular-nums">
+                    {cat.getValue(winner)}{cat.outOfLabel}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    ({coveragePct(cat.getValue(winner), cat.outOf)})
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Ranked rows */}
+            <div className="px-4 py-3 space-y-2.5">
+              {ranked.map(({ v, val }, i) => (
+                <div key={v.id} className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground w-4 shrink-0 tabular-nums">#{i + 1}</span>
+                  <span className={`text-xs w-20 shrink-0 truncate ${i === 0 ? "font-semibold text-foreground" : "text-muted-foreground"}`}>
+                    {v.name}
+                  </span>
+                  {rankBar(val, max, cat.barColor, i === 0)}
+                  <span className="text-xs tabular-nums text-muted-foreground w-6 text-right shrink-0">{val}</span>
+                </div>
+              ))}
+
+              {/* WF baseline reference line */}
+              {cat.wfBaseline > 0 && (
+                <div className="flex items-center gap-2 pt-1 border-t mt-1">
+                  <span className="text-xs text-muted-foreground w-4 shrink-0">—</span>
+                  <span className="text-xs text-muted-foreground w-20 shrink-0">WF baseline</span>
+                  <div className="flex-1 h-px bg-muted-foreground/30 relative">
+                    <div
+                      className="absolute top-1/2 -translate-y-1/2 h-2 w-0.5 bg-muted-foreground/50"
+                      style={{ left: `${Math.round((cat.wfBaseline / max) * 100)}%` }}
+                    />
+                  </div>
+                  <span className="text-xs tabular-nums text-muted-foreground w-6 text-right shrink-0">{cat.wfBaseline}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -357,7 +474,7 @@ function WaterfallStrategy() {
     {
       position: "P1 — Work email",
       vendor: "Limadata",
-      why: "Highest work email coverage (480/1,000) with 76% recall. LinkedIn URL input — works on 982/1,000 contacts. No validity signal but targeted endpoint returns email-or-nothing.",
+      why: "Highest work email coverage (480/1,000, 48%) with 76% recall. LinkedIn URL input — runs on 982/1,000 contacts. No validity signal but targeted endpoint returns email-or-nothing.",
       pill: "bg-blue-50 text-blue-700 border-blue-200",
     },
     {
@@ -369,19 +486,19 @@ function WaterfallStrategy() {
     {
       position: "P2 — Phone + personal email",
       vendor: "ContactOut",
-      why: "Best phone coverage (101/134, 75.4%) and best personal email source (625/1,000). 88% recall. Two keys required (work + personal billed separately). Work email batch is slow (~7 min).",
+      why: "Best phone (101/134, 75.4%) and best personal email source (625/1,000, 88% recall). Two keys required (work vs. personal billed separately). Work email batch is slow (~7 min).",
       pill: "bg-orange-50 text-orange-700 border-orange-200",
     },
     {
-      position: "P3 — High-precision email layer",
+      position: "P3 — High-precision work email",
       vendor: "Prospeo",
-      why: "100% VERIFIED on all returned emails — zero CATCHALL or RISKY. 72.8% match rate, 80% recall. Use when precision matters more than volume (e.g. outbound sequences).",
+      why: "100% VERIFIED on all 283 returned emails — zero CATCHALL or RISKY. 72.8% match rate, 80% recall, strong phone (84/134). Use when precision matters more than volume.",
       pill: "bg-emerald-50 text-emerald-700 border-emerald-200",
     },
     {
       position: "Speed-first / async phone",
       vendor: "Wiza",
-      why: "205ms avg — fastest vendor. Moderate email (339/1,000, 90% VALID). Phone underperforms Clay's internal Wiza attribution — worth investigating data tier access.",
+      why: "~205ms avg — fastest vendor tested. Returns both work (275) and personal (230) emails, 90% VALID. Phone underperforms Clay's Wiza attribution — worth investigating data tier access.",
       pill: "bg-slate-50 text-slate-700 border-slate-200",
     },
   ]
@@ -425,20 +542,31 @@ function VendorCard({ v, emailMax, phoneMax }: { v: VendorEvalResult; emailMax: 
         <div className="text-right shrink-0 ml-4">
           <div className="text-xs text-muted-foreground">Match rate</div>
           <div className={`text-xl font-bold tabular-nums ${v.matchRate === null ? "text-muted-foreground" : v.matchRate >= 50 ? "text-emerald-700" : v.matchRate >= 30 ? "text-amber-700" : "text-red-600"}`}>
-            {pct(v.matchRate, 0)}
+            {v.matchRate !== null ? `${v.matchRate.toFixed(0)}%` : "—"}
           </div>
         </div>
       </div>
 
       {/* Metrics */}
       <div className="px-5 py-4 space-y-3">
-        {/* Email */}
+        {/* Email — split by type */}
         <div>
-          <div className="flex justify-between text-xs mb-0.5">
+          <div className="flex justify-between text-xs mb-1">
             <span className="text-muted-foreground font-medium">Email coverage</span>
-            <span className="text-muted-foreground">vs. WF {WF_EMAIL}</span>
+            <span className="text-muted-foreground">WF baseline: {WF_EMAIL}</span>
           </div>
-          {bar(v.emailCoverage, emailMax, "bg-blue-400")}
+          {(v.workEmailCoverage ?? 0) > 0 && (
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="text-xs text-blue-600 w-16 shrink-0">Work</span>
+              {bar(v.workEmailCoverage, emailMax, "bg-blue-400")}
+            </div>
+          )}
+          {(v.personalEmailCoverage ?? 0) > 0 && (
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="text-xs text-purple-600 w-16 shrink-0">Personal</span>
+              {bar(v.personalEmailCoverage, emailMax, "bg-purple-400")}
+            </div>
+          )}
           {v.wfRescueEmail !== null && (
             <div className="text-xs text-muted-foreground mt-1">
               Rescued <span className="font-medium text-foreground">{v.wfRescueEmail}</span> WF misses ·{" "}
@@ -464,7 +592,7 @@ function VendorCard({ v, emailMax, phoneMax }: { v: VendorEvalResult; emailMax: 
           <div>
             <div className="text-xs text-muted-foreground mb-0.5">Recall vs. WF baseline</div>
             <div className={`text-sm font-semibold tabular-nums ${v.recall === null ? "text-muted-foreground" : v.recall >= 70 ? "text-emerald-700" : v.recall >= 40 ? "text-amber-700" : "text-red-600"}`}>
-              {pct(v.recall)}
+              {v.recall !== null ? `${v.recall.toFixed(1)}%` : "—"}
             </div>
           </div>
           <div>
@@ -497,8 +625,8 @@ function VendorCard({ v, emailMax, phoneMax }: { v: VendorEvalResult; emailMax: 
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function EvalResultsHub() {
-  const emailMax = Math.max(...[...linkedInVendors, ...nameDomainVendors].map(v => v.emailCoverage ?? 0), WF_EMAIL)
-  const phoneMax = Math.max(...[...linkedInVendors, ...nameDomainVendors].map(v => v.phoneCoverage ?? 0), WF_PHONE)
+  const emailMax = Math.max(...ALL_VENDORS.map(v => v.emailCoverage ?? 0), WF_EMAIL)
+  const phoneMax = Math.max(...ALL_VENDORS.map(v => v.phoneCoverage ?? 0), WF_PHONE)
 
   const typeFilter: Record<string, string> = {
     both: "bg-slate-100 text-slate-700 border-slate-200",
@@ -511,7 +639,7 @@ export function EvalResultsHub() {
     <div className="space-y-10">
 
       {/* ── Context strip ─────────────────────────────────────────────────────── */}
-      <div className="rounded-lg border bg-muted/20 px-5 py-4 text-sm space-y-1.5">
+      <div className="rounded-lg border bg-muted/20 px-5 py-4 text-sm">
         <div className="font-semibold text-foreground mb-2">About this eval</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
           <div>
@@ -523,16 +651,20 @@ export function EvalResultsHub() {
             <span className="text-muted-foreground">472 emails + 71 phones (from 134-contact phone subset) already found by Waterfall.</span>
           </div>
           <div>
-            <span className="font-medium">⚠ Name+domain vendors</span>{" "}
+            <span className="font-medium">Name+domain vendors</span>{" "}
             <span className="text-muted-foreground">only reach 142/1,000 contacts (14.2%). Their numbers reflect that ceiling, not quality.</span>
           </div>
         </div>
       </div>
 
-      {/* ── Best in class ─────────────────────────────────────────────────────── */}
+      {/* ── Rankings ──────────────────────────────────────────────────────────── */}
       <div>
-        <h2 className="text-base font-semibold mb-3">Best in class</h2>
-        <BestInClass />
+        <h2 className="text-base font-semibold mb-1">Rankings by category</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Top 5 vendors per signal type. Work and personal email ranked separately — a vendor returning both appears in both columns.
+          WF baseline shown as reference. Phone column is 134-contact subset only.
+        </p>
+        <RankingsSection />
       </div>
 
       {/* ── Waterfall strategy ────────────────────────────────────────────────── */}
@@ -542,12 +674,12 @@ export function EvalResultsHub() {
         <WaterfallStrategy />
       </div>
 
-      {/* ── LinkedIn-input vendors (full dataset) ─────────────────────────────── */}
+      {/* ── LinkedIn-input vendors ────────────────────────────────────────────── */}
       <div>
         <h2 className="text-base font-semibold mb-1">LinkedIn-input vendors</h2>
         <p className="text-sm text-muted-foreground mb-4">
           These vendors accept a LinkedIn URL or slug — they can run on all 982 contacts with a slug.
-          Sorted by email coverage.
+          Email bars are split by type: blue = work, purple = personal.
         </p>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {[...linkedInVendors]
@@ -558,15 +690,15 @@ export function EvalResultsHub() {
         </div>
       </div>
 
-      {/* ── Name+domain vendors (capped dataset) ──────────────────────────────── */}
+      {/* ── Name+domain vendors ───────────────────────────────────────────────── */}
       <div>
         <div className="flex items-center gap-3 mb-1">
           <h2 className="text-base font-semibold">Name+domain vendors</h2>
-          <span className="text-xs px-2 py-0.5 rounded border border-orange-200 bg-orange-50 text-orange-700 font-medium">⚠ Capped at 142/1,000 contacts</span>
+          <span className="text-xs px-2 py-0.5 rounded border border-orange-200 bg-orange-50 text-orange-700 font-medium">Capped at 142/1,000 contacts</span>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
-          These vendors require first name + last name + company domain — only 142/1,000 contacts in our dataset have all three.
-          Low coverage numbers reflect the input constraint, not poor quality. Only worth evaluating if we shift to a name+domain-first workflow.
+          Require first name + last name + company domain. Only 142/1,000 contacts have all three.
+          Low numbers reflect the input constraint, not quality.
         </p>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {nameDomainVendors.map(v => (
