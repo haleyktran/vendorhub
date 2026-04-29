@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-29T22:32:28.466912Z",
+  "generated_at": "2026-04-29T23:32:10.326666Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -251,6 +251,22 @@
         "VALID": 231,
         "VALID-RISKY": 142
       },
+      "cost_notes": "Unknown"
+    },
+    "rocketreach": {
+      "matched": 114,
+      "total": 125,
+      "email_count": 0,
+      "phone_subset": 83,
+      "wf_email": 72,
+      "wf_phone_subset": 66,
+      "rescued_email": 0,
+      "combined_email": 72,
+      "combined_phone": 94,
+      "recall_pct": "97.2%",
+      "avg_latency_ms": 689,
+      "p95_latency_ms": 990,
+      "precision": null,
       "cost_notes": "Unknown"
     }
   }
