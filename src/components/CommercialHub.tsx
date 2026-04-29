@@ -1,11 +1,11 @@
 import * as React from "react"
 import { vendorContacts } from "@/vendorHubData"
-import { vendorCommercialData, type CommitmentTier, type Capability, type LegalStatus } from "@/vendorCommercialData"
+import { vendorCommercialData, type CommitmentTier, type Capability, type LegalStatus, type ResellAgreementStatus } from "@/vendorCommercialData"
 import { useLocalOverrides, type CommercialOverride } from "@/hooks/useLocalOverrides"
 import {
   Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
 } from "@/components/ui/table"
-import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, User, Pencil, RotateCcw, ExternalLink } from "lucide-react"
+import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Clock, CheckCircle2, User, Pencil, RotateCcw, ExternalLink, Scale, AlertCircle } from "lucide-react"
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -144,22 +144,22 @@ function EditableSelect<T extends string>({
 
 const STATUS_STYLES = {
   ready:     { pill: "bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200", label: "🟢 Ready" },
-  wait:      { pill: "bg-amber-100   text-amber-800   border-amber-300   hover:bg-amber-200",   label: "🟡 In motion" },
-  review:    { pill: "bg-blue-100    text-blue-800    border-blue-300    hover:bg-blue-200",    label: "🔵 Negotiating" },
-  committed: { pill: "bg-purple-100  text-purple-800  border-purple-300  hover:bg-purple-200", label: "🟣 Committed" },
-  signed:    { pill: "bg-teal-100    text-teal-800    border-teal-300    hover:bg-teal-200",    label: "✅ Signed" },
-  blocked:   { pill: "bg-red-100     text-red-800     border-red-300     hover:bg-red-200",     label: "🔴 Blocked" },
-  tbd:       { pill: "bg-gray-100    text-gray-600    border-gray-300    hover:bg-gray-200",    label: "⚪ TBD" },
+  wait:      { pill: "bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200",         label: "🟡 In motion" },
+  review:    { pill: "bg-blue-100 text-blue-800 border-blue-300 hover:bg-blue-200",             label: "🔵 Negotiating" },
+  committed: { pill: "bg-purple-100 text-purple-800 border-purple-300 hover:bg-purple-200",     label: "🟣 Committed" },
+  signed:    { pill: "bg-teal-100 text-teal-800 border-teal-300 hover:bg-teal-200",             label: "✅ Signed" },
+  blocked:   { pill: "bg-red-100 text-red-800 border-red-300 hover:bg-red-200",                 label: "🔴 Blocked" },
+  tbd:       { pill: "bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200",             label: "⚪ TBD" },
 }
 
 const MENU_STYLES: Record<string, string> = {
   ready:     "hover:bg-emerald-50 text-emerald-800",
-  wait:      "hover:bg-amber-50   text-amber-800",
-  review:    "hover:bg-blue-50    text-blue-800",
-  committed: "hover:bg-purple-50  text-purple-800",
-  signed:    "hover:bg-teal-50    text-teal-800",
-  blocked:   "hover:bg-red-50     text-red-800",
-  tbd:       "hover:bg-gray-50    text-gray-600",
+  wait:      "hover:bg-amber-50 text-amber-800",
+  review:    "hover:bg-blue-50 text-blue-800",
+  committed: "hover:bg-purple-50 text-purple-800",
+  signed:    "hover:bg-teal-50 text-teal-800",
+  blocked:   "hover:bg-red-50 text-red-800",
+  tbd:       "hover:bg-gray-50 text-gray-600",
 }
 
 function StatusPill({
@@ -186,7 +186,7 @@ function StatusPill({
     <div ref={containerRef} className="relative inline-block">
       <button
         onClick={e => { e.stopPropagation(); setOpen(o => !o) }}
-        className={`inline-flex items-center gap-0.5 text-[10px] font-medium border rounded-full px-2 py-0.5 transition-colors cursor-pointer ${cfg.pill}`}
+        className={`inline-flex items-center gap-0.5 text-[10px] font-medium border rounded-full px-2 py-0.5 transition-colors cursor-pointer whitespace-nowrap ${cfg.pill}`}
         title="Click to change status"
       >
         {cfg.label}
@@ -217,16 +217,125 @@ function StatusPill({
 
 // ─── sub-components ────────────────────────────────────────────────────────────
 
-function OwnerChip({ owner }: { owner: "haley" | "will" | null }) {
+const OWNER_STYLES: Record<string, string> = {
+  haley: "bg-violet-100 text-violet-800 border-violet-200",
+  will:  "bg-emerald-100 text-emerald-800 border-emerald-200",
+  adl:   "bg-blue-100 text-blue-800 border-blue-200",
+}
+
+const OWNER_DISPLAY: Record<string, string> = {
+  haley: "Haley",
+  will:  "Will",
+  adl:   "ADL",
+}
+
+function OwnerChip({ owner }: { owner: string | null }) {
   if (!owner) return null
-  const styles = {
-    haley: "bg-violet-100 text-violet-800 border-violet-200",
-    will:  "bg-emerald-100 text-emerald-800 border-emerald-200",
-  }
+  const key = owner.toLowerCase()
+  const style = OWNER_STYLES[key] ?? "bg-gray-100 text-gray-700 border-gray-200"
+  const label = OWNER_DISPLAY[key] ?? owner
   return (
-    <span className={`text-[10px] font-medium rounded-full border px-1.5 py-0.5 ${styles[owner]}`}>
-      {owner === "haley" ? "Haley" : "Will"}
+    <span className={`text-[10px] font-medium rounded-full border px-1.5 py-0.5 ${style}`}>
+      {label}
     </span>
+  )
+}
+
+const OWNER_PRESETS = ["Haley", "Will", "ADL"]
+
+function EditableOwnerField({
+  value, onSave,
+}: {
+  value: string | null
+  onSave: (v: string | null) => void
+}) {
+  const [open, setOpen] = React.useState(false)
+  const [customMode, setCustomMode] = React.useState(false)
+  const [draft, setDraft] = React.useState(value ?? "")
+  const containerRef = React.useRef<HTMLDivElement>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
+  React.useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) {
+        setOpen(false); setCustomMode(false)
+      }
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [open])
+
+  React.useEffect(() => { if (customMode) inputRef.current?.focus() }, [customMode])
+
+  const pick = (v: string | null) => { onSave(v); setOpen(false); setCustomMode(false) }
+
+  const commitCustom = () => {
+    const trimmed = draft.trim()
+    onSave(trimmed || null)
+    setOpen(false); setCustomMode(false)
+  }
+
+  return (
+    <div ref={containerRef} className="relative inline-block">
+      <span
+        className="group/edit inline-flex items-center gap-1 cursor-pointer rounded px-0.5 -mx-0.5 hover:bg-violet-50 transition-colors"
+        onClick={e => { e.stopPropagation(); setOpen(o => !o); setCustomMode(false); setDraft(value ?? "") }}
+      >
+        {value
+          ? <OwnerChip owner={value} />
+          : <span className="text-[10px] text-muted-foreground italic">—</span>
+        }
+        <Pencil className="h-2.5 w-2.5 text-violet-400 opacity-0 group-hover/edit:opacity-100 flex-shrink-0 transition-opacity" />
+      </span>
+
+      {open && (
+        <div className="absolute left-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[110px]">
+          {!customMode ? (
+            <>
+              <button
+                onMouseDown={e => { e.preventDefault(); pick(null) }}
+                className={`w-full text-left text-[11px] px-3 py-1.5 cursor-pointer hover:bg-muted/50 text-muted-foreground ${!value ? "font-semibold bg-muted/30" : ""}`}
+              >—</button>
+              {OWNER_PRESETS.map(opt => {
+                const key = opt.toLowerCase()
+                const style = OWNER_STYLES[key] ?? "bg-gray-100 text-gray-700 border-gray-200"
+                const isActive = (value ?? "").toLowerCase() === key
+                return (
+                  <button
+                    key={opt}
+                    onMouseDown={e => { e.preventDefault(); pick(opt) }}
+                    className={`w-full text-left text-[11px] px-3 py-1.5 cursor-pointer hover:bg-muted/50 transition-colors ${isActive ? "font-semibold bg-muted/30" : ""}`}
+                  >
+                    <span className={`text-[10px] font-medium rounded-full border px-1.5 py-0.5 ${style}`}>{opt}</span>
+                  </button>
+                )
+              })}
+              <div className="border-t border-gray-100 mt-1 pt-1">
+                <button
+                  onMouseDown={e => { e.preventDefault(); setCustomMode(true); setDraft(value ?? "") }}
+                  className="w-full text-left text-[11px] px-3 py-1.5 cursor-pointer hover:bg-muted/50 text-muted-foreground"
+                >Other…</button>
+              </div>
+            </>
+          ) : (
+            <div className="px-2 py-1.5">
+              <input
+                ref={inputRef}
+                value={draft}
+                onChange={e => setDraft(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === "Enter") { e.preventDefault(); commitCustom() }
+                  if (e.key === "Escape") { setCustomMode(false); setDraft(value ?? "") }
+                }}
+                placeholder="Type name…"
+                className="w-full text-xs border border-violet-400 rounded px-1.5 py-1 bg-white outline-none ring-1 ring-violet-300"
+              />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -252,9 +361,413 @@ function StatusSection({ status }: { status: "ready" | "wait" | "review" | "comm
   )
 }
 
+// ─── Legal Review tab ──────────────────────────────────────────────────────────
+
+const RESELL_STATUS_CONFIG: Record<ResellAgreementStatus, { label: string; bg: string; border: string; text: string; pill: string; description: string }> = {
+  "ready-to-sign": {
+    label: "✅ Ready to sign",
+    bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-800",
+    pill: "bg-emerald-100 text-emerald-800 border-emerald-300",
+    description: "Agreement looks good — just needs signatures",
+  },
+  "sent-redlines": {
+    label: "✏️ Sent redlines",
+    bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-800",
+    pill: "bg-blue-100 text-blue-800 border-blue-300",
+    description: "We sent amendments/redlines; waiting on their response",
+  },
+  "need-to-review": {
+    label: "🔍 Need to review",
+    bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-800",
+    pill: "bg-amber-100 text-amber-800 border-amber-300",
+    description: "We have the agreement in hand; need to review it",
+  },
+  "need-reseller-agreement": {
+    label: "📋 Need reseller agreement",
+    bg: "bg-orange-50", border: "border-orange-200", text: "text-orange-800",
+    pill: "bg-orange-100 text-orange-800 border-orange-300",
+    description: "Don't have an agreement yet; need to request one",
+  },
+  "do-not-sign": {
+    label: "🚫 Do not sign",
+    bg: "bg-gray-50", border: "border-gray-200", text: "text-gray-600",
+    pill: "bg-gray-100 text-gray-600 border-gray-300",
+    description: "Decided not to proceed / deprioritized",
+  },
+}
+
+const RESELL_STATUS_ORDER: ResellAgreementStatus[] = [
+  "ready-to-sign",
+  "sent-redlines",
+  "need-to-review",
+  "need-reseller-agreement",
+  "do-not-sign",
+]
+
+const RESELL_STATUS_OPTIONS: Array<{ value: ResellAgreementStatus | ""; label: string }> = [
+  { value: "",                        label: "— Not set" },
+  { value: "ready-to-sign",           label: "✅ Ready to sign" },
+  { value: "sent-redlines",           label: "✏️ Sent redlines; waiting on response" },
+  { value: "need-to-review",          label: "🔍 Need to review" },
+  { value: "need-reseller-agreement", label: "📋 Need reseller agreement" },
+  { value: "do-not-sign",             label: "🚫 Do not sign" },
+]
+
+function ResellStatusPill({
+  value, onSave,
+}: {
+  value: ResellAgreementStatus | null
+  onSave: (v: ResellAgreementStatus | null) => void
+}) {
+  const [open, setOpen] = React.useState(false)
+  const containerRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [open])
+
+  const cfg = value ? RESELL_STATUS_CONFIG[value] : null
+
+  return (
+    <div ref={containerRef} className="relative inline-block">
+      <button
+        onClick={e => { e.stopPropagation(); setOpen(o => !o) }}
+        className={`inline-flex items-center gap-0.5 text-[10px] font-medium border rounded-full px-2 py-0.5 transition-colors cursor-pointer whitespace-nowrap ${cfg ? cfg.pill : "bg-gray-100 text-gray-500 border-gray-200 hover:bg-gray-200"}`}
+        title="Click to change legal status"
+      >
+        {cfg ? cfg.label : "— Set status"}
+        <ChevronDown className={`h-2.5 w-2.5 opacity-60 ml-0.5 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="absolute left-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[220px]">
+          {RESELL_STATUS_OPTIONS.map(o => (
+            <button
+              key={o.value}
+              onMouseDown={e => {
+                e.preventDefault(); e.stopPropagation()
+                onSave(o.value === "" ? null : o.value as ResellAgreementStatus)
+                setOpen(false)
+              }}
+              className={`w-full text-left text-[11px] px-3 py-1.5 cursor-pointer hover:bg-muted/50 transition-colors ${(value ?? "") === o.value ? "font-semibold bg-muted/30" : ""}`}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function LegalReviewTab() {
+  const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set())
+  const { overrides, setField } = useLocalOverrides()
+
+  const toggle = (id: string) => {
+    setExpandedRows(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }
+
+  const merged = (vendorId: string, base: typeof vendorCommercialData[string] | null) => {
+    const o = overrides[vendorId] ?? {}
+    return base ? { ...base, ...o } : (Object.keys(o).length ? o as unknown as typeof base : null)
+  }
+
+  const rows = vendorContacts
+    .filter(v => v.overallStatus !== "do-not-contact")
+    .map(v => {
+      const base = vendorCommercialData[v.id] ?? null
+      const comm = merged(v.id, base)
+      const statusOverride = (overrides[v.id] as CommercialOverride)?.resellAgreementStatus
+      const resellStatus = (statusOverride !== undefined ? statusOverride : comm?.resellAgreementStatus) ?? null
+      return { vendor: v, commercial: comm, resellStatus: resellStatus as ResellAgreementStatus | null }
+    })
+
+  // Count by status
+  const countBy = (s: ResellAgreementStatus) => rows.filter(r => r.resellStatus === s).length
+  const readyCount = countBy("ready-to-sign")
+  const redlinesCount = countBy("sent-redlines")
+  const reviewCount = countBy("need-to-review")
+
+  return (
+    <div className="space-y-6">
+      {/* Summary strip */}
+      <div className="grid grid-cols-5 gap-3">
+        {RESELL_STATUS_ORDER.map(s => {
+          const cfg = RESELL_STATUS_CONFIG[s]
+          const count = countBy(s)
+          return (
+            <div key={s} className={`rounded-lg border px-4 py-3 flex items-center gap-3 ${cfg.bg}`}>
+              <span className={cfg.text}><Scale className="h-4 w-4" /></span>
+              <div>
+                <div className={`text-2xl font-semibold tabular-nums ${cfg.text}`}>{count}</div>
+                <div className="text-xs text-muted-foreground leading-tight">{cfg.label}</div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Priority callout */}
+      {(readyCount + redlinesCount + reviewCount) > 0 && (
+        <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 flex items-start gap-3">
+          <AlertCircle className="h-4 w-4 text-blue-700 mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-blue-800">
+              {readyCount > 0 && `${readyCount} ready to sign · `}
+              {redlinesCount > 0 && `${redlinesCount} sent redlines (awaiting response) · `}
+              {reviewCount > 0 && `${reviewCount} need review`}
+            </p>
+            <p className="text-xs text-blue-700 mt-0.5">
+              Prioritize Committed/Negotiating vendors. Always ensure: (1) IP ownership clause, (2) indemnification language, (3) data accuracy warranty, (4) reseller/redistribution rights.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Edit hint */}
+      <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+        <Pencil className="h-3 w-3" />
+        Click the status pill to update legal status. Click a row to expand and edit notes.
+      </p>
+
+      {/* Table grouped by resell agreement status */}
+      {RESELL_STATUS_ORDER.map(status => {
+        const sectionRows = rows.filter(r => r.resellStatus === status)
+        if (sectionRows.length === 0) return null
+        const cfg = RESELL_STATUS_CONFIG[status]
+        return (
+          <div key={status} className="space-y-0">
+            {/* Section header */}
+            <div className={`px-4 py-2 text-xs font-semibold rounded-t-lg border-t border-x ${cfg.bg} ${cfg.text} ${cfg.border}`}>
+              <div className="flex items-center gap-2">
+                <span>{cfg.label}</span>
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${cfg.pill} border`}>{sectionRows.length}</span>
+                <span className="font-normal opacity-70">— {cfg.description}</span>
+              </div>
+            </div>
+            <div className="rounded-b-lg border overflow-visible">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/30">
+                    <TableHead className="w-6"></TableHead>
+                    <TableHead className="w-[160px]">Vendor</TableHead>
+                    <TableHead className="w-[170px]">Legal status</TableHead>
+                    <TableHead className="w-[120px]">Commercial status</TableHead>
+                    <TableHead>Legal notes / next step</TableHead>
+                    <TableHead className="w-[70px]">Owner</TableHead>
+                    <TableHead className="w-[80px]">Contract</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {sectionRows.map(({ vendor, commercial }) => {
+                    const expanded = expandedRows.has(vendor.id)
+                    const o = overrides[vendor.id] as CommercialOverride | undefined
+                    const resellStatus = (o?.resellAgreementStatus !== undefined ? o.resellAgreementStatus : commercial?.resellAgreementStatus) ?? null
+                    const legalNotes = (o?.legalNotes !== undefined ? o.legalNotes : commercial?.legalNotes) ?? ""
+                    const statusOverride = o?.commercialStatus
+                    const section = (statusOverride !== undefined ? statusOverride : vendor.commercialStatus) ?? "tbd"
+                    const sectionCfg = STATUS_STYLES[section as keyof typeof STATUS_STYLES] ?? STATUS_STYLES.tbd
+
+                    return (
+                      <React.Fragment key={vendor.id}>
+                        <TableRow
+                          className="cursor-pointer hover:bg-muted/20 transition-colors"
+                          onClick={() => toggle(vendor.id)}
+                        >
+                          <TableCell className="text-muted-foreground pr-0">
+                            {expanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
+                          </TableCell>
+                          <TableCell>
+                            <div className="font-semibold text-sm">{vendor.name}</div>
+                            <div className="text-xs text-muted-foreground">{vendor.category.split(" · ")[0]}</div>
+                          </TableCell>
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <ResellStatusPill
+                              value={resellStatus}
+                              onSave={v => setField(vendor.id, "resellAgreementStatus" as any, v)}
+                            />
+                          </TableCell>
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <span className={`inline-flex items-center text-[10px] font-medium border rounded-full px-2 py-0.5 whitespace-nowrap ${sectionCfg.pill}`}>
+                              {sectionCfg.label}
+                            </span>
+                          </TableCell>
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <EditableText
+                              value={legalNotes}
+                              onSave={v => setField(vendor.id, "legalNotes" as any, v)}
+                              className="text-xs leading-snug text-foreground"
+                              placeholder="Add legal notes / next step…"
+                              multiline
+                            />
+                          </TableCell>
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            <EditableOwnerField
+                              value={(o?.commercialOwner !== undefined ? o.commercialOwner : commercial?.commercialOwner) ?? null}
+                              onSave={v => setField(vendor.id, "commercialOwner", v)}
+                            />
+                          </TableCell>
+                          <TableCell onClick={e => e.stopPropagation()}>
+                            {(() => {
+                              const url = (o as any)?.contractUrl ?? commercial?.contractUrl
+                              return url ? (
+                                <a
+                                  href={url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-[11px] text-violet-600 hover:text-violet-800 hover:underline font-medium"
+                                  onClick={e => e.stopPropagation()}
+                                >
+                                  <ExternalLink className="h-3 w-3" />
+                                  Open
+                                </a>
+                              ) : (
+                                <EditableText
+                                  value=""
+                                  onSave={v => setField(vendor.id, "contractUrl" as any, v)}
+                                  className="text-[11px] text-muted-foreground"
+                                  placeholder="Paste URL…"
+                                />
+                              )
+                            })()}
+                          </TableCell>
+                        </TableRow>
+                        {expanded && (
+                          <TableRow className="hover:bg-transparent">
+                            <TableCell colSpan={7} className="p-0">
+                              <div className="px-6 py-4 border-t bg-muted/10 space-y-3">
+                                <div className="grid grid-cols-2 gap-6">
+                                  <div>
+                                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Legal notes</p>
+                                    <EditableText
+                                      value={legalNotes}
+                                      onSave={v => setField(vendor.id, "legalNotes" as any, v)}
+                                      className="text-sm text-foreground leading-relaxed block w-full"
+                                      multiline
+                                      placeholder="Add detailed legal notes…"
+                                    />
+                                  </div>
+                                  <div className="space-y-3">
+                                    <div>
+                                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Update legal status</p>
+                                      <ResellStatusPill
+                                        value={resellStatus}
+                                        onSave={v => setField(vendor.id, "resellAgreementStatus" as any, v)}
+                                      />
+                                    </div>
+                                    {vendor.contacts.length > 0 && (
+                                      <div>
+                                        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Contacts</p>
+                                        <div className="space-y-0.5">
+                                          {vendor.contacts.map((c, i) => (
+                                            <div key={i} className="flex items-center gap-1.5 text-xs text-foreground">
+                                              <User className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                                              <span>{c}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                    <div>
+                                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Pricing TL;DR</p>
+                                      <p className="text-xs text-muted-foreground">{commercial?.pricingTldr ?? "—"}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </React.Fragment>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        )
+      })}
+
+      {/* Unset vendors */}
+      {(() => {
+        const unset = rows.filter(r => r.resellStatus === null)
+        if (unset.length === 0) return null
+        return (
+          <div className="space-y-0">
+            <div className="px-4 py-2 text-xs font-semibold rounded-t-lg border-t border-x bg-gray-50 text-gray-500 border-gray-200">
+              <div className="flex items-center gap-2">
+                <span>⬜ Not yet classified</span>
+                <span className="rounded-full px-2 py-0.5 text-[10px] font-medium bg-gray-100 text-gray-500 border border-gray-200">{unset.length}</span>
+              </div>
+            </div>
+            <div className="rounded-b-lg border overflow-visible">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/30">
+                    <TableHead className="w-[160px]">Vendor</TableHead>
+                    <TableHead className="w-[170px]">Set legal status</TableHead>
+                    <TableHead>Notes</TableHead>
+                    <TableHead className="w-[70px]">Owner</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {unset.map(({ vendor, commercial }) => {
+                    const o = overrides[vendor.id] as CommercialOverride | undefined
+                    return (
+                      <TableRow key={vendor.id}>
+                        <TableCell>
+                          <div className="font-semibold text-sm">{vendor.name}</div>
+                          <div className="text-xs text-muted-foreground">{vendor.category.split(" · ")[0]}</div>
+                        </TableCell>
+                        <TableCell onClick={e => e.stopPropagation()}>
+                          <ResellStatusPill
+                            value={null}
+                            onSave={v => setField(vendor.id, "resellAgreementStatus" as any, v)}
+                          />
+                        </TableCell>
+                        <TableCell onClick={e => e.stopPropagation()}>
+                          <EditableText
+                            value={o?.legalNotes ?? commercial?.legalNotes ?? ""}
+                            onSave={v => setField(vendor.id, "legalNotes" as any, v)}
+                            className="text-xs text-foreground"
+                            placeholder="Add legal notes…"
+                            multiline
+                          />
+                        </TableCell>
+                        <TableCell onClick={e => e.stopPropagation()}>
+                          <EditableOwnerField
+                            value={(overrides[vendor.id] as any)?.commercialOwner !== undefined
+                              ? (overrides[vendor.id] as any).commercialOwner
+                              : commercial?.commercialOwner ?? null}
+                            onSave={v => setField(vendor.id, "commercialOwner", v)}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        )
+      })()}
+    </div>
+  )
+}
+
 // ─── main component ────────────────────────────────────────────────────────────
 
 export function CommercialHub() {
+  const [subTab, setSubTab] = React.useState<"overview" | "legal">("overview")
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set())
   const { overrides, setField, resetVendor, hasOverrides } = useLocalOverrides()
 
@@ -295,6 +808,38 @@ export function CommercialHub() {
 
   return (
     <div className="space-y-6">
+
+      {/* Sub-tab nav */}
+      <div className="flex gap-1 border-b">
+        <button
+          onClick={() => setSubTab("overview")}
+          className={`flex items-center gap-1.5 px-4 py-2 text-sm rounded-t transition-colors relative -mb-px ${
+            subTab === "overview"
+              ? "text-foreground font-medium border border-b-background bg-background"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <DollarSign className="h-3.5 w-3.5" />
+          Commercial Overview
+        </button>
+        <button
+          onClick={() => setSubTab("legal")}
+          className={`flex items-center gap-1.5 px-4 py-2 text-sm rounded-t transition-colors relative -mb-px ${
+            subTab === "legal"
+              ? "text-foreground font-medium border border-b-background bg-background"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Scale className="h-3.5 w-3.5" />
+          ⚖️ Legal Review
+        </button>
+      </div>
+
+      {/* Legal Review tab */}
+      {subTab === "legal" && <LegalReviewTab />}
+
+      {/* Commercial Overview tab — only render when selected */}
+      {subTab === "overview" && <>
 
       {/* Priority callout */}
       <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 flex items-start gap-3">
@@ -353,7 +898,7 @@ export function CommercialHub() {
       </p>
 
       {/* Table */}
-      <div className="rounded-lg border overflow-hidden">
+      <div className="rounded-lg border overflow-visible">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/40">
@@ -365,7 +910,7 @@ export function CommercialHub() {
               <TableHead>Next commercial step</TableHead>
               <TableHead className="w-[70px]">Owner</TableHead>
               <TableHead className="w-[130px]">Legal / Contract</TableHead>
-              <TableHead className="w-[80px]">Eval Doc</TableHead>
+              <TableHead className="w-[80px]">Contract</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -480,14 +1025,9 @@ export function CommercialHub() {
 
                           {/* owner — editable */}
                           <TableCell onClick={e => e.stopPropagation()}>
-                            <EditableSelect<"haley" | "will">
+                            <EditableOwnerField
                               value={commercial?.commercialOwner ?? null}
-                              options={[
-                                { value: "", label: "—" },
-                                { value: "haley", label: "Haley" },
-                                { value: "will",  label: "Will" },
-                              ] as any}
-                              onSave={v => setField(vendor.id, "commercialOwner", v as "haley" | "will" | null)}
+                              onSave={v => setField(vendor.id, "commercialOwner", v)}
                             />
                           </TableCell>
 
@@ -500,10 +1040,10 @@ export function CommercialHub() {
                             />
                           </TableCell>
 
-                          {/* eval doc — link or editable URL */}
+                          {/* contract — link or editable URL */}
                           <TableCell onClick={e => e.stopPropagation()}>
                             {(() => {
-                              const url = (overrides[vendor.id] as CommercialOverride)?.questionnaireUrl ?? commercial?.questionnaireUrl
+                              const url = (overrides[vendor.id] as any)?.contractUrl ?? commercial?.contractUrl
                               return url ? (
                                 <a
                                   href={url}
@@ -518,7 +1058,7 @@ export function CommercialHub() {
                               ) : (
                                 <EditableText
                                   value=""
-                                  onSave={v => setField(vendor.id, "questionnaireUrl", v)}
+                                  onSave={v => setField(vendor.id, "contractUrl" as any, v)}
                                   className="text-[11px] text-muted-foreground"
                                   placeholder="Paste URL…"
                                 />
@@ -595,7 +1135,7 @@ export function CommercialHub() {
                                   </p>
                                   {commercial?.commercialOwner && (
                                     <span className="flex-shrink-0 mt-0.5">
-                                      <OwnerChip owner={commercial.commercialOwner} />
+                                      <OwnerChip owner={commercial.commercialOwner ?? null} />
                                     </span>
                                   )}
                                   {hasOverrides(vendor.id) && (
@@ -632,8 +1172,11 @@ export function CommercialHub() {
           <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-violet-400 inline-block" /> locally edited</span>
           <span className="bg-violet-100 text-violet-800 border border-violet-200 rounded-full px-1.5 py-0.5 text-[10px] font-medium">Haley</span>
           <span className="bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-full px-1.5 py-0.5 text-[10px] font-medium">Will</span>
+          <span className="bg-blue-100 text-blue-800 border border-blue-200 rounded-full px-1.5 py-0.5 text-[10px] font-medium">ADL</span>
         </span>
       </div>
+
+      </> /* end overview tab */}
     </div>
   )
 }

@@ -28,6 +28,14 @@ export type LegalStatus = "not-started" | "nda-out" | "nda-signed" | "contract-r
 // contract-review = contract / MSA under legal review
 // contract-signed = fully executed
 
+// Reseller / OEM agreement review status (new legal review workstream)
+export type ResellAgreementStatus =
+  | "ready-to-sign"           // Agreement looks good — ready for signatures
+  | "sent-redlines"           // We sent redlines / amendments; waiting on their response
+  | "need-to-review"          // We have the agreement in hand; need to review it
+  | "need-reseller-agreement" // Don't have an agreement yet; need to get one from them
+  | "do-not-sign"             // Decided not to proceed / deprioritized
+
 export interface VendorCommercial {
   commitmentTier: CommitmentTier | null
   commitmentLabel: string            // human-readable amount, e.g. "$150K/yr"
@@ -36,14 +44,17 @@ export interface VendorCommercial {
   capability: Capability | null
   capabilityLabel?: string           // override display label if needed
   commercialNextStep: string
-  commercialOwner: "haley" | "will" | null
+  commercialOwner: string | null
   questionnaireUrl?: string          // link to Google Doc vendor questionnaire
+  contractUrl?: string               // link to latest signed/in-review contract
   annualBudgetUsd: number | null     // tentative annual spend in USD
   budgetStatus: BudgetStatus         // how firm this number is
   estimatedAnnualVolume: number | null  // rough annual enrichments/lookups at budgeted spend
   coverageNote: string               // what data this vendor provides, finance-facing
   financeNote: string                // justification / context for finance
   legalStatus: LegalStatus | null    // where are we in NDA / contract process
+  resellAgreementStatus: ResellAgreementStatus | null  // reseller/OEM agreement review status
+  legalNotes?: string                // notes for legal review tab
 }
 
 export const vendorCommercialData: Record<string, VendorCommercial> = {
@@ -59,12 +70,15 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     commercialNextStep: "Reach out to Mike Palmer — confirm no-caching constraint before pricing convo. Request data partner agreement in parallel.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1vjT5BINvN0k0yCoXp_NtVvPpUXgFXzcV/edit",
+    contractUrl: "https://docs.google.com/document/d/1s-VVOE0sH6p2hD8wsn0vEgx6oTxwvVRgwPNi6DLC0rM/edit",
     annualBudgetUsd: 10000,
     budgetStatus: "tentative",
     estimatedAnnualVolume: 250000,
     coverageNote: "Company enrichment — firmographics, funding rounds, employee count",
     financeNote: "API-only; no data caching allowed. Strong US startup coverage.",
     legalStatus: null,
+    resellAgreementStatus: "sent-redlines",
+    legalNotes: "Apr 9 legal review: highest-risk contract. Issues: no data accuracy warranty, $100K liability cap, broad customer indemnification. Austin wants to proceed; Haley to send proposed amendments. Apr 16 follow-up legal review: higher liability cap remains an issue; missing non-infringement warranty flagged as additional risk. Amendments still outstanding.",
   },
 
   upriver: {
@@ -75,12 +89,15 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "finds-enrich",
     commercialNextStep: "Reach out to Lulu Zhang — demo done 3/24, API key shared. Clear path to commercial conversation.",
     commercialOwner: "will",
+    contractUrl: "https://drive.google.com/file/d/1FkA_eCfQI4wkcMldBhyJRcOY12r4pBRc/view",
     annualBudgetUsd: null,
     budgetStatus: "excluded",
     estimatedAnnualVolume: null,
     coverageNote: "Company finder + enrichment — PAYG",
     financeNote: "PAYG — no upfront commitment; pay as we use",
     legalStatus: null,
+    resellAgreementStatus: "sent-redlines",
+    legalNotes: "Apr 7: Joe Tam sent OEM/reseller agreement. Apr 9: Legal did first pass — needs Ocean-style indemnification + explicit data rights statement. Apr 14: Haley shared notes; Joe accepted key edits. Lulu reviewing remaining edits. Apr 16: Legal review meeting (Will + ADL) completed — Upriver agreement markup formally reviewed. Awaiting Joe/Lulu's revised agreement incorporating accepted edits.",
   },
 
   adyntel: {
@@ -90,14 +107,17 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingDetail: "1 credit = 1 successful API call. 500K: $2,604 sub / $3,255 PAYG. 1M: $4,687 / $5,859. 5M: $19K / $23K. Above 5M: custom pricing, credits don't expire. ~20% cheaper on subscription vs PAYG.",
     capability: "enrich-only",
     commercialNextStep: "Reach out to Andrei — favorable pay-per-success model. Straightforward commercial conversation.",
-    commercialOwner: "will",
+    commercialOwner: "adl",
     questionnaireUrl: "https://docs.google.com/document/d/1gEKLwZfPwDLH5DdSwwD3B3fYvju98y_f/edit",
+    contractUrl: "https://docs.google.com/document/d/1DPZbI4ub_JPyj9Ar0ZQLczHDLju0ab4Wk9P1OC9dLWU/edit",
     annualBudgetUsd: null,
     budgetStatus: "excluded",
     estimatedAnnualVolume: null,
     coverageNote: "Contact + company enrichment — pay-per-success model",
     financeNote: "PAYG — charged only on successful returns; no upfront risk",
     legalStatus: null,
+    resellAgreementStatus: "need-to-review",
+    legalNotes: "Apr 14: Emils shared OEM/reseller agreement Google Doc in #partner-adyntel-unifygtm. Ready for Haley's review. Apr 22: Adyntel responded to reseller agreement — reviewing their response. Haley confirmed Adyntel purchase in team DM: 'we're def buying adyntel, I just need to select a package.'",
   },
 
   storeleads: {
@@ -106,15 +126,18 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "$25K advance = 500K domain credits @ $0.05/credit. Usage-based after. Standard redistribution deal (same as Clay, Artisan, Genesee).",
     pricingDetail: "$25K upfront = 500K domain credits @ $0.05/credit. Usage-based pricing beyond that. Standard redistribution partner deal — same structure as Clay, Artisan, Genesee. No flexibility claimed on structure. BYOK option for customers who already have Store Leads. 1-month dev access agreement pending from Ammar before full contract.",
     capability: "finds-enrich",
-    commercialNextStep: "Receive and sign 1-month dev access agreement from Ammar. Then loop in eng team for integration.",
+    commercialNextStep: "Review and sign reseller agreement sent by Ammar Apr 23 — once signed and returned, Stripe payment link follows and commercial period begins.",
     commercialOwner: "haley",
     questionnaireUrl: "https://docs.google.com/document/d/1A2C1Ox2znxGLQrwBl5Jw_PK5crh4BPjS/edit",
+    contractUrl: "https://docs.google.com/document/d/1rTv7Xoq0qi0mgrHenFfj2G3TXwMRuSNlrDAEB5j5SdQ/edit",
     annualBudgetUsd: 25000,
     budgetStatus: "tentative",
     estimatedAnnualVolume: 500000,
     coverageNote: "E-commerce domain data — Shopify/WooCommerce stores, traffic, tech stack",
     financeNote: "One-time $25K advance = 500K domain credits. Same deal structure as Clay and Artisan.",
     legalStatus: null,
+    resellAgreementStatus: "need-to-review",
+    legalNotes: "Apr 7: Haley sent IP warranty + indemnification requirements to Ammar with sample clauses. Apr 8: Ammar running it by the team. Awaiting updated dev agreement. Apr 23: Ammar sent final reseller agreement to Will + Haley — pending review and signature. Once signed, Stripe payment link to follow and commercial period starts.",
   },
 
   theirstack: {
@@ -124,13 +147,16 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingDetail: "Pure PAYG — only charged when notifications fire. 1 credit = 1 job signal; 3 credits = 1 company technographic lookup. Volume discounts above 1M credits. Public pricing up to 1M; custom beyond. Best commercial model of any vendor in the eval.",
     capability: "finds-enrich",
     commercialNextStep: "Reach out to Xoel López — strongest commercial profile: zero upfront, pure PAYG. Get trial API invite + loop in finance for pricing above 1M credits.",
-    commercialOwner: "will",
+    commercialOwner: "adl",
+    contractUrl: "https://docs.google.com/document/d/1lqJ-qMjhMAeu8B2jhkTXG4s8vXE-YiszAL6PWV1Tp0M/edit?tab=t.0",
     annualBudgetUsd: null,
     budgetStatus: "excluded",
     estimatedAnnualVolume: null,
     coverageNote: "Job posting signals + tech stack lookup — PAYG",
     financeNote: "PAYG — zero upfront, best commercial model in eval. No budget line needed.",
     legalStatus: null,
+    resellAgreementStatus: "sent-redlines",
+    legalNotes: "No agreement yet — PAYG model may not require formal reseller terms. Confirm with legal. Apr 21: Legal review with Alex (ADL) + Will in group DM. Key redlines being sent to TheirStack: §3.2 (end user responsibility — cannot accept; Unify doesn't control customer actions); §4.3 (direct audit of end users — not practicable for Unify customers); §6.2 (reseller indemnification not market; Unify will only indemnify for its own use/control, not end user actions); §6.3 (cannot accept indemnifying TheirStack for its own data collection practices). Unify requiring TheirStack to warrant legal data collection compliance and indemnify Unify for breach of that warrant. Alex confirmed 'let's move forward' — redlines being sent. Apr 22: Redlines confirmed sent — TheirStack trading comments; ball in their court per internal workstream update (#product-on-prem-data).",
   },
 
   serpstat: {
@@ -139,14 +165,17 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "$9–10K one-time for full 1.8M domain DB dump. PAYG API also available per-credit.",
     pricingDetail: "$10K one-time for full 1.8M domain dataset (all SEO/traffic fields). PAYG per-credit API also available; partner pricing doc shared post-call. Rate limits: 1 req/sec standard, 10 req/sec top tier.",
     capability: "finds-enrich-dataset",
-    commercialNextStep: "Reach out to Eugene Romanuk — $9–10K one-time dataset is a standout low-commitment option. Loop Will into email thread (Eugene flagged this specifically).",
+    commercialNextStep: "Contract signed Apr 22 — no further action needed. Loop in eng to activate integration.",
     commercialOwner: "will",
+    contractUrl: "https://docs.google.com/document/d/1bcbvcU5qG81Ko4FG7v2Bt4kB-CYo8V6RXpO7tWYWoIM/edit",
     annualBudgetUsd: null,
     budgetStatus: "excluded",
     estimatedAnnualVolume: null,
     coverageNote: "SEO + web traffic data, 1.8M domain dataset",
     financeNote: "$9-10K one-time dataset option if needed; PAYG API otherwise. No recurring commitment.",
-    legalStatus: null,
+    legalStatus: "contract-signed",
+    resellAgreementStatus: "ready-to-sign",
+    legalNotes: "Contract v3 reviewed (Apr 9). Data rights warranty ✅, no liability cap ✅, indemnification ✅. BLOCKER: final disclaimer paragraph must be struck — negates warranty protections. Apr 14: Haley asked Eugene to repurpose crawling → API credits on $2K annual plan. Ready to sign once confirmed. Apr 16: Legal review meeting (Will + ADL) completed — Serpstat agreement markup formally reviewed and confirmed ready to sign once Eugene confirms credit repurposing. Apr 21: Will flagged Serpstat included a 2nd work order for on-prem with a signature block — Will sent request to Serpstat to remove it (already sent). Agreement should be final once on-prem work order is removed. Apr 22: Contract confirmed SIGNED per internal data vendor workstream update (#product-on-prem-data).",
   },
 
   openmart: {
@@ -155,15 +184,18 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "$80K min, $0.006/credit. Lower min = higher per-credit rate. Flexible on negotiation.",
     pricingDetail: "$80K bulk minimum. $0.006/credit at that tier. Credit costs: 1 credit = company lookup, 2 credits = email, 8 credits = phone. Lower commitment likely possible at higher per-credit rate.",
     capability: "finds-enrich",
-    commercialNextStep: "Negotiate $80K min down with Kathryn — expect higher per-credit rate at lower commitment.",
-    commercialOwner: "will",
+    commercialNextStep: "Contract signed Apr 22 — no further action needed. Loop in eng to activate integration.",
+    commercialOwner: "adl",
     questionnaireUrl: "https://docs.google.com/document/d/1hExzGNYBfFPnN-qB151piiGsXEIUNiTR/edit",
+    contractUrl: "https://docs.google.com/document/d/1cKx4KIQXWPwCh-3DBdcDOjcjCpbcHu5-0_Mk5YizEoI/edit",
     annualBudgetUsd: 80000,
-    budgetStatus: "exploring",
+    budgetStatus: "signed",
     estimatedAnnualVolume: 13000000,
     coverageNote: "Company lookup + email + phone enrichment",
     financeNote: "~13M company lookups at $80K minimum. Negotiating minimum down; per-credit cost rises at lower volume.",
-    legalStatus: null,
+    legalStatus: "contract-signed",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Mar 31: NEW deal — $15K upfront. Kathryn confirming per-credit pricing. Haley to send legal agreement template to Kathryn. Also need to set up shared Slack channel. Apr 22: Contract confirmed SIGNED per internal data vendor workstream update (#product-on-prem-data).",
   },
 
   // ── 🟡 WAIT ──────────────────────────────────────────────────────────────
@@ -182,6 +214,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Company finder + enrichment — PAYG preferred",
     financeNote: "PAYG option being negotiated; no budget commitment expected",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Blocked on POC scope — need to agree scope with Alex before any agreement can be drafted.",
   },
 
   similarweb: {
@@ -198,6 +232,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Web traffic + engagement metrics per domain — competitive intelligence",
     financeNote: "Volume TBD — final price depends on # of URLs × metrics chosen. Entry tier ~10K credit-queries.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Pre-commercial — CEO hasn't approved $10K 2-month POC yet. No agreement until pricing agreed.",
   },
 
   seranking: {
@@ -206,15 +242,18 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "PAYG credit model. No upfront. Pricing call 3/31 with Alex Trusevich — open to custom partner terms.",
     pricingDetail: "Pure PAYG. AI search/LLM visibility data is more expensive than standard SEO data (key differentiator). Custom annual partnership pricing available. Pricing calculator: help.seranking.com/hc/en-us/articles/21487397355420. Come to 3/31 call with volume estimates and field priorities.",
     capability: "finds-enrich-dataset",
-    commercialNextStep: "Will: join 3/31 pricing call with Alex Trusevich — come with volume estimates and field priorities. No upfront commitment required.",
-    commercialOwner: "will",
+    commercialNextStep: "Apr 28 refresher call done (transcript unavailable). Follow up on OEM agreement status with Alex Trusevich. Send sample indemnification language. Confirm POC structure (10M credits = $620/mo × 3 months).",
+    commercialOwner: "adl",
     questionnaireUrl: "https://docs.google.com/document/d/1cQ_IxMQSe7fRc3kHjAqr9tZSLCFbkwSh/edit",
+    contractUrl: "https://docs.google.com/document/d/1T6wg9aSUmTEXJGBOJDnjZ4cUJR1bliDNXsyB8V_D0EM/edit",
     annualBudgetUsd: null,
     budgetStatus: "excluded",
     estimatedAnnualVolume: null,
     coverageNote: "SEO data + AI/LLM brand visibility tracking — PAYG",
     financeNote: "PAYG — no upfront. Unique differentiator: AI/LLM brand visibility data.",
     legalStatus: null,
+    resellAgreementStatus: "need-to-review",
+    legalNotes: "Apr 9 call: SE Ranking drafting custom OEM agreement with mutual indemnification language (1-2 weeks). Haley to send sample indemnification language. Apr 28: Refresher call done with Alex Trusevich + Guifre Ballester (transcript unavailable — follow up). OEM agreement drafting reportedly still in progress.",
   },
 
   cbinsights: {
@@ -232,15 +271,17 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Mosaic scores, funding intelligence, company health signals",
     financeNote: "Awaiting formal proposal. 6-fig license is a significant line item; evaluate vs. Crunchbase for overlap.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Waiting for formal proposal from Rawley Dawson before any legal work can start. CEO approval required for all deals.",
   },
 
   dealroom: {
     commitmentTier: "medium",
     commitmentLabel: "€12K/yr",
-    pricingTldr: "€12K/yr entry → €45K/yr unlimited. Best price point in the fundraising category. 2-week trial API available.",
-    pricingDetail: "Annual license, tiered by API call volume. €12K/yr entry (limited calls) → €45K/yr unlimited OEM. Apollo uses the unlimited OEM model. €12K entry is the right starting point — gives access to evaluate before scaling. Questionnaire being filled by Kjeld + Miguel as of 3/27.",
+    pricingTldr: "€12K/yr entry → €45K/yr unlimited. Best price point in the fundraising category. Apr 16: 3-month POC proposed at ~$12K/year for 50K calls.",
+    pricingDetail: "Annual license, tiered by API call volume. €12K/yr entry (limited calls) → €45K/yr unlimited OEM. Apollo uses the unlimited OEM model. €12K entry is the right starting point — gives access to evaluate before scaling. Questionnaire being filled by Kjeld + Miguel as of 3/27. Apr 16 catch-up call: 3-month POC proposed at ~$12K/year for 50K calls. Engineer capacity is the current blocker to move forward.",
     capability: "finds-enrich",
-    commercialNextStep: "Will: review questionnaire responses from Kjeld/Miguel, then move to commercial conversation. €12K entry is the best starting point vs. Crunchbase ($150K) or PitchBook (~$160K).",
+    commercialNextStep: "Loop in engineer to evaluate POC — engineer capacity is the blocker identified on Apr 16 call. Then finalize 3-month POC at ~$12K/year for 50K calls.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1XfJYV4yaO-IBs2LQwKcXcjUoxfQ2TV-L3EwgkvNXXjo/edit",
     annualBudgetUsd: 13000,
@@ -249,6 +290,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Fundraising data — rounds, investors, valuations, European startup coverage",
     financeNote: "Replaces Crunchbase ($150K) at ~12x lower cost for overlapping signals. Entry tier covers our expected call volume.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Questionnaire filling / commercial terms TBD. No reseller agreement yet — get one once commercial terms confirmed.",
   },
 
   theswarm: {
@@ -266,6 +309,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Contact enrichment, professional network graph",
     financeNote: "PAYG partner tier; no upfront. Budget line only needed if we commit to flat file.",
     legalStatus: null,
+    resellAgreementStatus: "need-to-review",
+    legalNotes: "Apr 2: Grace approved 90-day paid pilot ($3K/450K credits). PandaDoc Service Order Form sent — awaiting Haley's signature.",
   },
 
   adbeat: {
@@ -282,6 +327,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Contact enrichment — Clay-style credit model",
     financeNote: "Pricing TBD pending vendor internal approval. No budget line until terms received.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "VP Ops approval needed before any terms can be offered. No agreement until pricing confirmed.",
   },
 
   beauhurst: {
@@ -298,6 +345,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "UK + German private company data — 5M+ companies from Companies House filings",
     financeNote: "Only vendor with deep UK private company data. Niche but high-value for EU coverage gap.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "CEO approval needed before API/reseller pricing can be offered. Louis Scott following up.",
   },
 
   // ── 🔴 BLOCKED / DEPRIORITIZED ───────────────────────────────────────────
@@ -316,6 +365,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Global company data — funding rounds, investors, financials",
     financeNote: "Deprioritized. $150K non-refundable advance. Dealroom covers ~80% of use case at 12x lower cost.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 9 PAYG/Advance sync done. Crunchbase to share reseller agreement + data dictionary post-sync. Granola Apr 16: $0.15/enrichment during POC, $50–100K Year 1 projection; advance payment structure discussion ongoing. Still awaiting reseller agreement from Crunchbase.",
   },
 
   pitchbook: {
@@ -332,6 +383,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Venture + PE data — deep fundraising and private market intelligence",
     financeNote: "Deprioritized. Seat-based ~$160K/yr. Does not justify 3–13x premium over Dealroom for overlapping signals.",
     legalStatus: null,
+    resellAgreementStatus: "do-not-sign",
+    legalNotes: "Deprioritized. 3–13× premium over Dealroom for overlapping signals not justified.",
   },
 
   spade: {
@@ -349,6 +402,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Transaction + merchant data enrichment — fintech-specific",
     financeNote: "6-fig OEM floor needs significant negotiation. Niche fintech use case. Awaiting quote.",
     legalStatus: "nda-signed",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "NDA signed by Will 3/26. Awaiting OEM agreement / quote from Oban. 6-fig floor needs significant negotiation down.",
   },
 
   "reodev": {
@@ -365,6 +420,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Company enrichment — terms not yet discussed",
     financeNote: "No commercial terms yet. Needs formal proposal before re-engaging.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Blocked — need to send formal partnership proposal before any agreement can be discussed.",
   },
 
   explorium: {
@@ -382,6 +439,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Company enrichment + technographics + intent signals (Bombora partnership)",
     financeNote: "Only vendor with Bombora intent data. 6M credits = ~6M company enrichments or ~1.2M contact enrichments at min tier.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Pricing options received (API-only $50-60K/yr). Need to respond to Roy + get reseller agreement drafted.",
   },
 
   crustdata: {
@@ -398,6 +457,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Company + contact enrichment, bulk dataset option",
     financeNote: "Deprioritized for API use; better suited for bulk dataset evaluation. $4K/mo = 40K enrichments/mo.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Deprioritized for now. No agreement needed until evaluation scope is confirmed.",
   },
 
   retentiondotcom: {
@@ -414,6 +475,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Website visitor de-anonymization",
     financeNote: "Deprioritized. Niche use case (visitor ID only). PAYG if ever needed.",
     legalStatus: null,
+    resellAgreementStatus: "do-not-sign",
+    legalNotes: "Deprioritized — niche visitor de-anonymization only. Skip.",
   },
 
   // ── TBD / UPCOMING ────────────────────────────────────────────────────────
@@ -433,22 +496,27 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "European company data — 80M+ companies across EU",
     financeNote: "Entry tier ~60K enrichments for €3.5K. Scales with usage. Best EU coverage option evaluated.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Trial not started yet. Get agreement once trial is evaluated.",
   },
 
   buyercaddy: {
-    commitmentTier: "high",
-    commitmentLabel: "$50K min",
-    pricingTldr: "$50K min partnership = few million credits. 1cr/firmographic, 2cr/technographic, 5cr/contact. 50% off website rates. 180K products tracked. 6-figure annual target.",
-    pricingDetail: "Partnership deal minimum: $50K (few million credits). Target annual: 6-figures. Credit tiers: 1cr firmographic, 2cr technographic, 5cr contact/social. 50% discount from public website rates. Can combine bulk data (S3/Snowflake monthly distribution) + API credits + contact enrichment. 180K IT products, 92K vendors, 31.2M+ companies across 55 countries. MCP server available. AI-native stack, lean 10-engineer team — claims most competitive partnership pricing in market.",
+    commitmentTier: "medium",
+    commitmentLabel: "$12K–$36K",
+    pricingTldr: "Formal proposals confirmed Apr 3: $12K=250K credits (starter) or $36K=2M credits (growth). 1cr/firmographic, 2cr/technographic, 5cr/contact. 180K IT products tracked.",
+    pricingDetail: "Two confirmed pricing tiers from Mitch Warren (Apr 3 email): Starter: $12,000 = 250K credits; Growth: $36,000 = 2M credits. Credit tiers: 1cr firmographic, 2cr technographic, 5cr contact/social. Can combine bulk data (S3/Snowflake monthly distribution) + API credits + contact enrichment. 180K IT products, 92K vendors, 31.2M+ companies across 55 countries. MCP server available. 50% discount from public website rates. Apr 8: Mitch built out starter plan and sent DocuSign directly ($12K/250K credits). Apr 16: Haley replied — stuck at legal review due to bandwidth; ball in BuyerCaddy's court.",
     capability: "finds-enrich-dataset",
-    commercialNextStep: "Engage Craig/Mitch via #buyercaddy-unify Slack — get trial API access and evaluate vs HG Insights for technographic coverage. Lock in partnership structure.",
-    commercialOwner: "haley",
-    annualBudgetUsd: 50000,
+    commercialNextStep: "Review and sign the $12K starter plan DocuSign from Mitch (sent Apr 8). Pending legal bandwidth — Haley replied Apr 16 citing constraints. Once ready, sign DocuSign and engage vs HG Insights for technographic coverage decision.",
+    commercialOwner: "adl",
+    contractUrl: "https://docs.google.com/document/d/1ZJcVg2SlfNlmn5ZDcXttVapSx_bv6ykd-E5plDNpktA/edit",
+    annualBudgetUsd: 12000,
     budgetStatus: "tentative",
-    estimatedAnnualVolume: 2000000,
+    estimatedAnnualVolume: 250000,
     coverageNote: "Technographics — 180K IT products tracked, tech stack, IT spend, churn signals",
-    financeNote: "Primary alternative to HG Insights for tech stack data. Founded by ex-HG Insights CEO. ~2M enrichments at min tier.",
+    financeNote: "Primary alternative to HG Insights for tech stack data. Founded by ex-HG Insights CEO. Starter: $12K=250K enrichments, Growth: $36K=2M enrichments.",
     legalStatus: null,
+    resellAgreementStatus: "need-to-review",
+    legalNotes: "Apr 8: Mitch sent DocuSign for $12K/250K credits starter plan — pending Haley's signature. Apr 16: Haley told Mitch stuck at legal review due to bandwidth. DocuSign waiting for review and signature.",
   },
 
   builtwith: {
@@ -459,12 +527,15 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     capability: "enrich-only",
     commercialNextStep: "Evaluate Domain API pricing tiers for our expected volume vs. BuyerCaddy.",
     commercialOwner: null,
+    contractUrl: "https://builtwith.com/terms",
     annualBudgetUsd: null,
     budgetStatus: "excluded",
     estimatedAnnualVolume: null,
     coverageNote: "Tech stack data — public Domain API",
     financeNote: "PAYG — standard public API, no partnership needed. No budget line required.",
     legalStatus: null,
+    resellAgreementStatus: "need-to-review",
+    legalNotes: "No reseller agreement needed — standard public API, no special partnership required. Apr 21: Alex (ADL) flagged in legal review that BuiltWith's agreement indemnifies Unify 'by reason of Builtwith's breach of its data rights warranties' but BuiltWith makes no actual data rights warranties anywhere in the agreement — the indemnification clause is legally meaningless/hollow. Agreement requires revision before any signing. Apr 22: BuiltWith agreement approved internally per workstream update — still need vendor to revise the hollow indemnification clause before final signature.",
   },
 
   dealfront: {
@@ -480,21 +551,134 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "European B2B data — company + contact",
     financeNote: "Pricing TBD post-intro call. No budget line yet.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Intro call done. Pricing TBD. No agreement yet.",
   },
 
   hginsights: {
     commitmentTier: null,
     commitmentLabel: "TBD",
-    pricingTldr: "Intro call Mar 24 — details TBD from call notes.",
+    pricingTldr: "Intro call Mar 24 — details TBD from call notes. Apr 15 meeting done with Ted West (Ted@springdb.io); Katrina OOO. NDA being sent. Follow-up Apr 21 noon-12:45pm PDT with Katrina Cho + David Crossman.",
     capability: "enrich-only",
-    commercialNextStep: "Fill in pricing + structure from call notes. Send follow-up to Ed Field.",
+    commercialNextStep: "Scope data validation exercise with Ted + David Crossman. HG expects 2-year ramped agreement (Clay model). POC first, then ramp to multi-year min commit. Key: call firmographic + technographic together for 88–90% fill rate vs 60% with separate providers. Fix NDA effective date (2025 → 2026). Get formal pricing from Katrina. Competing with BuyerCaddy for tech stack coverage.",
     commercialOwner: "haley",
     annualBudgetUsd: null,
     budgetStatus: "exploring",
     estimatedAnnualVolume: null,
     coverageNote: "Technographics — tech intelligence, IT spend data",
     financeNote: "Pricing TBD. Competing with BuyerCaddy for tech stack coverage — only one likely to be signed.",
-    legalStatus: null,
+    legalStatus: "nda-out",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 15: Meeting with Ted West (ted@springdb.io) — Katrina Cho was OOO. Ted provided Unify context to HG Insights. NDA being sent (confirmed by Ted on Apr 15 call). Apr 21: Will flagged NDA effective date shows 2025 — Haley to ask HG Insights to update to correct 2026 date. Apr 21: Solution Deep Dive call done with Katrina Cho + David Crossman. NDA may not be fully executed (Ted mentioned 'I don't know if the NDA has gone over' on the call). HG Insights expects 2-year ramped agreement (Clay model; Clay now nearly 7-figure ARR). POC + ramp structure needed. Data fabric in scope: technographics + firmographics + corporate hierarchy + TrustRadius intent. No reseller agreement until NDA signed and pricing confirmed. Apr 21: Haley confirmed NDA is ready to sign and asked Ted to send DocuSign to connor@unifygtm.com. Ted replied: Katrina sending NDA to Connor via DocuSign before EOD Apr 21. NDA DocuSign in Connor's inbox — pending Connor's signature. Also need to flag 2025→2026 effective date correction once signed.",
+  },
+
+  // ── CONTACT VENDOR COMMERCIAL NOTES ────────────────────────────────────────
+
+  upcell: {
+    commitmentTier: "high",
+    commitmentLabel: "$100K/yr min",
+    pricingTldr: "$100K annual minimum commitment. US mobile enrichment focus, 60–70% match rate. Haley to check with finance on feasibility.",
+    pricingDetail: "US mobile enrichment specialist. $100K minimum annual commitment. 60–70% match rate. High minimum is the key risk factor — needs finance sign-off before proceeding further.",
+    capability: "enrich-only",
+    commercialNextStep: "Check with finance on $100K minimum feasibility before progressing. High minimum relative to expected mobile enrichment volume.",
+    commercialOwner: "haley",
+    annualBudgetUsd: 100000,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "US mobile phone enrichment — 60–70% match rate",
+    financeNote: "$100K minimum is above typical contact vendor spend. Needs explicit finance approval before committing.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 16: Meeting done with Mark Bedard (mark.bedard@upcell.io). $100K minimum commitment flagged. No legal work started — pending finance feasibility check.",
+  },
+
+  leadiq: {
+    commitmentTier: null,
+    commitmentLabel: "TBD",
+    pricingTldr: "OEM/partnership structure TBD. Key blocker: Clay integration appears BYOA-only, which may kill partnership viability. BYOA models are deprioritized at Unify.",
+    pricingDetail: "Partnership model similar to Clay's integration — requires separate legal/OEM agreement (not standard terms). Does NOT partner with Apollo (direct competitor). Apr 17: Nabil (Head of Partnerships) call confirmed Clay integration is BYOA-only — major blocker. Apr 20 follow-up with Elena + Nabeel Ahmed to clarify.",
+    capability: "enrich-only",
+    commercialNextStep: "Await Elena's intro email to connect Haley directly with Nabeel Ahmed (Apr 20 follow-up was cancelled). Confirm whether non-BYOA OEM path is available. If BYOA-only, deprioritize.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Email + phone contact enrichment — 750M professionals",
+    financeNote: "No commercial terms yet. BYOA blocker may make this vendor non-viable for Unify's model.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 15: Meeting with Elena — separate OEM agreement required (not standard terms). Apr 17: Nabil (Head of Partnerships) call done — BYOA concern surfaced. Apr 20: Elena cancelled the follow-up meeting with Nabeel Ahmed — said she will send an intro email for Haley to coordinate directly with Nabeel. No legal work until partnership model confirmed viable.",
+  },
+
+  rocketreach: {
+    commitmentTier: "none",
+    commitmentLabel: "Min $2,900/yr",
+    pricingTldr: "Min $2,900/yr = 200K credits (100K emails or 33K phones). $6K/yr = 500K credits; $10K/yr = 1M credits. Email=2cr, phone=6cr.",
+    pricingDetail: "Annual commitment, credits provisioned upfront. 200K credits = $2,900/yr; 500K = $6,000/yr (biannual payments); 1M = $10,000/yr (quarterly payments). Email costs 2 credits (~$0.029/email at base tier), phone costs 6 credits (~$0.087/phone). White label OK — no attribution required. DPA standard. Legal redlines/questionnaires only for contracts ≥$6K.",
+    capability: "enrich-only",
+    commercialNextStep: "Send questionnaire pre-fill to Emily Gleason. Send Unify's standard DPA. After trial evaluation (1000 credits to Ross, valid May 23), target $6K/yr (500K credits) if coverage is strong.",
+    commercialOwner: "haley",
+    annualBudgetUsd: 6000,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: 500000,
+    coverageNote: "Phone + email enrichment — 750M professionals, 65M companies. Real-time email validation included. Targeting ~30–40% coverage gap fill.",
+    financeNote: "Min $2,900/yr entry tier; $6K/yr likely right for supplemental waterfall coverage. No upfront beyond annual commit. White label OK.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 21: Pricing call done with Emily Gleason. White label confirmed OK. DPA: Haley flagged Unify has its own DPA for personal data vendors; Emily said 'should be fine.' Legal redlines only for contracts ≥$6K. No agreement drafted yet — pending trial evaluation.",
+  },
+
+  lusha: {
+    commitmentTier: null,
+    commitmentLabel: "TBD",
+    pricingTldr: "Partnership model TBD — Lusha currently limits partners to API access only (no data resell). Awaiting partnerships team response by Thu Apr 24 on whether waterfall API use is permitted.",
+    pricingDetail: "Apr 17: Intro call with Nick Colson. Partnership structure needs manager + Israeli director approval. Apr 21: Nick clarified Lusha's current model is API access only — no data resell to end users. Key question: does using Lusha API in Unify's waterfall (enrichment for customers) count as 'reselling'? Nick escalated to partnerships team; response expected Thu Apr 24.",
+    capability: "enrich-only",
+    commercialNextStep: "Apr 29 follow-up meeting with Nick Colson + Miri Tamir (partnerships). Confirm if waterfall API use is permitted. If blocked (like LeadIQ BYOA), deprioritize. If permitted, get pricing and structure.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Contact enrichment — email + phone. Large B2B database. Partnership model unclear.",
+    financeNote: "No commercial terms yet. Partnership viability gated on Thu Apr 24 response from Lusha partnerships team.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 21: Haley clarified Unify's use case (waterfall API, not traditional resell). Nick sent to partnerships team. No legal work until partnership model confirmed viable. Apr 25: Thu Apr 24 deadline for partnerships team response has passed without reply — follow up with Nick Colson needed. Apr 28: New follow-up meeting booked for Apr 29 9am PDT — Nick Colson + Miri Tamir + Orit Shilvock (Lusha partnerships) accepted invite. Partnerships team now directly engaged.",
+  },
+
+  swordfish: {
+    commitmentTier: "low",
+    commitmentLabel: "Min $1K/mo",
+    pricingTldr: "Min $1K/mo (~10K contacts). Custom pricing for 10K–200K contacts/month range TBD from Drew. Reseller pricing ~4x standard.",
+    pricingDetail: "Credit-based model. Mobile phone = 15 credits, email = 5 credits. Minimum $1,000/month for ~10,000 contacts. Custom pricing for higher volumes (Drew Clark to send range for 10K–200K contacts/month). Reseller/OEM pricing is ~4x the standard pricing. Data feed: $85K/yr (800M people globally), $65K/yr (65M companies). Self-serve starter/grow/pro plans also available in app.",
+    capability: "enrich-only",
+    commercialNextStep: "Await Drew's pricing range for 10K–200K contacts/month. Set up Slack channel, send questionnaire, let engineers test trial next week. Evaluate reseller vs. standard model — reseller is 4x, which may be prohibitive.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Personal email (#1 on Clay for quality) + mobile phone numbers (#1 on Clay for quality). NOT work email focused. ~100M mobiles; 200-400M more releasing soon.",
+    financeNote: "Pricing TBD from Drew. Min ~$12K/yr at base tier. Reseller model ~4x standard. Strongest for personal email + mobile coverage gap; NOT for work email.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 22: Intro call done with Drew Clark (VP, London-based). No legal work started — pending trial evaluation and pricing confirmation from Drew.",
+  },
+
+  trigify: {
+    commitmentTier: "none",
+    commitmentLabel: "PAYG (no minimum)",
+    pricingTldr: "PAYG: $0.012/credit, no minimum. Annual commitment tiers also available.",
+    capability: "enrich-only",
+    commercialNextStep: "Await Trigify's response to our comments on their OEM/reseller agreement.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Social signal intelligence — LinkedIn, X, Reddit, YouTube, podcasts, TikTok, GitHub, HackerNews engagement data",
+    financeNote: "PAYG with no minimum — low commitment risk. Social Topics endpoint used by Clay. Credits at $0.012 each.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "sent-redlines",
+    legalNotes: "Apr 22: Comments sent on Trigify OEM/reseller agreement per internal workstream update (#product-on-prem-data) — trading redlines.",
   },
 
   semrush: {
@@ -511,6 +695,98 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Web traffic, backlinks, AI/LLM brand visibility per domain",
     financeNote: "6-fig minimum TBD; exact amount depends on API bundle selected. Evaluating vs. SE Ranking (PAYG) for cost efficiency.",
     legalStatus: null,
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Pre-commercial. Need finance sign-off on 6-fig minimum, then exec summary, then proposal. No agreement until that process is complete.",
+  },
+
+  wattdata: {
+    commitmentTier: "none",
+    commitmentLabel: "TBD",
+    pricingTldr: "No pricing known yet. In trial/evaluation — Slack channel #unify-watt-data active. Contacts: Jared Parker (jared@wattdata.ai), John (john@wattdata.ai).",
+    pricingDetail: "Pre-commercial. Trial access in progress as of Apr 27 2026. Watt Data offers agent-native data infrastructure (15T relationships). No pricing proposals received yet.",
+    capability: "finds-enrich",
+    commercialNextStep: "Follow up on Apr 27 meeting with Jared Parker (transcript unavailable). Capture use case, coverage scope, and pricing structure. Kunal to continue testing.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Agent-native data infrastructure — people, company, intent signals",
+    financeNote: "No budget allocated. Pre-commercial trial only.",
+    legalStatus: "not-started",
+    resellAgreementStatus: null,
+    legalNotes: "Apr 27: Trial started. Meeting with Jared Parker done Apr 27 (calendar confirmed Jared accepted; John needsAction). Transcript unavailable — follow up. No legal docs exchanged yet.",
+  },
+
+  minerva: {
+    commitmentTier: "none",
+    commitmentLabel: "TBD",
+    pricingTldr: "No pricing known yet. Intro meeting booked Apr 28 9–9:30am PDT. Contacts: Jackson Engles (jackson@minerva.io), Daniel Saedi (daniel@minerva.io).",
+    pricingDetail: "Pre-commercial. Intro/demo call scheduled Apr 28 2026. Category and pricing model TBD post-meeting.",
+    capability: "enrich-only",
+    commercialNextStep: "Apr 28 intro call done (transcript unavailable). Follow up with Jackson Engles for meeting recap, use case details, and pricing model.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "TBD — pending Apr 28 intro call",
+    financeNote: "No budget allocated. Pre-commercial.",
+    legalStatus: "not-started",
+    resellAgreementStatus: null,
+    legalNotes: "Apr 27: Added as new vendor. Apr 28: Intro meeting done with Jackson Engles (jackson@minerva.io) + Daniel Saedi (daniel@minerva.io). Transcript unavailable — follow up for capability, pricing model, and coverage notes. No legal docs yet.",
+  },
+
+  icypeas: {
+    commitmentTier: "none",
+    commitmentLabel: "No commit / PAYG",
+    pricingTldr: "$500/100K email searches; volume discounts available. Email-only enrichment (no phone). Used by Apollo, Lemlist, Instantly as first waterfall position.",
+    pricingDetail: "$500 per 100K searches. Volume discounts available at higher tiers. Charged only for email enrichment — no phone data. 100M emails/month API capacity. Weaker in Spanish-speaking & Asian countries. MCP server available for Claude integration.",
+    capability: "enrich-only",
+    commercialNextStep: "Test 1K contacts via bulk search API using 10K trial credits (Pierre adding post-meeting). CTO increasing rate limits. Email Pierre questions as they arise. Evaluate coverage vs. existing waterfall providers.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Email enrichment only — no phone. Used by Apollo/Lemlist/Instantly. Weaker in Spanish-speaking & Asian countries.",
+    financeNote: "PAYG at $500/100K searches. No upfront commitment. Budget line only needed if trial coverage is strong enough to warrant waterfall inclusion.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 27: Meeting done with Pierre-Baptiste Landoin (CEO). 10K trial credits being added. No legal docs exchanged yet. Pierre noted data retention policy changes effective May 20 — review before any agreement.",
+  },
+
+  zeliq: {
+    commitmentTier: "medium",
+    commitmentLabel: "~$23K min (1M credits)",
+    pricingTldr: "€0.02/credit. Phone=10cr (€0.20/lookup), email=1cr (€0.02/lookup). Min 1M credits (~$23K). POC: 250K credits. Credits don't expire.",
+    pricingDetail: "Pre-pay credit model. 1M credits = ~$23K. Phone numbers cost 10 credits per lookup (€0.20); emails cost 1 credit (€0.02). POC batch of 250K credits available for testing, then top-up at 1M. Credits never expire. Positioned as waterfall endpoint similar to ZoomInfo but cheaper. Not a direct data provider — aggregates from sources.",
+    capability: "enrich-only",
+    commercialNextStep: "Accept Vincent's POC offer: start with 250K credit test batch. Evaluate EU phone/email coverage vs. other waterfall vendors. Vincent will send detailed pricing confirmation via email.",
+    commercialOwner: "haley",
+    annualBudgetUsd: 23000,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Phone + email enrichment. Strong EU/Oceania/NA coverage (France, UK, US top regions). 60–65% phone, 80–85% email in top regions. Comparable to ZoomInfo; better European coverage than US-based providers.",
+    financeNote: "Pre-pay model. Min ~$23K for 1M credits. POC at 250K credits first. Partnership revenue <10% of their business — not their core product.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 28: Intro meeting done with Vincent Deloffre (Head of Revenue). No legal docs exchanged yet. Clay partnership uses 4M credit packages — similar structure expected.",
+  },
+
+  snovio: {
+    commitmentTier: "none",
+    commitmentLabel: "Custom Ultra package",
+    pricingTldr: "Custom Ultra package from 200K credits. 1 credit per valid email only (no charge for invalid). Trial of ~1K contacts starting Apr 27.",
+    pricingDetail: "Credit-based model. Custom Ultra package available at 200K+ credits with rollover. Only charged on valid email returns. Sub-API key per customer ID (feasibility being checked with engineering). Primarily email enrichment; also has phone coverage.",
+    capability: "enrich-only",
+    commercialNextStep: "Confirm trial credits loaded (Gabrielle to set up today Apr 27). Test ~1K contacts for phone + email enrichment over 2-3 weeks. Send vendor questionnaire. Set up shared Slack channel.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Email + phone enrichment. Targeting ~30% coverage not covered by existing two providers.",
+    financeNote: "PAYG credit model with rollover. No upfront beyond commit tier. Budget line TBD pending trial evaluation.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Apr 14: First meeting with Gabrielle (Pg). Apr 27: Email exchange — trial starting today. No legal docs exchanged yet.",
   },
 
 }

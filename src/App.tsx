@@ -64,6 +64,8 @@ import { summaryData, tierData, burstData, runLog, type Status } from "./data"
 import { VendorHub } from "@/components/VendorHub"
 import { CommercialHub } from "@/components/CommercialHub"
 import { BudgetHub } from "@/components/BudgetHub"
+import { ContactVendorHub } from "@/components/ContactVendorHub"
+import { EvalResultsHub } from "@/components/EvalResultsHub"
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -327,7 +329,7 @@ const VENDOR_STATUS: [string, Status][] = [
   ["HG Insights","pending"],
 ]
 
-type AppView = "latency" | "followups" | "commercial" | "budget"
+type AppView = "latency" | "followups" | "commercial" | "budget" | "contact-vendors" | "eval-results"
 
 export default function App() {
   const [view, setView] = React.useState<AppView>("commercial")
@@ -369,6 +371,26 @@ export default function App() {
               }`}
             >
               📊 Budget
+            </button>
+            <button
+              onClick={() => setView("contact-vendors")}
+              className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${
+                view === "contact-vendors"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              📞 Contact Vendors
+            </button>
+            <button
+              onClick={() => setView("eval-results")}
+              className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${
+                view === "eval-results"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              🧪 Eval Results
             </button>
             <button
               onClick={() => setView("latency")}
@@ -423,6 +445,40 @@ export default function App() {
               </p>
             </div>
             <BudgetHub />
+          </>
+        )}
+
+        {/* ── Contact Vendors view ──────────────────────────────────────────── */}
+        {view === "contact-vendors" && (
+          <>
+            <div className="mb-6">
+              <h1 className="text-2xl font-semibold tracking-tight mb-1">📞 Contact Vendor Eval</h1>
+              <p className="text-sm text-muted-foreground max-w-2xl">
+                Phone and email enrichment vendors under evaluation. Track meeting status, questionnaire progress,
+                API keys + trial credits, pricing, and rate limits for each vendor.
+              </p>
+              <p className="text-xs text-muted-foreground mt-1 flex items-center gap-3">
+                <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-orange-400" /> Phone — phone number enrichment only</span>
+                <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-blue-400" /> Email — email enrichment only</span>
+                <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-purple-400" /> Both — phone + email enrichment</span>
+              </p>
+            </div>
+            <ContactVendorHub />
+          </>
+        )}
+
+        {/* ── Eval Results view ─────────────────────────────────────────────── */}
+        {view === "eval-results" && (
+          <>
+            <div className="mb-6">
+              <h1 className="text-2xl font-semibold tracking-tight mb-1">🧪 Contact Vendor Eval Results</h1>
+              <p className="text-sm text-muted-foreground max-w-2xl">
+                Head-to-head comparison of all evaluated contact enrichment vendors against the 1,000-contact
+                LinkedIn-slug dataset. Includes email coverage, phone coverage, waterfall rescue rates, recall,
+                and precision. Vendors requiring name+domain are capped at 142 eligible contacts.
+              </p>
+            </div>
+            <EvalResultsHub />
           </>
         )}
 

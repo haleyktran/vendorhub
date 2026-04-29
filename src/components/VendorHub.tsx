@@ -32,6 +32,92 @@ import {
   User,
 } from "lucide-react"
 
+// ─── persistence ──────────────────────────────────────────────────────────────
+
+const STORAGE_KEY = "vendor-hub-followups-v1"
+const API_URL = "/api/vendor-overrides"
+const POLL_MS = 8000
+
+type FollowupState = {
+  actionState: Record<string, boolean>
+  ownerState: Record<string, string>
+}
+
+function loadLocal(): FollowupState {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}") } catch { return { actionState: {}, ownerState: {} } }
+}
+function saveLocal(s: FollowupState) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s))
+}
+async function fetchRemote(): Promise<FollowupState> {
+  const res = await fetch(API_URL)
+  if (!res.ok) throw new Error("fetch failed")
+  return res.json()
+}
+async function pushRemote(s: FollowupState) {
+  await fetch(API_URL, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(s) })
+}
+
+function useFollowupState() {
+  const [state, setState] = React.useState<FollowupState>(() => {
+    const l = loadLocal()
+    return { actionState: l.actionState ?? {}, ownerState: l.ownerState ?? {} }
+  })
+
+  const apply = React.useCallback((next: FollowupState) => {
+    const safe = { actionState: next.actionState ?? {}, ownerState: next.ownerState ?? {} }
+    saveLocal(safe)
+    setState(safe)
+  }, [])
+
+  React.useEffect(() => {
+    let cancelled = false
+    let initialised = false
+    const poll = async () => {
+      try {
+        const remote = await fetchRemote()
+        if (cancelled) return
+        if (!initialised) {
+          initialised = true
+          const local = loadLocal()
+          const localHasData = Object.keys(local.actionState ?? {}).length + Object.keys(local.ownerState ?? {}).length > 0
+          const remoteEmpty = Object.keys(remote.actionState ?? {}).length + Object.keys(remote.ownerState ?? {}).length === 0
+          if (localHasData && remoteEmpty) {
+            await pushRemote(local)
+          } else {
+            apply(remote)
+          }
+        } else {
+          apply(remote)
+        }
+      } catch { /* keep local */ }
+    }
+    poll()
+    const id = setInterval(poll, POLL_MS)
+    return () => { cancelled = true; clearInterval(id) }
+  }, [apply])
+
+  const setAction = React.useCallback((key: string, value: boolean) => {
+    setState(prev => {
+      const next = { ...prev, actionState: { ...prev.actionState, [key]: value } }
+      saveLocal(next)
+      pushRemote(next)
+      return next
+    })
+  }, [])
+
+  const setOwner = React.useCallback((key: string, value: string) => {
+    setState(prev => {
+      const next = { ...prev, ownerState: { ...prev.ownerState, [key]: value } }
+      saveLocal(next)
+      pushRemote(next)
+      return next
+    })
+  }, [])
+
+  return { actionState: state.actionState, ownerState: state.ownerState, setAction, setOwner }
+}
+
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
 function daysSince(dateStr: string | null): number | null {
@@ -540,8 +626,7 @@ export function VendorHub() {
   const [filter, setFilter] = React.useState<FilterTab>("all")
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set())
   const [collapsedGroups, setCollapsedGroups] = React.useState<Set<string>>(new Set())
-  const [actionState, setActionState] = React.useState<Record<string, boolean>>({})
-  const [ownerState, setOwnerState] = React.useState<Record<string, string>>({})
+  const { actionState, ownerState, setAction, setOwner } = useFollowupState()
 
   const toggleExpanded = (id: string) => {
     setExpandedRows((prev) => {
@@ -563,12 +648,12 @@ export function VendorHub() {
 
   const toggleAction = (vendorId: string, actionId: string) => {
     const key = `${vendorId}-${actionId}`
-    setActionState((prev) => ({ ...prev, [key]: !prev[key] }))
+    setAction(key, !actionState[key])
   }
 
   const changeOwner = (vendorId: string, actionId: string, newOwner: string) => {
     const key = `${vendorId}-${actionId}`
-    setOwnerState((prev) => ({ ...prev, [key]: newOwner }))
+    setOwner(key, newOwner)
   }
 
   const getEffectiveDone = (vendorId: string, actionId: string, defaultDone: boolean) =>
