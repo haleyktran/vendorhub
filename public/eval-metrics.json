@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-29T21:50:55.806037Z",
+  "generated_at": "2026-04-29T22:32:28.466912Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -210,6 +210,46 @@
         "DELIVERABLE": 5,
         "CATCH_ALL_SAFE": 8,
         "UNDELIVERABLE": 1
+      },
+      "cost_notes": "Unknown"
+    },
+    "bettercontact_phoneall": {
+      "matched": 870,
+      "total": 1000,
+      "email_count": 42,
+      "phone_subset": 99,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 10,
+      "combined_email": 482,
+      "combined_phone": 104,
+      "recall_pct": "96.0%",
+      "avg_latency_ms": 0,
+      "p95_latency_ms": 0,
+      "precision": {
+        "UNKNOWN": 28,
+        "DELIVERABLE": 5,
+        "CATCH_ALL_SAFE": 8,
+        "UNDELIVERABLE": 1
+      },
+      "cost_notes": "Unknown"
+    },
+    "kitt": {
+      "matched": 373,
+      "total": 1000,
+      "email_count": 373,
+      "phone_subset": 0,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 71,
+      "combined_email": 545,
+      "combined_phone": 71,
+      "recall_pct": "63.6%",
+      "avg_latency_ms": 4486,
+      "p95_latency_ms": 11305,
+      "precision": {
+        "VALID": 231,
+        "VALID-RISKY": 142
       },
       "cost_notes": "Unknown"
     }
