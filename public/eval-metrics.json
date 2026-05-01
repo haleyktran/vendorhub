@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-01T22:46:53.576761Z",
+  "generated_at": "2026-05-01T23:49:17.462356Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -25,7 +25,22 @@
         "STUDENT": 17
       },
       "cost_notes": "Contact sales for pricing",
-      "zb_work_valid_pct": null
+      "zerobounce": {
+        "run_date": "2026-05-01",
+        "emails_validated": 968,
+        "work": {
+          "total": 440,
+          "valid_pct": 38.6,
+          "catchall_pct": 23.4,
+          "bad_pct": 34.5
+        },
+        "personal": {
+          "total": 528,
+          "valid_pct": 90.7,
+          "catchall_pct": 1.3,
+          "bad_pct": 6.6
+        }
+      }
     },
     "bettercontact": {
       "matched": 135,
@@ -47,7 +62,7 @@
         "UNDELIVERABLE": 1
       },
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": null
+      "zerobounce": null
     },
     "bettercontact_phoneall": {
       "matched": 870,
@@ -69,7 +84,7 @@
         "UNDELIVERABLE": 1
       },
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": null
+      "zerobounce": null
     },
     "contactout": {
       "matched": 734,
@@ -88,7 +103,22 @@
         "FOUND": 721
       },
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": 65.5
+      "zerobounce": {
+        "run_date": "2026-04-29",
+        "emails_validated": 1171,
+        "work": {
+          "total": 414,
+          "valid_pct": 65.5,
+          "catchall_pct": 21.3,
+          "bad_pct": 12.1
+        },
+        "personal": {
+          "total": 757,
+          "valid_pct": 93.0,
+          "catchall_pct": null,
+          "bad_pct": null
+        }
+      }
     },
     "crustdata": {
       "matched": 219,
@@ -107,7 +137,7 @@
         "FOUND": 169
       },
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": null
+      "zerobounce": null
     },
     "enrow": {
       "matched": 88,
@@ -126,7 +156,7 @@
         "VALID": 86
       },
       "cost_notes": "See enrow.io/pricing",
-      "zb_work_valid_pct": null
+      "zerobounce": null
     },
     "forager": {
       "matched": 873,
@@ -145,7 +175,22 @@
         "VALID": 474
       },
       "cost_notes": "Contact sales for pricing",
-      "zb_work_valid_pct": null
+      "zerobounce": {
+        "run_date": "2026-05-01",
+        "emails_validated": 572,
+        "work": {
+          "total": 24,
+          "valid_pct": 83.3,
+          "catchall_pct": 4.2,
+          "bad_pct": 12.5
+        },
+        "personal": {
+          "total": 548,
+          "valid_pct": 93.6,
+          "catchall_pct": 1.6,
+          "bad_pct": 4.6
+        }
+      }
     },
     "icypeas": {
       "matched": 679,
@@ -165,7 +210,7 @@
         "ULTRA_SURE": 165
       },
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": null
+      "zerobounce": null
     },
     "kitt": {
       "matched": 373,
@@ -185,7 +230,7 @@
         "VALID-RISKY": 142
       },
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": null
+      "zerobounce": null
     },
     "limadata": {
       "matched": 491,
@@ -204,7 +249,16 @@
         "FOUND": 480
       },
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": null
+      "zerobounce": {
+        "run_date": "2026-05-01",
+        "emails_validated": 480,
+        "work": {
+          "total": 480,
+          "valid_pct": 67.5,
+          "catchall_pct": 20.6,
+          "bad_pct": 11.9
+        }
+      }
     },
     "prospeo": {
       "matched": 856,
@@ -223,7 +277,16 @@
         "VERIFIED": 323
       },
       "cost_notes": "$39/mo for 1,000 credits; +10 credits for mobile",
-      "zb_work_valid_pct": 78.4
+      "zerobounce": {
+        "run_date": "2026-04-29",
+        "emails_validated": 283,
+        "work": {
+          "total": 283,
+          "valid_pct": 78.4,
+          "catchall_pct": 13.8,
+          "bad_pct": 6.4
+        }
+      }
     },
     "rocketreach": {
       "matched": 861,
@@ -240,7 +303,7 @@
       "p95_latency_ms": 1156,
       "precision": null,
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": null
+      "zerobounce": null
     },
     "snov": {
       "matched": 112,
@@ -260,7 +323,7 @@
         "VALID": 31
       },
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": null
+      "zerobounce": null
     },
     "swordfish": {
       "matched": 337,
@@ -279,7 +342,22 @@
         "FOUND": 328
       },
       "cost_notes": "Unknown",
-      "zb_work_valid_pct": null
+      "zerobounce": {
+        "run_date": "2026-05-01",
+        "emails_validated": 638,
+        "work": {
+          "total": 92,
+          "valid_pct": 96.7,
+          "catchall_pct": 1.1,
+          "bad_pct": 2.2
+        },
+        "personal": {
+          "total": 546,
+          "valid_pct": 83.0,
+          "catchall_pct": 3.1,
+          "bad_pct": 13.9
+        }
+      }
     },
     "wiza": {
       "matched": 950,
@@ -300,7 +378,22 @@
         "RISKY": 12
       },
       "cost_notes": "Contact sales / pay-per-reveal model",
-      "zb_work_valid_pct": null
+      "zerobounce": {
+        "run_date": "2026-05-01",
+        "emails_validated": 1034,
+        "work": {
+          "total": 549,
+          "valid_pct": 81.8,
+          "catchall_pct": 15.5,
+          "bad_pct": 2.2
+        },
+        "personal": {
+          "total": 485,
+          "valid_pct": 85.6,
+          "catchall_pct": 1.9,
+          "bad_pct": 12.4
+        }
+      }
     }
   }
 }
