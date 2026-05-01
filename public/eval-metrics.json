@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-01T22:10:52.911709Z",
+  "generated_at": "2026-05-01T22:46:53.576761Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -24,7 +24,8 @@
         "WORK": 184,
         "STUDENT": 17
       },
-      "cost_notes": "Contact sales for pricing"
+      "cost_notes": "Contact sales for pricing",
+      "zb_work_valid_pct": null
     },
     "bettercontact": {
       "matched": 135,
@@ -45,7 +46,8 @@
         "CATCH_ALL_SAFE": 8,
         "UNDELIVERABLE": 1
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": null
     },
     "bettercontact_phoneall": {
       "matched": 870,
@@ -66,7 +68,8 @@
         "CATCH_ALL_SAFE": 8,
         "UNDELIVERABLE": 1
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": null
     },
     "contactout": {
       "matched": 734,
@@ -84,7 +87,8 @@
       "precision": {
         "FOUND": 721
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": 65.5
     },
     "crustdata": {
       "matched": 219,
@@ -102,7 +106,8 @@
       "precision": {
         "FOUND": 169
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": null
     },
     "enrow": {
       "matched": 88,
@@ -120,7 +125,8 @@
       "precision": {
         "VALID": 86
       },
-      "cost_notes": "See enrow.io/pricing"
+      "cost_notes": "See enrow.io/pricing",
+      "zb_work_valid_pct": null
     },
     "forager": {
       "matched": 873,
@@ -138,7 +144,8 @@
       "precision": {
         "VALID": 474
       },
-      "cost_notes": "Contact sales for pricing"
+      "cost_notes": "Contact sales for pricing",
+      "zb_work_valid_pct": null
     },
     "icypeas": {
       "matched": 679,
@@ -157,7 +164,8 @@
         "PROBABLE": 69,
         "ULTRA_SURE": 165
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": null
     },
     "kitt": {
       "matched": 373,
@@ -176,7 +184,8 @@
         "VALID": 231,
         "VALID-RISKY": 142
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": null
     },
     "limadata": {
       "matched": 491,
@@ -194,7 +203,8 @@
       "precision": {
         "FOUND": 480
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": null
     },
     "prospeo": {
       "matched": 856,
@@ -212,7 +222,8 @@
       "precision": {
         "VERIFIED": 323
       },
-      "cost_notes": "$39/mo for 1,000 credits; +10 credits for mobile"
+      "cost_notes": "$39/mo for 1,000 credits; +10 credits for mobile",
+      "zb_work_valid_pct": 78.4
     },
     "rocketreach": {
       "matched": 861,
@@ -228,7 +239,8 @@
       "avg_latency_ms": 694,
       "p95_latency_ms": 1156,
       "precision": null,
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": null
     },
     "snov": {
       "matched": 112,
@@ -247,7 +259,8 @@
         "UNKNOWN": 31,
         "VALID": 31
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": null
     },
     "swordfish": {
       "matched": 337,
@@ -265,7 +278,8 @@
       "precision": {
         "FOUND": 328
       },
-      "cost_notes": "Unknown"
+      "cost_notes": "Unknown",
+      "zb_work_valid_pct": null
     },
     "wiza": {
       "matched": 950,
@@ -285,7 +299,8 @@
         "UNKNOWN": 47,
         "RISKY": 12
       },
-      "cost_notes": "Contact sales / pay-per-reveal model"
+      "cost_notes": "Contact sales / pay-per-reveal model",
+      "zb_work_valid_pct": null
     }
   }
 }
