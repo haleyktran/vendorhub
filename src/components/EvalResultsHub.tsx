@@ -57,7 +57,7 @@ const linkedInVendors: VendorEvalResult[] = [
     latencyLabel: "~1,022ms avg total (sync) — 4 serial calls per contact: detail + personal email + work email + phone (~255ms per call avg)",
     notionUrl: "https://app.notion.com/p/34fd5e4e099a8189a9a1c52feaf73b57",
     commentary: "Highest match rate (87.3%) and 100% VALID precision — but 470/474 emails are personal (webmail), only 20 are work. Not a work email source despite the headline coverage. Best use case: personal email enrichment and identity resolution. 93.5% recall vs WF-confirmed contacts.",
-    waterfallNote: "P1 for personal email. Not a work email source — pair with Limadata for work email coverage.",
+    waterfallNote: "P1 for personal email. Not a work email source — pair with Wiza for work email coverage.",
   },
   {
     id: "contactout",
@@ -81,7 +81,7 @@ const linkedInVendors: VendorEvalResult[] = [
     latencyLabel: "Phone (sync): ~195ms avg · Work email: ~7min async batch (1,000/batch) · Personal email: sync per-contact",
     notionUrl: "https://app.notion.com/p/350d5e4e099a81dcb828c9c18251b5a2",
     commentary: "Best phone (101/134, 75.4%) and highest recall (88.0%). 721 total emails = 373 work + 625 personal (some contacts have both). Dominant personal email source. Two API keys required (work vs. personal billed separately). Work email batch is slow (~7 min for 1,000).",
-    waterfallNote: "Best-in-class for phone and personal email. Work email trails Limadata — use for phone-first or personal email enrichment.",
+    waterfallNote: "Best-in-class for phone and personal email. Work email trails Wiza — use for phone-first or personal email enrichment.",
   },
   {
     id: "prospeo",
@@ -553,8 +553,8 @@ function WaterfallStrategy() {
   const rows = [
     {
       position: "P1 — Work email",
-      vendor: "Limadata",
-      why: "Highest work email coverage (480/1,000, 48%) with 76% recall. LinkedIn URL input — runs on 982/1,000 contacts. No validity signal but targeted endpoint returns email-or-nothing.",
+      vendor: "Wiza",
+      why: "Highest work email coverage (549/1,000, 54.9%) with 97.4% recall and 91% VALID precision. Also returns personal email (451/1,000) and strong phone (94/134, 70.1%). Async — requires long poll window for large batches.",
       pill: "bg-blue-50 text-blue-700 border-blue-200",
     },
     {
@@ -576,9 +576,9 @@ function WaterfallStrategy() {
       pill: "bg-emerald-50 text-emerald-700 border-emerald-200",
     },
     {
-      position: "Speed-first / async phone",
-      vendor: "Wiza",
-      why: "~205ms avg — fastest vendor tested. Returns both work (275) and personal (230) emails, 90% VALID. Phone underperforms Clay's Wiza attribution — worth investigating data tier access.",
+      position: "P4 — Work email fallback",
+      vendor: "Limadata",
+      why: "480/1,000 work emails (48%) with 76% recall. No validity signal but targeted endpoint returns email-or-nothing. Good fallback after Wiza for incremental work email coverage.",
       pill: "bg-slate-50 text-slate-700 border-slate-200",
     },
   ]
