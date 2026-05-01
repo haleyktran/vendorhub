@@ -23,6 +23,7 @@ interface VendorEvalResult {
   combinedEmail: number | null
   recall: number | null
   precisionLabel: string | null
+  zbWorkValidPct?: number | null   // ZeroBounce valid % on work emails (cross-check)
   latencyLabel: string | null
   notionUrl: string | null
   commentary: string
@@ -75,7 +76,8 @@ const linkedInVendors: VendorEvalResult[] = [
     wfRescueEmail: 311,
     combinedEmail: 786,
     recall: 88.0,
-    precisionLabel: "No signal (V2 batch)",
+    precisionLabel: "No native signal (V2 batch)",
+    zbWorkValidPct: 65.5,
     latencyLabel: "~195ms avg (phone); ~7min (work email batch)",
     notionUrl: "https://app.notion.com/p/350d5e4e099a81dcb828c9c18251b5a2",
     commentary: "Best phone (101/134, 75.4%) and highest recall (88.0%). 721 total emails = 373 work + 625 personal (some contacts have both). Dominant personal email source. Two API keys required (work vs. personal billed separately). Work email batch is slow (~7 min for 1,000).",
@@ -98,10 +100,11 @@ const linkedInVendors: VendorEvalResult[] = [
     wfRescueEmail: 57,
     combinedEmail: 529,
     recall: 80.0,
-    precisionLabel: "100% VERIFIED",
+    precisionLabel: "100% VERIFIED (native)",
+    zbWorkValidPct: 78.4,
     latencyLabel: "~449ms avg (bulk, 50/batch)",
     notionUrl: "https://app.notion.com/p/350d5e4e099a81399eb6dca318edca2d",
-    commentary: "Best-in-class email precision: 100% VERIFIED on all 283 returned emails (zero CATCHALL or RISKY). Strong phone (84/134, 62.7%). Coverage is conservative because Prospeo only returns emails it is highly confident in. Uses bulk endpoint (50/batch, synchronous).",
+    commentary: "Best-in-class email precision: 100% VERIFIED on all 283 returned emails (zero CATCHALL or RISKY). ZeroBounce cross-check: 78.4% valid, 13.8% catch-all, 5.7% invalid — VERIFIED is a lighter check than full SMTP. Strong phone (84/134, 62.7%). Uses bulk endpoint (50/batch, synchronous).",
     waterfallNote: "Best precision of any vendor. Strong phone. Use as a high-confidence email layer — not for maximum coverage.",
   },
   {
@@ -195,6 +198,29 @@ const linkedInVendors: VendorEvalResult[] = [
     notionUrl: "https://app.notion.com/p/351d5e4e099a81fc941df6b548bf3dd7",
     commentary: "Surprise standout for phone: 638/1,000 (63.8%) full-dataset coverage — essentially tied with ContactOut (644). 87% person match rate and 96% recall vs WF-confirmed contacts. Email is weak (42/1,000, 4.2%) but phone is top-tier. UBE traffic is particularly strong (52% phone coverage). Phone results also surface contact names, driving the high match/recall numbers.",
     waterfallNote: "Top-tier phone vendor — essentially tied with ContactOut on full-dataset phone coverage (638 vs 644). Not for email. Stack after Waterfall for phone enrichment.",
+  },
+  {
+    id: "rocketreach",
+    name: "RocketReach",
+    status: "evaluated",
+    inputMethod: "linkedin-url",
+    worksEmail: false,
+    personalEmail: false,
+    phone: true,
+    matchRate: 86.2,
+    emailCoverage: 0,
+    workEmailCoverage: 0,
+    personalEmailCoverage: 0,
+    phoneCoverage: 81,
+    phoneCoverageFull: 420,
+    wfRescueEmail: 0,
+    combinedEmail: 0,
+    recall: 93.5,
+    precisionLabel: "No validity signal (type: mobile/professional/unknown)",
+    latencyLabel: "~681ms avg (p95: 1,156ms)",
+    notionUrl: "",
+    commentary: "Phone-only eval (no email requested). 81/125 phone subset coverage (64.8%) — #4 overall behind ContactOut, BetterContact, and Prospeo. Full-dataset: 420/982 (42.8%) with any phone. Returns multiple phones per contact (avg 4–5) with type field (mobile/professional/unknown) and a recommended flag. No validity/deliverability signal. 15 connection errors on full run (http=0). Universal Credit API: GET /api/v2/universal/person/lookup?reveal_phone=true.",
+    waterfallNote: "Strong phone coverage — ranks #4 on subset behind ContactOut, BetterContact, Prospeo. Returns many phone candidates per contact with type hints. No email capability tested. Worth stacking for phone enrichment after ContactOut/BetterContact.",
   },
   {
     id: "crustdata",
@@ -687,6 +713,14 @@ function VendorCard({ v }: { v: VendorEvalResult }) {
           <div className="col-span-2">
             <div className="text-xs text-muted-foreground mb-0.5">Precision</div>
             <div className="text-xs font-medium text-foreground leading-tight">{v.precisionLabel ?? "—"}</div>
+            {v.zbWorkValidPct != null && (
+              <div className="flex items-center gap-1 mt-1">
+                <span className="text-xs text-muted-foreground">ZeroBounce valid (work):</span>
+                <span className={`text-xs font-semibold tabular-nums ${v.zbWorkValidPct >= 80 ? "text-emerald-700" : v.zbWorkValidPct >= 70 ? "text-amber-700" : "text-red-600"}`}>
+                  {v.zbWorkValidPct}%
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
