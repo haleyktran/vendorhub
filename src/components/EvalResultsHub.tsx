@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge"
+import { useEffect, useState } from "react"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -81,7 +82,6 @@ const linkedInVendors: VendorEvalResult[] = [
     combinedEmail: 786,
     recall: 88.0,
     precisionLabel: "No native signal (V2 batch)",
-    zbWorkValidPct: 65.5,
     latencyLabel: null,
     phoneLatency: "~195ms avg (sync, per-contact)",
     emailLatency: "Work: ~7min async batch (1,000/batch) · Personal: sync per-contact",
@@ -108,7 +108,6 @@ const linkedInVendors: VendorEvalResult[] = [
     combinedEmail: 529,
     recall: 80.0,
     precisionLabel: "100% VERIFIED (native)",
-    zbWorkValidPct: 78.4,
     latencyLabel: "~449ms avg (sync, bulk 50/batch) · p50: 471ms · p95: 955ms",
     latencyNote: "Single combined call returns email + phone together — no per-signal split possible",
     notionUrl: "https://app.notion.com/p/350d5e4e099a81399eb6dca318edca2d",
@@ -814,6 +813,28 @@ function VendorCard({ v }: { v: VendorEvalResult }) {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function EvalResultsHub() {
+  const [zbOverrides, setZbOverrides] = useState<Record<string, number | null>>({})
+
+  useEffect(() => {
+    fetch("/eval-metrics.json")
+      .then(r => r.json())
+      .then((data: { vendors?: Record<string, { zb_work_valid_pct?: number | null }> }) => {
+        const overrides: Record<string, number | null> = {}
+        for (const [vendor, metrics] of Object.entries(data.vendors ?? {})) {
+          if (metrics.zb_work_valid_pct != null) {
+            overrides[vendor] = metrics.zb_work_valid_pct
+          }
+        }
+        setZbOverrides(overrides)
+      })
+      .catch(() => {/* silently ignore — hardcoded fallback remains null */})
+  }, [])
+
+  const allVendors = [...linkedInVendors, ...nameDomainVendors].map(v => ({
+    ...v,
+    zbWorkValidPct: zbOverrides[v.id] ?? v.zbWorkValidPct ?? null,
+  }))
+
   const typeFilter: Record<string, string> = {
     both: "bg-slate-100 text-slate-700 border-slate-200",
     email: "bg-blue-50 text-blue-700 border-blue-200",
@@ -868,7 +889,8 @@ export function EvalResultsHub() {
           Email bars are split by type: blue = work, purple = personal.
         </p>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {[...linkedInVendors]
+          {allVendors
+            .filter(v => v.inputMethod !== "name-domain")
             .sort((a, b) => (b.emailCoverage ?? -1) - (a.emailCoverage ?? -1))
             .map(v => (
               <VendorCard key={v.id} v={v}  />
@@ -887,9 +909,11 @@ export function EvalResultsHub() {
           Low numbers reflect the input constraint, not quality.
         </p>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {nameDomainVendors.map(v => (
-            <VendorCard key={v.id} v={v}  />
-          ))}
+          {allVendors
+            .filter(v => v.inputMethod === "name-domain")
+            .map(v => (
+              <VendorCard key={v.id} v={v}  />
+            ))}
         </div>
       </div>
 
