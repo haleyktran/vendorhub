@@ -6,6 +6,20 @@ import { useEffect, useState } from "react"
 type EvalStatus = "evaluated" | "failed" | "pending"
 type InputMethod = "linkedin-url" | "linkedin-slug" | "name-domain"
 
+interface ZBEmailStats {
+  total: number
+  valid_pct: number | null
+  catchall_pct: number | null
+  bad_pct: number | null
+}
+
+interface ZBData {
+  run_date?: string
+  emails_validated?: number
+  work?: ZBEmailStats
+  personal?: ZBEmailStats
+}
+
 interface VendorEvalResult {
   id: string
   name: string
@@ -24,7 +38,7 @@ interface VendorEvalResult {
   combinedEmail: number | null
   recall: number | null
   precisionLabel: string | null
-  zbWorkValidPct?: number | null   // ZeroBounce valid % on work emails (cross-check)
+  zerobounce?: ZBData | null
   latencyLabel: string | null      // single-line fallback when no split available
   phoneLatency?: string | null     // phone-specific latency (when measured separately)
   emailLatency?: string | null     // email-specific latency (when measured separately)
@@ -748,18 +762,55 @@ function VendorCard({ v }: { v: VendorEvalResult }) {
             </div>
           </div>
           <div className="col-span-2">
-            <div className="text-xs text-muted-foreground mb-0.5">Precision</div>
+            <div className="text-xs text-muted-foreground mb-0.5">Precision (native signal)</div>
             <div className="text-xs font-medium text-foreground leading-tight">{v.precisionLabel ?? "—"}</div>
-            {v.zbWorkValidPct != null && (
-              <div className="flex items-center gap-1 mt-1">
-                <span className="text-xs text-muted-foreground">ZeroBounce valid (work):</span>
-                <span className={`text-xs font-semibold tabular-nums ${v.zbWorkValidPct >= 80 ? "text-emerald-700" : v.zbWorkValidPct >= 70 ? "text-amber-700" : "text-red-600"}`}>
-                  {v.zbWorkValidPct}%
-                </span>
-              </div>
-            )}
           </div>
         </div>
+
+        {/* ── ZeroBounce section ── */}
+        {v.zerobounce && (
+          <div className="border-t pt-3">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Email Validity</span>
+              <span className="text-xs px-1.5 py-0.5 rounded bg-violet-50 text-violet-700 border border-violet-200 font-medium">ZeroBounce cross-check</span>
+              <span className="text-xs text-muted-foreground ml-auto">{v.zerobounce.emails_validated?.toLocaleString()} emails</span>
+            </div>
+            <div className="space-y-2.5">
+              {(["work", "personal"] as const).map(kind => {
+                const s = v.zerobounce![kind]
+                if (!s) return null
+                const valid = s.valid_pct ?? 0
+                const catchall = s.catchall_pct ?? 0
+                const bad = s.bad_pct ?? 0
+                return (
+                  <div key={kind}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className={`text-xs font-medium ${kind === "work" ? "text-blue-600" : "text-purple-600"}`}>
+                        {kind === "work" ? "Work" : "Personal"}
+                        <span className="text-muted-foreground font-normal ml-1">({s.total.toLocaleString()} emails)</span>
+                      </span>
+                      <div className="flex items-center gap-2 text-xs tabular-nums">
+                        <span className={`font-semibold ${valid >= 80 ? "text-emerald-700" : valid >= 65 ? "text-amber-700" : "text-red-600"}`}>{valid}% valid</span>
+                        <span className="text-muted-foreground">{catchall}% catch-all</span>
+                        <span className={`${bad >= 15 ? "text-red-600 font-semibold" : bad >= 8 ? "text-amber-700" : "text-muted-foreground"}`}>{bad}% bad</span>
+                      </div>
+                    </div>
+                    <div className="h-2 rounded-full overflow-hidden flex bg-muted">
+                      <div className="h-full bg-emerald-400" style={{ width: `${valid}%` }} title={`${valid}% valid`} />
+                      <div className="h-full bg-amber-300" style={{ width: `${catchall}%` }} title={`${catchall}% catch-all`} />
+                      <div className="h-full bg-red-400" style={{ width: `${bad}%` }} title={`${bad}% bad`} />
+                    </div>
+                  </div>
+                )
+              })}
+              <div className="flex items-center gap-3 text-xs text-muted-foreground pt-0.5">
+                <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-sm bg-emerald-400" />Valid (deliverable)</span>
+                <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-sm bg-amber-300" />Catch-all (unknown)</span>
+                <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-sm bg-red-400" />Bad (invalid/abuse)</span>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ── Latency + input ── */}
         <div className="text-xs text-muted-foreground space-y-0.5">
@@ -813,26 +864,24 @@ function VendorCard({ v }: { v: VendorEvalResult }) {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function EvalResultsHub() {
-  const [zbOverrides, setZbOverrides] = useState<Record<string, number | null>>({})
+  const [zbData, setZbData] = useState<Record<string, ZBData>>({})
 
   useEffect(() => {
     fetch("/eval-metrics.json")
       .then(r => r.json())
-      .then((data: { vendors?: Record<string, { zb_work_valid_pct?: number | null }> }) => {
-        const overrides: Record<string, number | null> = {}
+      .then((data: { vendors?: Record<string, { zerobounce?: ZBData | null }> }) => {
+        const map: Record<string, ZBData> = {}
         for (const [vendor, metrics] of Object.entries(data.vendors ?? {})) {
-          if (metrics.zb_work_valid_pct != null) {
-            overrides[vendor] = metrics.zb_work_valid_pct
-          }
+          if (metrics.zerobounce) map[vendor] = metrics.zerobounce
         }
-        setZbOverrides(overrides)
+        setZbData(map)
       })
-      .catch(() => {/* silently ignore — hardcoded fallback remains null */})
+      .catch(() => {})
   }, [])
 
   const allVendors = [...linkedInVendors, ...nameDomainVendors].map(v => ({
     ...v,
-    zbWorkValidPct: zbOverrides[v.id] ?? v.zbWorkValidPct ?? null,
+    zerobounce: zbData[v.id] ?? v.zerobounce ?? null,
   }))
 
   const typeFilter: Record<string, string> = {
