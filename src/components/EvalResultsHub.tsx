@@ -24,7 +24,10 @@ interface VendorEvalResult {
   recall: number | null
   precisionLabel: string | null
   zbWorkValidPct?: number | null   // ZeroBounce valid % on work emails (cross-check)
-  latencyLabel: string | null
+  latencyLabel: string | null      // single-line fallback when no split available
+  phoneLatency?: string | null     // phone-specific latency (when measured separately)
+  emailLatency?: string | null     // email-specific latency (when measured separately)
+  latencyNote?: string | null      // async/architecture note shown below the split rows
   notionUrl: string | null
   commentary: string
   waterfallNote?: string
@@ -54,7 +57,8 @@ const linkedInVendors: VendorEvalResult[] = [
     combinedEmail: 673,
     recall: 93.5,
     precisionLabel: "100% VALID",
-    latencyLabel: "~1,022ms avg total (sync) — 4 serial calls per contact: detail + personal email + work email + phone (~255ms per call avg)",
+    latencyLabel: "~1,022ms avg total (sync)",
+    latencyNote: "4 serial calls per contact — detail + personal email + work email + phone (~255ms per call avg); no per-signal breakdown stored",
     notionUrl: "https://app.notion.com/p/34fd5e4e099a8189a9a1c52feaf73b57",
     commentary: "Highest match rate (87.3%) and 100% VALID precision — but 470/474 emails are personal (webmail), only 20 are work. Not a work email source despite the headline coverage. Best use case: personal email enrichment and identity resolution. 93.5% recall vs WF-confirmed contacts.",
     waterfallNote: "P1 for personal email. Not a work email source — pair with Wiza for work email coverage.",
@@ -78,7 +82,10 @@ const linkedInVendors: VendorEvalResult[] = [
     recall: 88.0,
     precisionLabel: "No native signal (V2 batch)",
     zbWorkValidPct: 65.5,
-    latencyLabel: "Phone (sync): ~195ms avg · Work email: ~7min async batch (1,000/batch) · Personal email: sync per-contact",
+    latencyLabel: null,
+    phoneLatency: "~195ms avg (sync, per-contact)",
+    emailLatency: "Work: ~7min async batch (1,000/batch) · Personal: sync per-contact",
+    latencyNote: "Two separate API keys — work email and personal email billed independently",
     notionUrl: "https://app.notion.com/p/350d5e4e099a81dcb828c9c18251b5a2",
     commentary: "Best phone (101/134, 75.4%) and highest recall (88.0%). 721 total emails = 373 work + 625 personal (some contacts have both). Dominant personal email source. Two API keys required (work vs. personal billed separately). Work email batch is slow (~7 min for 1,000).",
     waterfallNote: "Best-in-class for phone and personal email. Work email trails Wiza — use for phone-first or personal email enrichment.",
@@ -102,7 +109,8 @@ const linkedInVendors: VendorEvalResult[] = [
     recall: 80.0,
     precisionLabel: "100% VERIFIED (native)",
     zbWorkValidPct: 78.4,
-    latencyLabel: "~449ms avg (sync, bulk 50/batch) — email + phone returned in one combined call; p50: 471ms, p95: 955ms",
+    latencyLabel: "~449ms avg (sync, bulk 50/batch) · p50: 471ms · p95: 955ms",
+    latencyNote: "Single combined call returns email + phone together — no per-signal split possible",
     notionUrl: "https://app.notion.com/p/350d5e4e099a81399eb6dca318edca2d",
     commentary: "Best-in-class email precision: 100% VERIFIED on all 283 returned emails (zero CATCHALL or RISKY). ZeroBounce cross-check: 78.4% valid, 13.8% catch-all, 5.7% invalid — VERIFIED is a lighter check than full SMTP. Strong phone (84/134, 62.7%). Uses bulk endpoint (50/batch, synchronous).",
     waterfallNote: "Best precision of any vendor. Strong phone. Use as a high-confidence email layer — not for maximum coverage.",
@@ -125,7 +133,10 @@ const linkedInVendors: VendorEvalResult[] = [
     combinedEmail: 596,
     recall: 76.2,
     precisionLabel: "No signal (email or 404)",
-    latencyLabel: "Email endpoint: avg 2,323ms (p50: 171ms, p95: 11,254ms — heavy tail) · Phone endpoint: avg 196ms (p50: 134ms, p95: 261ms) — separate endpoints, measured independently",
+    latencyLabel: null,
+    emailLatency: "avg 2,323ms · p50: 171ms · p95: 11,254ms (heavy tail ~5% of requests)",
+    phoneLatency: "avg 196ms · p50: 134ms · p95: 261ms",
+    latencyNote: "Separate endpoints — measured independently; email tail latency flagged with vendor",
     notionUrl: "https://app.notion.com/p/350d5e4e099a81d88e99f345e2a1d1a3",
     commentary: "Highest work email coverage (480/1,000, 48%) with 76.2% recall. Rescued 121 contacts Waterfall missed. No email validity signal — you get an email or nothing. Tail latency issue (~5% of requests hit 10–22s) flagged with vendor.",
     waterfallNote: "P1 for work email volume. Pair with Forager for personal email or ContactOut for phone.",
@@ -171,7 +182,8 @@ const linkedInVendors: VendorEvalResult[] = [
     combinedEmail: 743,
     recall: 97.4,
     precisionLabel: "91% VALID (12 risky, 47 unknown)",
-    latencyLabel: "~205ms avg (async submit only) — actual enrichment resolves async; requires >=1800s poll timeout for large batches",
+    latencyLabel: "~205ms avg (async submit only)",
+    latencyNote: "Enrichment resolves async — email + phone returned together when complete; requires ≥1,800s poll timeout",
     notionUrl: "https://www.notion.so/unifygtm/34fd5e4e099a81f3b141f3c96cffcdc3",
     commentary: "Top-tier coverage: 95% person match, 69% email (549 work / 451 personal), 97.4% recall vs WF-confirmed contacts. 91% VALID precision. Phone strong at 70.1% (94/134 subset). Initial eval was understated due to polling timeout — all contacts resolved correctly on full re-poll.",
     waterfallNote: "Strong all-around vendor — top-2 email coverage, #1 recall, solid phone. Best used with a long async poll window (30min+) for large batches.",
@@ -194,7 +206,8 @@ const linkedInVendors: VendorEvalResult[] = [
     combinedEmail: 482,
     recall: 96.0,
     precisionLabel: "31% deliverable (of 14 w/ status; 28 unverified bonus emails)",
-    latencyLabel: "~2–3min async batch resolution (100/batch) — phone + email returned together; no per-signal latency split",
+    latencyLabel: "~2–3min async batch resolution (100/batch)",
+    latencyNote: "Phone + email returned together when batch completes — no per-signal split",
     notionUrl: "https://app.notion.com/p/351d5e4e099a81fc941df6b548bf3dd7",
     commentary: "Surprise standout for phone: 638/1,000 (63.8%) full-dataset coverage — essentially tied with ContactOut (644). 87% person match rate and 96% recall vs WF-confirmed contacts. Email is weak (42/1,000, 4.2%) but phone is top-tier. UBE traffic is particularly strong (52% phone coverage). Phone results also surface contact names, driving the high match/recall numbers.",
     waterfallNote: "Top-tier phone vendor — essentially tied with ContactOut on full-dataset phone coverage (638 vs 644). Not for email. Stack after Waterfall for phone enrichment.",
@@ -217,7 +230,10 @@ const linkedInVendors: VendorEvalResult[] = [
     combinedEmail: 0,
     recall: 93.5,
     precisionLabel: "No validity signal (type: mobile/professional/unknown)",
-    latencyLabel: "Phone only (sync): avg 681ms · p50: 647ms · p95: 1,156ms · p99: 2,684ms — single call with reveal_phone=true",
+    latencyLabel: null,
+    phoneLatency: "avg 681ms · p50: 647ms · p95: 1,156ms · p99: 2,684ms (sync)",
+    emailLatency: null,
+    latencyNote: "Phone-only eval — single GET call with reveal_phone=true; no email endpoint tested",
     notionUrl: "",
     commentary: "Phone-only eval (no email requested). 81/125 phone subset coverage (64.8%) — #4 overall behind ContactOut, BetterContact, and Prospeo. Full-dataset: 420/982 (42.8%) with any phone. Returns multiple phones per contact (avg 4–5) with type field (mobile/professional/unknown) and a recommended flag. No validity/deliverability signal. 15 connection errors on full run (http=0). Universal Credit API: GET /api/v2/universal/person/lookup?reveal_phone=true.",
     waterfallNote: "Strong phone coverage — ranks #4 on subset behind ContactOut, BetterContact, Prospeo. Returns many phone candidates per contact with type hints. No email capability tested. Worth stacking for phone enrichment after ContactOut/BetterContact.",
@@ -747,11 +763,38 @@ function VendorCard({ v }: { v: VendorEvalResult }) {
         </div>
 
         {/* ── Latency + input ── */}
-        <div className="text-xs text-muted-foreground">
-          <span className="font-medium text-foreground">Latency:</span> {v.latencyLabel ?? "—"}
-          {" · "}
-          <span className="font-medium text-foreground">Input:</span>{" "}
-          {v.inputMethod === "linkedin-url" ? "LinkedIn URL" : v.inputMethod === "linkedin-slug" ? "LinkedIn slug" : "Name + domain"}
+        <div className="text-xs text-muted-foreground space-y-0.5">
+          {/* Split phone/email rows when we have separate data */}
+          {(v.phoneLatency || v.emailLatency) ? (
+            <div className="space-y-0.5">
+              {v.phoneLatency && (
+                <div>
+                  <span className="font-medium text-foreground">Phone latency:</span> {v.phoneLatency}
+                </div>
+              )}
+              {v.emailLatency && (
+                <div>
+                  <span className="font-medium text-foreground">Email latency:</span> {v.emailLatency}
+                </div>
+              )}
+              {!v.phoneLatency && !v.emailLatency && v.latencyLabel && (
+                <div>
+                  <span className="font-medium text-foreground">Latency:</span> {v.latencyLabel}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <span className="font-medium text-foreground">Latency:</span> {v.latencyLabel ?? "—"}
+            </div>
+          )}
+          {v.latencyNote && (
+            <div className="text-muted-foreground/70 italic">{v.latencyNote}</div>
+          )}
+          <div>
+            <span className="font-medium text-foreground">Input:</span>{" "}
+            {v.inputMethod === "linkedin-url" ? "LinkedIn URL" : v.inputMethod === "linkedin-slug" ? "LinkedIn slug" : "Name + domain"}
+          </div>
         </div>
       </div>
 
