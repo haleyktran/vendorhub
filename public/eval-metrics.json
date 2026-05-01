@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-01T16:01:49.034950Z",
+  "generated_at": "2026-05-01T19:33:20.347894Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -266,6 +266,26 @@
         "VALID": 306,
         "UNKNOWN": 26,
         "RISKY": 7
+      },
+      "cost_notes": "Contact sales / pay-per-reveal model"
+    },
+    "wiza_repolled": {
+      "matched": 950,
+      "total": 1000,
+      "email_count": 690,
+      "phone_subset": 94,
+      "wf_email": 615,
+      "wf_phone_subset": 93,
+      "rescued_email": 127,
+      "combined_email": 743,
+      "combined_phone": 103,
+      "recall_pct": "97.4%",
+      "avg_latency_ms": 205,
+      "p95_latency_ms": 360,
+      "precision": {
+        "VALID": 631,
+        "UNKNOWN": 47,
+        "RISKY": 12
       },
       "cost_notes": "Contact sales / pay-per-reveal model"
     }
