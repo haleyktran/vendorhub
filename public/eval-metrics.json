@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-01T22:01:13.691920Z",
+  "generated_at": "2026-05-01T22:04:36.334000Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -197,35 +197,35 @@
       "cost_notes": "Unknown"
     },
     "prospeo": {
-      "matched": 800,
+      "matched": 837,
       "total": 1000,
-      "email_count": 283,
+      "email_count": 309,
       "phone_subset": 84,
       "wf_email": 472,
       "wf_phone_subset": 71,
-      "rescued_email": 57,
-      "combined_email": 529,
+      "rescued_email": 64,
+      "combined_email": 536,
       "combined_phone": 100,
-      "recall_pct": "87.4%",
-      "avg_latency_ms": 449,
+      "recall_pct": "89.7%",
+      "avg_latency_ms": 507,
       "p95_latency_ms": 955,
       "precision": {
-        "VERIFIED": 283
+        "VERIFIED": 309
       },
       "cost_notes": "$39/mo for 1,000 credits; +10 credits for mobile"
     },
     "rocketreach": {
-      "matched": 846,
+      "matched": 861,
       "total": 982,
       "email_count": 0,
-      "phone_subset": 81,
+      "phone_subset": 83,
       "wf_email": 462,
       "wf_phone_subset": 66,
       "rescued_email": 0,
       "combined_email": 462,
-      "combined_phone": 93,
-      "recall_pct": "93.5%",
-      "avg_latency_ms": 681,
+      "combined_phone": 94,
+      "recall_pct": "95.1%",
+      "avg_latency_ms": 694,
       "p95_latency_ms": 1156,
       "precision": null,
       "cost_notes": "Unknown"
