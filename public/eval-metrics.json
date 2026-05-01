@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-01T22:04:36.334000Z",
+  "generated_at": "2026-05-01T22:10:52.911709Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -197,20 +197,20 @@
       "cost_notes": "Unknown"
     },
     "prospeo": {
-      "matched": 837,
+      "matched": 856,
       "total": 1000,
-      "email_count": 309,
+      "email_count": 323,
       "phone_subset": 84,
       "wf_email": 472,
       "wf_phone_subset": 71,
-      "rescued_email": 64,
-      "combined_email": 536,
+      "rescued_email": 66,
+      "combined_email": 538,
       "combined_phone": 100,
-      "recall_pct": "89.7%",
+      "recall_pct": "92.0%",
       "avg_latency_ms": 507,
       "p95_latency_ms": 955,
       "precision": {
-        "VERIFIED": 309
+        "VERIFIED": 323
       },
       "cost_notes": "$39/mo for 1,000 credits; +10 credits for mobile"
     },
