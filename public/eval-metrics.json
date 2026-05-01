@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-01T19:40:55.460125Z",
+  "generated_at": "2026-05-01T19:47:12.023390Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -246,6 +246,24 @@
       "precision": {
         "UNKNOWN": 31,
         "VALID": 31
+      },
+      "cost_notes": "Unknown"
+    },
+    "swordfish": {
+      "matched": 337,
+      "total": 1000,
+      "email_count": 328,
+      "phone_subset": 55,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 108,
+      "combined_email": 581,
+      "combined_phone": 88,
+      "recall_pct": "46.9%",
+      "avg_latency_ms": 3535,
+      "p95_latency_ms": 13473,
+      "precision": {
+        "FOUND": 328
       },
       "cost_notes": "Unknown"
     },
