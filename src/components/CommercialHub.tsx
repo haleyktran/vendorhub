@@ -764,11 +764,27 @@ function LegalReviewTab() {
   )
 }
 
+// ─── vendor type classification ────────────────────────────────────────────────
+
+const CONTACT_VENDOR_IDS = new Set([
+  "snovio", "prospeo", "rocketreach", "contactlevel", "leadiq",
+  "lusha", "foragerai", "swordfishai", "icypeas", "minerva",
+  "datagma", "upcell", "zeliq",
+])
+
+function VendorTypeBadge({ id }: { id: string }) {
+  const isContact = CONTACT_VENDOR_IDS.has(id)
+  return isContact
+    ? <span className="inline-flex items-center text-[9px] font-semibold rounded-full px-1.5 py-0.5 bg-orange-100 text-orange-700 border border-orange-200 ml-1">Contact</span>
+    : <span className="inline-flex items-center text-[9px] font-semibold rounded-full px-1.5 py-0.5 bg-violet-100 text-violet-700 border border-violet-200 ml-1">Signal</span>
+}
+
 // ─── main component ────────────────────────────────────────────────────────────
 
 export function CommercialHub() {
   const [subTab, setSubTab] = React.useState<"overview" | "legal">("overview")
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set())
+  const [typeFilter, setTypeFilter] = React.useState<"all" | "signal" | "contact">("all")
   const { overrides, setField, resetVendor, hasOverrides } = useLocalOverrides()
 
   const toggle = (id: string) => {
@@ -786,6 +802,11 @@ export function CommercialHub() {
 
   const rows = vendorContacts
     .filter(v => v.overallStatus !== "do-not-contact")
+    .filter(v => {
+      if (typeFilter === "all") return true
+      const isContact = CONTACT_VENDOR_IDS.has(v.id)
+      return typeFilter === "contact" ? isContact : !isContact
+    })
     .map(v => {
       const base = vendorCommercialData[v.id] ?? null
       const comm = merged(v.id, base)
@@ -833,6 +854,26 @@ export function CommercialHub() {
           <Scale className="h-3.5 w-3.5" />
           ⚖️ Legal Review
         </button>
+      </div>
+
+      {/* Vendor type filter */}
+      <div className="flex items-center gap-1.5">
+        <span className="text-xs text-muted-foreground mr-1">Show:</span>
+        {(["all", "signal", "contact"] as const).map(f => (
+          <button
+            key={f}
+            onClick={() => setTypeFilter(f)}
+            className={`px-2.5 py-1 text-xs rounded-full border font-medium transition-colors ${
+              typeFilter === f
+                ? f === "signal" ? "bg-violet-600 text-white border-violet-600"
+                  : f === "contact" ? "bg-orange-500 text-white border-orange-500"
+                  : "bg-foreground text-background border-foreground"
+                : "text-muted-foreground border-muted hover:text-foreground hover:border-foreground"
+            }`}
+          >
+            {f === "all" ? "All vendors" : f === "signal" ? "Signal / Company" : "Contact (phone + email)"}
+          </button>
+        ))}
       </div>
 
       {/* Legal Review tab */}
@@ -955,8 +996,9 @@ export function CommercialHub() {
 
                           {/* vendor + edited indicator */}
                           <TableCell>
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1.5 flex-wrap">
                               <span className="font-semibold text-sm">{vendor.name}</span>
+                              <VendorTypeBadge id={vendor.id} />
                               {edited && (
                                 <span className="h-1.5 w-1.5 rounded-full bg-violet-400 flex-shrink-0" title="Locally edited" />
                               )}
