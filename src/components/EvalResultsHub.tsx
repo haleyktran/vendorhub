@@ -369,6 +369,32 @@ const nameDomainVendors: VendorEvalResult[] = [
     commentary: "Same name+domain cap. Only 50% of returned emails are verified — weakest precision in the eval. OAuth complexity adds integration overhead.",
     waterfallNote: "Weakest precision tested. Same input cap. Limited value for our dataset.",
   },
+  {
+    id: "datagma",
+    name: "Datagma",
+    status: "evaluated",
+    inputMethod: "name-domain",
+    worksEmail: true,
+    personalEmail: false,
+    phone: true,
+    matchRate: 60.2,
+    emailCoverage: 477,
+    workEmailCoverage: 477,
+    personalEmailCoverage: 0,
+    phoneCoverage: 95,
+    phoneCoverageFull: null,
+    wfRescueEmail: 144,
+    combinedEmail: 613,
+    recall: 74.5,
+    precisionLabel: "100% VALID",
+    latencyLabel: null,
+    phoneLatency: "~1,000ms avg (sync, LinkedIn URL)",
+    emailLatency: "~12,069ms avg (sync, step=3) · p50: 8,626ms · p95: 30,396ms ⚠️",
+    latencyNote: "Email endpoint performs deep pattern search (step=3) — not suitable for inline use. Phone uses LinkedIn URL and is fast (~1s avg).",
+    notionUrl: "https://www.notion.so/356d5e4e099a81e59bd9d627236ae122",
+    commentary: "Evaluated on 850/1,000 contacts (full name+domain dataset — larger reach than Enrow/IcyPeas/Snov). 477 work emails at 100% VALID precision. Phone strong: 95/127 (74.8% of phone subset) using LinkedIn URL — near ContactOut (75.4%). Email avg latency 12s, p95 30s — async/batch only. Phone charges ~30 credits/call regardless of hit/miss.",
+    waterfallNote: "Best email precision tested (100% VALID). Strong phone coverage. Email latency is prohibitive inline — use async. Good fit as a high-precision async email + phone layer.",
+  },
 ]
 
 const pendingVendors: { name: string; type: string }[] = [
@@ -385,7 +411,6 @@ const pendingVendors: { name: string; type: string }[] = [
   { name: "LeadIQ", type: "both" },
   { name: "Lusha", type: "both" },
   { name: "ContactLevel", type: "both" },
-  { name: "Datagma", type: "both" },
   { name: "EnrichCRM", type: "both" },
   { name: "Findymail", type: "both" },
   { name: "Pubrio", type: "phone" },
@@ -908,7 +933,7 @@ export function EvalResultsHub() {
           </div>
           <div>
             <span className="font-medium">Name+domain vendors</span>{" "}
-            <span className="text-muted-foreground">only reach 142/1,000 contacts (14.2%). Their numbers reflect that ceiling, not quality.</span>
+            <span className="text-muted-foreground">Enrow/IcyPeas/Snov capped at 142/1,000 (14.2%). Datagma evaluated on 850/1,000 — email counts shown vs 850 eligible, not 1,000.</span>
           </div>
         </div>
       </div>
@@ -951,11 +976,11 @@ export function EvalResultsHub() {
       <div>
         <div className="flex items-center gap-3 mb-1">
           <h2 className="text-base font-semibold">Name+domain vendors</h2>
-          <span className="text-xs px-2 py-0.5 rounded border border-orange-200 bg-orange-50 text-orange-700 font-medium">Capped at 142/1,000 contacts</span>
+          <span className="text-xs px-2 py-0.5 rounded border border-orange-200 bg-orange-50 text-orange-700 font-medium">Enrow/IcyPeas/Snov: 142/1,000 · Datagma: 850/1,000</span>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
-          Require first name + last name + company domain. Only 142/1,000 contacts have all three.
-          Low numbers reflect the input constraint, not quality.
+          Require first name + last name + company domain. Enrow, IcyPeas, and Snov.io were evaluated on an older 142-contact subset.
+          Datagma uses the full 850-contact name+domain dataset — email coverage shown vs 850 eligible contacts.
         </p>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {allVendors
