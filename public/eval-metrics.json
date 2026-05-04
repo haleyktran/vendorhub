@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-04T19:59:28.025431Z",
+  "generated_at": "2026-05-04T20:39:27.600243Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -156,7 +156,16 @@
         "VALID": 477
       },
       "cost_notes": "Unknown",
-      "zerobounce": null
+      "zerobounce": {
+        "run_date": "2026-05-04",
+        "emails_validated": 477,
+        "work": {
+          "total": 477,
+          "valid_pct": 84.5,
+          "catchall_pct": 14.0,
+          "bad_pct": 1.0
+        }
+      }
     },
     "enrow": {
       "matched": 88,
