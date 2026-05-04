@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-04T17:59:28.287470Z",
+  "generated_at": "2026-05-04T19:59:28.025431Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -135,6 +135,25 @@
       "p95_latency_ms": 15794,
       "precision": {
         "FOUND": 169
+      },
+      "cost_notes": "Unknown",
+      "zerobounce": null
+    },
+    "datagma": {
+      "matched": 512,
+      "total": 850,
+      "email_count": 477,
+      "phone_subset": 95,
+      "wf_email": 467,
+      "wf_phone_subset": 71,
+      "rescued_email": 144,
+      "combined_email": 613,
+      "combined_phone": 103,
+      "recall_pct": "74.5%",
+      "avg_latency_ms": 12069,
+      "p95_latency_ms": 30396,
+      "precision": {
+        "VALID": 477
       },
       "cost_notes": "Unknown",
       "zerobounce": null
