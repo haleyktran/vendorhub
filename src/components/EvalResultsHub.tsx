@@ -446,7 +446,6 @@ const pendingVendors: { name: string; type: string }[] = [
 const WF_EMAIL = 472
 const WF_PHONE = 71
 const PHONE_SUBSET = 134
-const ALL_VENDORS = [...linkedInVendors, ...nameDomainVendors]
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
