@@ -556,70 +556,144 @@ const RANK_CATEGORIES: RankCategory[] = [
   },
 ]
 
-function RankingsSection() {
+function RankingsSection({ vendors }: { vendors: VendorEvalResult[] }) {
+  const [zbMode, setZbMode] = useState(false)
+
+  function zbCount(v: VendorEvalResult, kind: "work" | "personal" | "any"): number | null {
+    const zb = v.zerobounce
+    if (!zb) return null
+    if (kind === "work") {
+      if (!zb.work || !v.workEmailCoverage) return null
+      return Math.round(v.workEmailCoverage * (zb.work.valid_pct ?? 0) / 100)
+    }
+    if (kind === "personal") {
+      if (!zb.personal || !v.personalEmailCoverage) return null
+      return Math.round(v.personalEmailCoverage * (zb.personal.valid_pct ?? 0) / 100)
+    }
+    // any — sum whichever types have ZB data
+    let n = 0; let found = false
+    if (zb.work && v.workEmailCoverage) { n += Math.round(v.workEmailCoverage * (zb.work.valid_pct ?? 0) / 100); found = true }
+    if (zb.personal && v.personalEmailCoverage) { n += Math.round(v.personalEmailCoverage * (zb.personal.valid_pct ?? 0) / 100); found = true }
+    return found ? n : null
+  }
+
+  const cats: RankCategory[] = zbMode
+    ? [
+        {
+          ...RANK_CATEGORIES[0],
+          subtitle: "ZB-verified valid only",
+          getValue: v => zbCount(v, "work"),
+        },
+        {
+          ...RANK_CATEGORIES[1],
+          subtitle: "ZB-verified valid only",
+          getValue: v => zbCount(v, "personal"),
+        },
+        {
+          ...RANK_CATEGORIES[2],
+          subtitle: "ZB-verified valid (work + personal)",
+          getValue: v => zbCount(v, "any"),
+        },
+        RANK_CATEGORIES[3],
+        RANK_CATEGORIES[4],
+      ]
+    : RANK_CATEGORIES
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
-      {RANK_CATEGORIES.map(cat => {
-        const ranked = ALL_VENDORS
-          .map(v => ({ v, val: cat.getValue(v) ?? 0 }))
-          .filter(x => x.val > 0)
-          .sort((a, b) => b.val - a.val)
-          .slice(0, 5)
-        const max = Math.max(ranked[0]?.val ?? 1, cat.outOf * 0.75)
-        const winner = ranked[0]?.v
+    <div>
+      {/* Toggle */}
+      <div className="flex items-center gap-3 mb-4 flex-wrap">
+        <span className="text-xs font-medium text-muted-foreground">Email counts:</span>
+        <div className="flex rounded-md border overflow-hidden text-xs font-medium">
+          <button
+            className={`px-3 py-1.5 transition-colors ${!zbMode ? "bg-foreground text-background" : "bg-background text-muted-foreground hover:bg-muted/40"}`}
+            onClick={() => setZbMode(false)}
+          >
+            Raw coverage
+          </button>
+          <button
+            className={`px-3 py-1.5 border-l transition-colors ${zbMode ? "bg-violet-600 text-white" : "bg-background text-muted-foreground hover:bg-muted/40"}`}
+            onClick={() => setZbMode(true)}
+          >
+            ZB-verified only
+          </button>
+        </div>
+        {zbMode && (
+          <span className="text-xs text-muted-foreground italic">
+            Raw coverage × ZB valid% — vendors without ZB data excluded from email columns. Phone unchanged.
+          </span>
+        )}
+      </div>
 
-        return (
-          <div key={cat.label} className="rounded-lg border overflow-hidden">
-            {/* Column header */}
-            <div className={`px-4 py-3 border-b ${cat.headerBg}`}>
-              <div className="text-xs text-muted-foreground">{cat.subtitle}</div>
-              <div className="font-semibold text-sm mt-0.5">{cat.label}</div>
-              {winner && (
-                <div className="mt-2 flex items-baseline gap-2 flex-wrap">
-                  <span className={`text-xs font-bold px-2 py-0.5 rounded ${cat.badgeCls}`}>
-                    {winner.name}
-                  </span>
-                  <span className="text-sm font-bold tabular-nums">
-                    {cat.getValue(winner)}{cat.outOfLabel}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    ({coveragePct(cat.getValue(winner), cat.outOf)})
-                  </span>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+        {cats.map(cat => {
+          const isEmailCat = !cat.label.startsWith("Phone")
+          const ranked = vendors
+            .map(v => ({ v, val: cat.getValue(v) ?? 0 }))
+            .filter(x => x.val > 0)
+            .sort((a, b) => b.val - a.val)
+            .slice(0, 5)
+          const max = Math.max(ranked[0]?.val ?? 1, cat.outOf * 0.75)
+          const winner = ranked[0]?.v
+
+          return (
+            <div key={cat.label} className="rounded-lg border overflow-hidden">
+              {/* Column header */}
+              <div className={`px-4 py-3 border-b ${cat.headerBg}`}>
+                <div className="text-xs text-muted-foreground">{cat.subtitle}</div>
+                <div className="font-semibold text-sm mt-0.5 flex items-center gap-1.5">
+                  {cat.label}
+                  {zbMode && isEmailCat && (
+                    <span className="text-xs font-normal px-1 py-0.5 rounded bg-violet-100 text-violet-700 border border-violet-200">ZB valid</span>
+                  )}
                 </div>
-              )}
-            </div>
-
-            {/* Ranked rows */}
-            <div className="px-4 py-3 space-y-2.5">
-              {ranked.map(({ v, val }, i) => (
-                <div key={v.id} className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground w-4 shrink-0 tabular-nums">#{i + 1}</span>
-                  <span className={`text-xs w-20 shrink-0 truncate ${i === 0 ? "font-semibold text-foreground" : "text-muted-foreground"}`}>
-                    {v.name}
-                  </span>
-                  {rankBar(val, max, cat.barColor, i === 0)}
-                  <span className="text-xs tabular-nums text-muted-foreground w-6 text-right shrink-0">{val}</span>
-                </div>
-              ))}
-
-              {/* WF baseline reference line */}
-              {cat.wfBaseline > 0 && (
-                <div className="flex items-center gap-2 pt-1 border-t mt-1">
-                  <span className="text-xs text-muted-foreground w-4 shrink-0">—</span>
-                  <span className="text-xs text-muted-foreground w-20 shrink-0">WF baseline</span>
-                  <div className="flex-1 h-px bg-muted-foreground/30 relative">
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 h-2 w-0.5 bg-muted-foreground/50"
-                      style={{ left: `${Math.round((cat.wfBaseline / max) * 100)}%` }}
-                    />
+                {winner && (
+                  <div className="mt-2 flex items-baseline gap-2 flex-wrap">
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded ${cat.badgeCls}`}>
+                      {winner.name}
+                    </span>
+                    <span className="text-sm font-bold tabular-nums">
+                      {cat.getValue(winner)}{cat.outOfLabel}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      ({coveragePct(cat.getValue(winner), cat.outOf)})
+                    </span>
                   </div>
-                  <span className="text-xs tabular-nums text-muted-foreground w-6 text-right shrink-0">{cat.wfBaseline}</span>
-                </div>
-              )}
+                )}
+              </div>
+
+              {/* Ranked rows */}
+              <div className="px-4 py-3 space-y-2.5">
+                {ranked.map(({ v, val }, i) => (
+                  <div key={v.id} className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground w-4 shrink-0 tabular-nums">#{i + 1}</span>
+                    <span className={`text-xs w-20 shrink-0 truncate ${i === 0 ? "font-semibold text-foreground" : "text-muted-foreground"}`}>
+                      {v.name}
+                    </span>
+                    {rankBar(val, max, cat.barColor, i === 0)}
+                    <span className="text-xs tabular-nums text-muted-foreground w-6 text-right shrink-0">{val}</span>
+                  </div>
+                ))}
+
+                {/* WF baseline reference line — hidden in ZB mode for email cols (not ZB-adjusted) */}
+                {(!zbMode || !isEmailCat) && cat.wfBaseline > 0 && (
+                  <div className="flex items-center gap-2 pt-1 border-t mt-1">
+                    <span className="text-xs text-muted-foreground w-4 shrink-0">—</span>
+                    <span className="text-xs text-muted-foreground w-20 shrink-0">WF baseline</span>
+                    <div className="flex-1 h-px bg-muted-foreground/30 relative">
+                      <div
+                        className="absolute top-1/2 -translate-y-1/2 h-2 w-0.5 bg-muted-foreground/50"
+                        style={{ left: `${Math.round((cat.wfBaseline / max) * 100)}%` }}
+                      />
+                    </div>
+                    <span className="text-xs tabular-nums text-muted-foreground w-6 text-right shrink-0">{cat.wfBaseline}</span>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -968,7 +1042,7 @@ export function EvalResultsHub() {
           Top 5 vendors per signal type. Work and personal email ranked separately — a vendor returning both appears in both columns.
           WF baseline shown as reference. Phone column is 134-contact subset only.
         </p>
-        <RankingsSection />
+        <RankingsSection vendors={allVendors} />
       </div>
 
       {/* ── Waterfall strategy ────────────────────────────────────────────────── */}
