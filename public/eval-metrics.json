@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-04T23:57:33.259671Z",
+  "generated_at": "2026-05-05T00:35:50.847665Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -62,7 +62,16 @@
         "UNDELIVERABLE": 1
       },
       "cost_notes": "Unknown",
-      "zerobounce": null
+      "zerobounce": {
+        "run_date": "2026-05-04",
+        "emails_validated": 42,
+        "work": {
+          "total": 42,
+          "valid_pct": 81.0,
+          "catchall_pct": 14.3,
+          "bad_pct": 4.8
+        }
+      }
     },
     "bettercontact_phoneall": {
       "matched": 870,
@@ -137,7 +146,22 @@
         "FOUND": 169
       },
       "cost_notes": "Unknown",
-      "zerobounce": null
+      "zerobounce": {
+        "run_date": "2026-05-04",
+        "emails_validated": 277,
+        "work": {
+          "total": 94,
+          "valid_pct": 61.7,
+          "catchall_pct": 12.8,
+          "bad_pct": 24.5
+        },
+        "personal": {
+          "total": 183,
+          "valid_pct": 93.4,
+          "catchall_pct": 2.7,
+          "bad_pct": 3.8
+        }
+      }
     },
     "datagma": {
       "matched": 512,
@@ -184,7 +208,16 @@
         "VALID": 86
       },
       "cost_notes": "See enrow.io/pricing",
-      "zerobounce": null
+      "zerobounce": {
+        "run_date": "2026-05-04",
+        "emails_validated": 86,
+        "work": {
+          "total": 86,
+          "valid_pct": 70.9,
+          "catchall_pct": 20.9,
+          "bad_pct": 7.0
+        }
+      }
     },
     "forager": {
       "matched": 873,
@@ -238,7 +271,16 @@
         "ULTRA_SURE": 165
       },
       "cost_notes": "Unknown",
-      "zerobounce": null
+      "zerobounce": {
+        "run_date": "2026-05-04",
+        "emails_validated": 234,
+        "work": {
+          "total": 234,
+          "valid_pct": 87.2,
+          "catchall_pct": 11.5,
+          "bad_pct": 0.9
+        }
+      }
     },
     "kitt": {
       "matched": 373,
@@ -386,7 +428,16 @@
         "VALID": 31
       },
       "cost_notes": "Unknown",
-      "zerobounce": null
+      "zerobounce": {
+        "run_date": "2026-05-04",
+        "emails_validated": 65,
+        "work": {
+          "total": 65,
+          "valid_pct": 49.2,
+          "catchall_pct": 24.6,
+          "bad_pct": 4.6
+        }
+      }
     },
     "swordfish": {
       "matched": 337,
