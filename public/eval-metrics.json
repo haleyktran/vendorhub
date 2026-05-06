@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-06T16:02:29.410539Z",
+  "generated_at": "2026-05-06T22:11:37.371503Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -216,6 +216,34 @@
           "valid_pct": 70.9,
           "catchall_pct": 20.9,
           "bad_pct": 7.0
+        }
+      }
+    },
+    "findymail": {
+      "matched": 490,
+      "total": 1000,
+      "email_count": 483,
+      "phone_subset": 32,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 141,
+      "combined_email": 616,
+      "combined_phone": 81,
+      "recall_pct": "72.8%",
+      "avg_latency_ms": null,
+      "p95_latency_ms": null,
+      "precision": {
+        "FOUND": 483
+      },
+      "cost_notes": "Unknown",
+      "zerobounce": {
+        "run_date": "2026-05-06",
+        "emails_validated": 483,
+        "work": {
+          "total": 483,
+          "valid_pct": 83.2,
+          "catchall_pct": 14.9,
+          "bad_pct": 1.4
         }
       }
     },
