@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-15T01:02:30.512145Z",
+  "generated_at": "2026-05-15T18:03:34.462003Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -278,6 +278,44 @@
           "valid_pct": 93.6,
           "catchall_pct": 1.6,
           "bad_pct": 4.6
+        }
+      }
+    },
+    "fullenrich_merged": {
+      "matched": 771,
+      "total": 1000,
+      "email_count": 672,
+      "phone_subset": 90,
+      "wf_email": 472,
+      "wf_phone_subset": 71,
+      "rescued_email": 284,
+      "combined_email": 758,
+      "combined_phone": 102,
+      "recall_pct": "82.9%",
+      "avg_latency_ms": 886,
+      "p95_latency_ms": 2032,
+      "precision": {
+        "DELIVERABLE": 300,
+        "HIGH_PROBABILITY": 192,
+        "UNKNOWN": 77,
+        "CATCH_ALL": 66,
+        "INVALID": 37
+      },
+      "cost_notes": "Unknown",
+      "zerobounce": {
+        "run_date": "2026-05-15",
+        "emails_validated": 1255,
+        "work": {
+          "total": 613,
+          "valid_pct": 74.2,
+          "catchall_pct": 18.1,
+          "bad_pct": 7.3
+        },
+        "personal": {
+          "total": 642,
+          "valid_pct": 88.0,
+          "catchall_pct": 1.9,
+          "bad_pct": 10.0
         }
       }
     },
