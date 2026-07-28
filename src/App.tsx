@@ -66,6 +66,7 @@ import { CommercialHub } from "@/components/CommercialHub"
 import { BudgetHub } from "@/components/BudgetHub"
 import { ContactVendorHub } from "@/components/ContactVendorHub"
 import { EvalResultsHub } from "@/components/EvalResultsHub"
+import { LinkedInVendorHub } from "@/components/LinkedInVendorHub"
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -329,7 +330,7 @@ const VENDOR_STATUS: [string, Status][] = [
   ["HG Insights","pending"],
 ]
 
-type AppView = "latency" | "followups" | "commercial" | "budget" | "contact-vendors" | "eval-results"
+type AppView = "latency" | "followups" | "commercial" | "budget" | "contact-vendors" | "eval-results" | "linkedin-vendors"
 
 export default function App() {
   const [view, setView] = React.useState<AppView>("commercial")
@@ -391,6 +392,16 @@ export default function App() {
               }`}
             >
               🧪 Eval Results
+            </button>
+            <button
+              onClick={() => setView("linkedin-vendors")}
+              className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${
+                view === "linkedin-vendors"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              🔗 LinkedIn Vendors
             </button>
             <button
               onClick={() => setView("latency")}
@@ -479,6 +490,21 @@ export default function App() {
               </p>
             </div>
             <EvalResultsHub />
+          </>
+        )}
+
+        {/* ── LinkedIn Automation Vendors view ──────────────────────────────── */}
+        {view === "linkedin-vendors" && (
+          <>
+            <div className="mb-6">
+              <h1 className="text-2xl font-semibold tracking-tight mb-1">🔗 LinkedIn Automation Vendors</h1>
+              <p className="text-sm text-muted-foreground max-w-2xl">
+                Vendors we're talking to for LinkedIn automation (connection requests, messaging, sequencing) to embed
+                alongside email in the product. <strong>Summary</strong> compares integration model, pricing, white-label,
+                and account-safety; <strong>Progress</strong> tracks last contact, open emails, and next actions per vendor.
+              </p>
+            </div>
+            <LinkedInVendorHub />
           </>
         )}
 
