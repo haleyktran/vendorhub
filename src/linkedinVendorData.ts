@@ -98,7 +98,8 @@ export const linkedinVendors: LinkedInVendor[] = [
       "What are the account-safety guardrails given prior company-level bans?",
       "Per-account rate limits under the white-label plan?",
     ],
-    contacts: ["HeyReach partnerships (via Slack)"],
+    contacts: ["HeyReach partnerships (via Slack)", "Ilija Stojkovski — ilija@heyreach.io"],
+    slackChannel: "#heyreach-unify",
     meetings: ["2026-02-26 intro", "2026-07-27 pricing follow-up"],
     notes: [
       "Rotates multiple LinkedIn accounts to scale volume (~800 connection requests/account/month)",
@@ -106,6 +107,7 @@ export const linkedinVendors: LinkedInVendor[] = [
       "Had C-level / company-page accounts banned by LinkedIn",
       "Backbone API (full white-label infra) on Q2 2026 roadmap, ~50% rev share",
       "Two pricing proposals requested, due 2026-07-28",
+      "Jul 27 6:00pm meeting scheduling: James Grinage + Kevin Liang coordinated coverage in #heyreach-unify around a HeyReach-side Loom pre-read; substance of the actual pricing call is captured via Granola (see above), Slack itself had no additional commercial detail",
     ],
   },
 
@@ -115,9 +117,9 @@ export const linkedinVendors: LinkedInVendor[] = [
     website: "https://www.unipile.com",
     priority: "P0",
     status: "active",
-    lastContactDate: "2026-07-20",
+    lastContactDate: "2026-07-26",
     emailStatus: "needs-response",
-    emailSubject: "Unipile x Unify - Next steps (Julien confirmed Unipile can support our use cases)",
+    emailSubject: "URGENT — 'Your free trial has ended' (Jul 26 10:35pm PT): trial data warned to be deleted within hours unless subscribed; support@unipile.com also sent an unanswered Jul 23 check-in on API testing progress",
     summary:
       "Unified API for LinkedIn, email, WhatsApp and more, with 200,000+ LinkedIn accounts connected. Reverse-engineered approach (no headless browser); proxies matched to each user's location for account safety.",
     integrationModel:
@@ -129,12 +131,13 @@ export const linkedinVendors: LinkedInVendor[] = [
       "White-label terms not yet confirmed — to be covered once Julien sends the pricing grid + legal docs.",
     banHistory:
       "Briefly banned by LinkedIn ~6–9 months ago, now restored. Recommends conservative daily limits: 100 messages/searches, 50–80 connection invites per account.",
-    nextStep: "Set up the shared Slack (Julien + Kevin + James) and scope the API trial; reply to Julien's next-steps email.",
+    nextStep: "URGENT: decide whether to subscribe or let the trial lapse — 'trial ended' notice (Jul 26 10:35pm PT) warned trial data would be deleted within hours; unconfirmed whether this was actioned before the deletion window closed.",
     actionItems: [
+      { id: "up-5", text: "URGENT — respond to 'Your free trial has ended' notice (Jul 26): confirm whether to subscribe or accept trial data loss", owner: "me", done: false },
       { id: "up-1", text: "Set up shared Slack channel with Julien (Unipile), Kevin, James", owner: "me", done: false },
       { id: "up-2", text: "Julien to send pricing grid, DPA, and MSA", owner: "them", done: false },
       { id: "up-3", text: "Scope and kick off the 7-day API trial", owner: "kevin", done: false },
-      { id: "up-4", text: "Reply to Julien's 'Next steps' email (Jul 20)", owner: "me", done: false },
+      { id: "up-4", text: "Reply to support@unipile.com's Jul 23 check-in on API testing progress (still unanswered)", owner: "me", done: false },
     ],
     openQuestions: [
       "White-label / reseller terms and any rev share?",
@@ -149,6 +152,8 @@ export const linkedinVendors: LinkedInVendor[] = [
       "Recommended daily limits: 100 messages/searches, 50–80 connection invites per account",
       "Briefly banned by LinkedIn ~6–9 months ago, now back",
       "Emailed haley + james + kevinliang on Jul 20 confirming they can support our use cases",
+      "Jul 23 10:35pm PT: support@unipile.com sent a check-in asking about API testing progress — unanswered",
+      "Jul 26 10:35pm PT: 'Your free trial has ended' notice — warned trial data would be deleted within hours unless Unify subscribes. Unresolved as of Jul 28 whether this was actioned in time.",
     ],
   },
 
