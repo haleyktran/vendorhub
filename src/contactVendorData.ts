@@ -206,7 +206,7 @@ export const contactVendors: ContactVendor[] = [
     rateLimit: "",
     latencyEstimateMs: null,
     slackChannel: "#partnership-unify-fullenrich",
-    notes: "Referenced in strategy discussions as key waterfall supplement vendor. On questionnaire eval list. Jul 27, 2026: Austin asked Ben Douablin (FullEnrich) in #partnership-unify-fullenrich how flat-file quality compares to their real-time API. Ben responded with two commercial tiers (see pricingNotes) — FullEnrich is pushing to keep email/phone delivery API-only (waterfall-based) rather than flat-file, citing freshness/coverage concerns.",
+    notes: "Referenced in strategy discussions as key waterfall supplement vendor. On questionnaire eval list. Jul 27, 2026: Austin asked Ben Douablin (FullEnrich) in #partnership-unify-fullenrich how flat-file quality compares to their real-time API. Ben responded with two commercial tiers (see pricingNotes) — FullEnrich is pushing to keep email/phone delivery API-only (waterfall-based) rather than flat-file, citing freshness/coverage concerns. Jul 29: internal phone eval completed — 67.2% match rate, but ~47s async delivery flagged as a real-time blocker. Jul 29 (#pod-enrichment): Austin recommended moving forward with a FullEnrich partnership — Haley + Ross owe a reply/decision, not yet sent as of Jul 30.",
     contacts: ["Ben Douablin"],
     website: "fullenrich.com",
   },
