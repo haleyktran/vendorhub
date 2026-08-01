@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-01T01:04:06.045074Z",
+  "generated_at": "2026-08-01T16:03:37.763683Z",
   "waterfall_baseline": {
     "email": 472,
     "phone_subset": 71,
@@ -631,42 +631,6 @@
       },
       "cost_notes": "Contact sales / pay-per-reveal model",
       "zerobounce": null
-    },
-    "apollo": {
-      "matched": 869,
-      "total": 1000,
-      "email_count": 606,
-      "phone_subset": 103,
-      "wf_email": 472,
-      "wf_phone_subset": 71,
-      "rescued_email": 241,
-      "combined_email": 716,
-      "combined_phone": 111,
-      "recall_pct": "93.1%",
-      "avg_latency_ms": 79,
-      "p95_latency_ms": 142,
-      "precision": {
-        "VERIFIED": 470,
-        "EXTRAPOLATED": 100,
-        "UNAVAILABLE": 36
-      },
-      "cost_notes": "Unified credit pool; phone ~8 credits/hit (separate mobile pool)",
-      "zerobounce": {
-        "run_date": "2026-07-31",
-        "emails_validated": 734,
-        "work": {
-          "total": 570,
-          "valid_pct": 73.2,
-          "catchall_pct": 1.2,
-          "bad_pct": 22.8
-        },
-        "personal": {
-          "total": 164,
-          "valid_pct": 82.9,
-          "catchall_pct": 1.2,
-          "bad_pct": 15.9
-        }
-      }
     }
   }
 }
