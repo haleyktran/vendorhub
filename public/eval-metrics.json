@@ -631,6 +631,19 @@
       },
       "cost_notes": "Contact sales / pay-per-reveal model",
       "zerobounce": null
+    },
+    "unify_waterfall": {
+      "matched": 828,
+      "total": 968,
+      "email_count": 695,
+      "phone_subset": 103,
+      "combined_email": null,
+      "recall_pct": null,
+      "avg_latency_ms": 304500,
+      "p95_latency_ms": 1098000,
+      "precision": {},
+      "cost_notes": "Internal \u2014 production cascade (live re-baseline Aug 1, 2026)",
+      "note": "Reference row: current Unify waterfall re-run on same 1,000 contacts. matchRate=any-hit."
     }
   }
 }
