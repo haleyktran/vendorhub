@@ -795,7 +795,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "Jul 30 call confirmed: $8-9K/month (LinkedIn-only) → $15K/month (multi-source, varies by delivery frequency). Jul 27: pricing plans also restructured 10→7, unified 'API Credits' unit, job postings 10x cheaper/request.",
     pricingDetail: "Jul 30 call (Paulius + Kevin Kim + Austin Hughes): $8-9K/mo for LinkedIn-only delivery, scaling to $15K/mo for multi-source. Jul 27 marketing announcement: plan count cut from 10 to 7; all API calls now unified under a single 'API Credits' unit; job posting records cost 10x less per API request. Coverage gap flagged Jul 30: ~10% of 300 sampled active posters had zero posts in the flat file (unexplained); ~3-day median post discovery lag; private profiles not scraped. Bake-off vs MixRank for on-prem LinkedIn post/engagement dataset still in progress.",
     capability: "finds-enrich-dataset",
-    commercialNextStep: "MSA due back to Crosby Fri Jul 31 — confirm 3 outstanding action items first: (1) reseller/end-customer redistribution language matches intended delivery, (2) confirm whether Unify will use Coresignal's Real-Time API (data retention clause), (3) DPA attached and reviewed. Separately, get Paulius's corrected file + 28 zero-coverage profile URLs investigated before re-testing coverage. Aug 3, 10am PDT: new call booked with Paulius — per Austin (Jul 30, greenlit moving forward) and James (Jul 31 negotiating tactic), open with a $2,000/mo counter-ask citing a comparable quote from another vendor to force a match down from the $8-9K/mo quoted Jul 30.",
+    commercialNextStep: "MSA due back to Crosby Fri Jul 31 — confirm 3 outstanding action items first: (1) reseller/end-customer redistribution language matches intended delivery, (2) confirm whether Unify will use Coresignal's Real-Time API (data retention clause), (3) DPA attached and reviewed. Separately, get Paulius's corrected file + 28 zero-coverage profile URLs investigated before re-testing coverage. Aug 3, 10am PDT: new call booked with Paulius — per Austin (Jul 30, greenlit moving forward) and James (Jul 31 negotiating tactic), open with a $2,000/mo counter-ask citing a comparable quote from another vendor to force a match down from the $8-9K/mo quoted Jul 30. Aug 2: Paulius got ahead of the call with prioritization-pyramid detail and a Base-vs-Multi-source profile comparison — useful leverage going into the counter-ask since he still can't explain the ~10% zero-coverage gap and confirmed engagement isn't yet factored into scrape priority.",
     commercialOwner: "haley",
     annualBudgetUsd: 108000,
     budgetStatus: "exploring",
@@ -840,7 +840,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     financeNote: "Both tiers are six-figure commitments ($250K-$400K/yr combined real-time + flat-file). Needs finance review before proceeding given the size.",
     legalStatus: "contract-review",
     resellAgreementStatus: null,
-    legalNotes: "Jul 27: Ben Douablin (FullEnrich) sent two commercial tiers in #partnership-unify-fullenrich in response to Austin's question. Jul 29: Austin recommended partnership in #pod-enrichment; Haley + Ross owe a reply. Jul 30 evening (Slack DM, Austin/Haley): Haley confirmed the redlined MSA is with Byron for review and the redlined DPA is with Crosby for review — both expected back Monday Aug 3, timed to the Aug 3 11am meeting with Byron.",
+    legalNotes: "Jul 27: Ben Douablin (FullEnrich) sent two commercial tiers in #partnership-unify-fullenrich in response to Austin's question. Jul 29: Austin recommended partnership in #pod-enrichment; Haley + Ross owe a reply. Jul 30 evening (Slack DM, Austin/Haley): Haley confirmed the redlined MSA is with Byron for review and the redlined DPA is with Crosby for review — both expected back Monday Aug 3, timed to the Aug 3 11am meeting with Byron. Aug 1: Haley emailed Crosby to confirm receipt of the DPA; Kush (Crosby) confirmed same day it was received and will be prioritized internally (also asked to be left off future chain emails — contact directly via email/Slack instead).",
   },
 
   heyreach: {
@@ -849,16 +849,16 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "Two models under evaluation (Jul 27 call): white label (Unify purchases a HeyReach plan, LinkedIn cost baked in) vs. brand placement (~$79/account rev share, co-branded). White label leaning preferred for predictable bulk pricing.",
     pricingDetail: "Competing head-to-head with Unipile for Unify's native LinkedIn outreach automation integration. White label model bundles LinkedIn cost into a single Unify-purchased plan; brand placement model is revenue-share (~$79/account) with 'powered by HeyReach' branding visible to end customers. Decision pending Unipile-vs-HeyReach testing plan outcome.",
     capability: "platform",
-    commercialNextStep: "Jul 30 9:40pm: Haley sent Ilija a consolidated ask via #heyreach-unify covering pricing proposal, MSA/DPA, and API key access — no reply as of Jul 31. Follow up if no response by EOD Aug 1. Kevin Liang volunteered Jul 31 to run the Unipile+HeyReach POC solo and write up a recommendation, which the pricing decision is gated on.",
+    commercialNextStep: "Jul 30 9:40pm: Haley sent Ilija a consolidated ask via #heyreach-unify covering pricing proposal, MSA/DPA, and API key access. Aug 1: HeyReach replied with the MSA/DPA doc (to copy + comment), an account-registration link for API key setup, and full API/webhooks/campaign-API docs — pricing structure for both white-label and brand-placement options still to follow separately. Next: create the HeyReach account/API key, route the MSA/DPA to Crosby for review, and follow up on the outstanding pricing structure. Kevin Liang volunteered Jul 31 to run the Unipile+HeyReach POC solo and write up a recommendation, which the pricing decision is gated on.",
     commercialOwner: "haley",
     annualBudgetUsd: null,
     budgetStatus: "exploring",
     estimatedAnnualVolume: null,
     coverageNote: "LinkedIn outreach automation platform — evaluated head-to-head vs. Unipile for Unify's native LinkedIn integration",
     financeNote: "Pricing model (white label vs. rev-share) and volume still TBD — no budget line until model is chosen and James's product decision lands.",
-    legalStatus: "not-started",
+    legalStatus: "contract-review",
     resellAgreementStatus: "need-reseller-agreement",
-    legalNotes: "Jul 27: pricing call covered two commercial structures, no agreement drafted. Jul 30 9:40pm: Haley requested MSA/DPA for legal review via #heyreach-unify (bundled with pricing + API key ask) — sent, awaiting Ilija's reply as of Jul 31. No legal docs received yet.",
+    legalNotes: "Jul 27: pricing call covered two commercial structures, no agreement drafted. Jul 30 9:40pm: Haley requested MSA/DPA for legal review via #heyreach-unify (bundled with pricing + API key ask) — sent, awaiting Ilija's reply as of Jul 31. Aug 1: HeyReach (#heyreach-unify) sent the MSA/DPA Google Doc for review (create a copy, add comments) — still needs to be routed to Crosby for formal legal review.",
   },
 
   twilio: {
