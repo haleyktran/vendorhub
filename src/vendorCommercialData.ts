@@ -682,6 +682,24 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     legalNotes: "Apr 22: Intro call done with Drew Clark (VP, London-based). No legal work started — pending trial evaluation and pricing confirmation from Drew.",
   },
 
+  forager: {
+    commitmentTier: "medium",
+    commitmentLabel: "50K credits/yr min (annual)",
+    pricingTldr: "Contract signed. Standard: 50K credits/yr min, mobile=9cr/email=3cr post-discount (~$0.107/phone). Data feed: $85K/yr people, $65K/yr company. Reseller ~4x standard.",
+    pricingDetail: "Credits: mobile=15cr, email=5cr standard list price; negotiated down to 9cr/phone and 3cr/email (confirmed Jun 17, ~$0.107/phone effective). Standard min 50K credits/yr, annual contract, quarterly invoicing (first quarterly ~$8K). Data feed option: $85K/yr people, $65K/yr company. Reseller/OEM pricing ~4x standard. Contract includes mutual indemnification (Unify's side scoped to breach of its own reps), a 2x-annual Super Cap on Excluded Claims (nothing left uncapped), and a Pricing Floor clause: Unify may not resell Forager-sourced data below Forager's own per-record API price, waived only if (i) Unify doesn't publicly expose its data-sourcing waterfall to end users, and (ii) end users can't back into Forager's per-record cost.",
+    capability: "enrich-only",
+    commercialNextStep: "Aug 7: Ross flagged that a planned public 'enrichment settings' page (listing providers by name, launching later this month) may conflict with the Pricing Floor clause's no-public-waterfall-exposure condition. Pricing itself is fine (Unify charges above Forager's cost) — Haley checking with legal on the exposure condition; likely fix is to redact Forager individually from the public list rather than renegotiate. Aug 3: Forager also moved to the front of the production phone waterfall (highest-priced but most-accurate vendor) per customer feedback on phone data quality; Emma gathering data-quality stats to support customer comms.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "signed",
+    estimatedAnnualVolume: null,
+    coverageNote: "Phone (mobile) + personal email enrichment — #1 mobile provider on Clay, now first in Unify's production phone waterfall",
+    financeNote: "Contract signed; standard min 50K credits/yr, quarterly invoicing. Jun–Jul 2026 invoicing friction (accounting delay on first quarterly payment) since resolved.",
+    legalStatus: "contract-signed",
+    resellAgreementStatus: "ready-to-sign",
+    legalNotes: "Order Form, Terms & Conditions, and DPA all finalized and signed (Jun 2026). Aug 7: Pricing Floor clause (no resale below Forager's per-record price unless the data-sourcing waterfall isn't publicly exposed) flagged as a possible conflict with a planned public enrichment-provider list. Haley reviewing with legal — leaning toward redacting Forager specifically from the public list rather than reopening the clause.",
+  },
+
   trigify: {
     commitmentTier: "none",
     commitmentLabel: "PAYG (no minimum)",
@@ -831,7 +849,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "Two tiers from Ben Douablin (Jul 27): Option 1 = $100K real-time + $200K flat-file add-on ($0.018/credit). Option 2 = $250K real-time + $150K flat-file ($0.016/credit). Jul 29: Austin recommends partnership — decision owed.",
     pricingDetail: "Credits: 1 = verified work email, 10 = mobile phone, 3 = personal email. FullEnrich is pushing to keep email/phone delivery API-only (waterfall-based) rather than flat-file, citing freshness/coverage advantages of the real-time API over a static dataset. Jul 29 (#pod-enrichment): FullEnrich phone eval completed — 67.2% match rate, but async delivery (~47s) is a real-time blocker per internal eval notes.",
     capability: "enrich-only",
-    commercialNextStep: "Jul 30 evening: Haley sent Byron the redlined MSA (he's reviewing) and sent the redlined DPA to Crosby for review — both expected back by Monday Aug 3. Meeting booked with Byron Aug 3, 11-11:30am PDT to discuss. James (Jul 31) wants this signed next week. Still need to resolve the ~47s async latency blocker before committing to either tier. Give Ross a heads-up once contract work formally kicks off — integration work is slotted in after the enrichment-provider-controls project (mid-August start). Aug 3: the 11am meeting with Byron was held per calendar confirmation, but no transcript synced — follow up directly with Byron if outcome detail is needed. Aug 4 10:08am: Byron confirmed via Slack DM he'll address the MSA as soon as he receives it — clarify with Byron whether the redlined MSA Haley sent Jul 30 actually reached him, since his message reads as still waiting on it.",
+    commercialNextStep: "Aug 6: Byron sent DPA response — deal is '95% there' with 2 remaining items: (1) 2x-contract-value cap on the indemnity liability (vs. unlimited), (2) FullEnrich handling data subject requests directly with a global suppression list, notifying Unify after the fact. Aug 7: Haley confirmed with Varad (data team) that the DSR ask is acceptable — matches how Unify already operates (DSRs received directly are never passed to vendors). Still need a decision on the 2x liability cap ask. All three docs now in final rounds: MSA (Unify redlined Jul 30, FullEnrich reviewing), DPA (FullEnrich responded Aug 6, Unify reviewing), Reseller Agreement (Unify redlined + sent Aug 6, FullEnrich reviewing). Also still need to resolve the ~47s async latency blocker before committing to either pricing tier. Give Ross a heads-up once contract work formally kicks off — integration work is slotted in after the enrichment-provider-controls project (mid-August start).",
     commercialOwner: "haley",
     annualBudgetUsd: null,
     budgetStatus: "exploring",
@@ -839,8 +857,8 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     coverageNote: "Work email + mobile + personal email enrichment — key waterfall supplement vendor",
     financeNote: "Both tiers are six-figure commitments ($250K-$400K/yr combined real-time + flat-file). Needs finance review before proceeding given the size.",
     legalStatus: "contract-review",
-    resellAgreementStatus: null,
-    legalNotes: "Jul 27: Ben Douablin (FullEnrich) sent two commercial tiers in #partnership-unify-fullenrich in response to Austin's question. Jul 29: Austin recommended partnership in #pod-enrichment; Haley + Ross owe a reply. Jul 30 evening (Slack DM, Austin/Haley): Haley confirmed the redlined MSA is with Byron for review and the redlined DPA is with Crosby for review — both expected back Monday Aug 3, timed to the Aug 3 11am meeting with Byron. Aug 1: Haley emailed Crosby to confirm receipt of the DPA; Kush (Crosby) confirmed same day it was received and will be prioritized internally (also asked to be left off future chain emails — contact directly via email/Slack instead). Aug 4: Byron (Slack DM) said he'll address the MSA once received — status of whether the redlined MSA actually reached him is unclear, needs a direct follow-up.",
+    resellAgreementStatus: "sent-redlines",
+    legalNotes: "Jul 27: Ben Douablin (FullEnrich) sent two commercial tiers in #partnership-unify-fullenrich in response to Austin's question. Jul 29: Austin recommended partnership in #pod-enrichment; Haley + Ross owe a reply. Jul 30 evening (Slack DM, Austin/Haley): Haley confirmed the redlined MSA is with Byron for review and the redlined DPA is with Crosby for review — both expected back Monday Aug 3, timed to the Aug 3 11am meeting with Byron. Aug 1: Haley emailed Crosby to confirm receipt of the DPA; Kush (Crosby) confirmed same day it was received and will be prioritized internally (also asked to be left off future chain emails — contact directly via email/Slack instead). Aug 4: Byron (Slack DM) said he'll address the MSA once received — status of whether the redlined MSA actually reached him is unclear, needs a direct follow-up. Aug 6, 10:19am (Slack DM): Byron sent the DPA + legal response, 95% done — 2 open items: 2x-contract-value liability cap on the indemnity (vs. unlimited), and FullEnrich wanting to handle DSRs directly with a global suppression list rather than requiring Unify's sign-off. Byron also requested reseller-agreement redlines; Haley sent them same day (Aug 6). Aug 7, 11:04am (Slack DM, Varad): Haley + Varad agreed the DSR ask is acceptable given Unify never passes direct DSRs to vendors today. Liability cap ask still needs an internal decision.",
   },
 
   heyreach: {
