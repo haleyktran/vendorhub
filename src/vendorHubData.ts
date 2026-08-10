@@ -189,6 +189,7 @@ export const vendorContacts: VendorContact[] = [
       "API: REST or GraphQL; enrichment endpoint only; 5-8 key fields per company",
       "Apr 16: Scout 2.0 launched — Max emailed announcing major new product update. Daily driver for most power users; use cases expanded well beyond original scope.",
       "Apr 29: Follow-up 'Harmonic <> Unify' call with Mike Palmer + Eric (harmonic.ai) done — calendar confirmed attendees: Mike Palmer, Eric (harmonic.ai), Haley, Alex (Unify). Transcript unavailable — follow up on contract amendment status and no-caching constraint discussion.",
+      "Aug 8: Generic 'Harmonic Checkin' email from Carter (Harmonic success team, not Mike/Eric) — re-engagement outreach offering a 15/30-min activation session. No new commercial or contract info; contract amendment status from Apr 29 still outstanding.",
       "Granola: https://notes.granola.ai/d/cf73611b-10dc-425e-b036-5f64d2330c62",
     ],
     overallStatus: "active",
