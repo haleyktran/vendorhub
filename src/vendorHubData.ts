@@ -2245,4 +2245,37 @@ export const vendorContacts: VendorContact[] = [
     contacts: ["Julien — julien@unipile.com"],
     slackChannel: "#product-linkedin-automation",
   },
+
+  // ── AUG 17 NEW VENDOR ────────────────────────────────────────────────────────
+
+  {
+    id: "captaindata",
+    name: "Captain Data",
+    tier: null,
+    category: "LinkedIn Data · Identity Resolution",
+    lastContactDate: "2026-08-17",
+    emailStatus: "none",
+    signal:
+      "Already-integrated LinkedIn data vendor — CaptainDataIdentityID is used for LinkedIn slug resolution in the enrichment waterfall (referenced Aug 10 in Apify's notes re: the Edges-vs-Apify decision). Aug 17: Ross/Agnes opened a legal question on whether caching Captain Data-sourced LinkedIn data is permitted under the existing contract. Haley only has Captain Data's public ToS/DPA on hand and asked Austin whether Unify has an actual negotiated contract (ADL might have it). Plan per Aug 17 legal-review sync with Crosby: send ToS/DPA + a caching use-case summary to Crosby today; ToS doesn't explicitly mention caching (good sign) — if Crosby clears it, green light expected tomorrow morning, otherwise negotiate caching rights directly with Captain Data. Separate open question: whether anonymous slugs reliably map 1:1 to a LinkedIn person over time (vanity slug changes are an edge case).",
+    hasApiKey: true,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "cd-1", text: "Send Captain Data ToS/DPA + caching use-case summary to Crosby for a legal read", owner: "me", done: false },
+      { id: "cd-2", text: "Locate the actual negotiated Captain Data contract (ADL may have it) — only public ToS/DPA on hand today", owner: "me", done: false },
+      { id: "cd-3", text: "Confirm with Captain Data whether anonymous slugs map 1:1 to a LinkedIn person (vanity slug edge case)", owner: "me", done: false },
+      { id: "cd-4", text: "Post open legal items summary in #pod-enrichment", owner: "me", done: false },
+    ],
+    notes: [
+      "Category: LinkedIn Data — already integrated, not a new vendor eval",
+      "Already integrated — CaptainDataIdentityID used for the LinkedIn slug endpoint in the enrichment waterfall (per Aug 10 #pod-enrichment note on the Apify/Edges decision)",
+      "Aug 17 (Slack DM, Haley/Austin): Haley asked whether Unify has negotiated terms with Captain Data and an actual contract copy — only has public ToS/DPA; ADL might have the real one",
+      "Aug 17 (Slack group DM, Haley/Ross/Agnes): Haley flagged needing clarification on status quo vs. proposed state before emailing Crosby on the caching question",
+      "Aug 17 (Granola, Legal Review w/ Crosby): sending Captain Data ToS/DPA to Crosby today with a caching use-case summary; ToS doesn't explicitly mention caching (good sign). If cleared, green light expected tomorrow AM; else negotiate directly with Captain Data",
+      "Aug 17: slug-to-person mapping reliability (vanity slug changes over time) still an open question to confirm with Captain Data",
+      "Related: Edges is being evaluated as an alternative for LinkedIn slug resolution ahead of Apify (see Apify notes, Aug 10) — Captain Data is the incumbent/already-integrated option",
+    ],
+    overallStatus: "active",
+    commercialStatus: "review",
+    contacts: [],
+  },
 ]
