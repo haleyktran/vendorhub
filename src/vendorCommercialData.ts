@@ -951,4 +951,22 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     legalNotes: "Aug 17: Ross/Agnes raised whether caching Captain Data data is allowed under the current contract. Haley only has the public ToS/DPA on hand — asked Austin/ADL for the actual negotiated contract. Sending ToS/DPA + use case to Crosby today; if cleared, green light expected tomorrow AM, otherwise Haley negotiates caching rights directly with Captain Data.",
   },
 
+  knock2: {
+    commitmentTier: "low",
+    commitmentLabel: "$150/mo testing",
+    pricingTldr: "Testing starts at $150/mo, no annual contract. API pricing is per-identification (cents/match) across 25K-1M+ tiers — custom pricing likely needed at Unify's volume.",
+    pricingDetail: "Aug 19 meeting: testing tier starts at $150/mo with no annual commitment. API pricing is metered per-identification (cents per match), with published tiers from 25K matches up to 1M+; Unify's expected volume will likely require a custom/higher tier quote from the vendor. Multi-tenant architecture (Unify as parent account, customers as child accounts) is central to the pricing model — same structure competitive vendor RB2B does not offer.",
+    capability: "platform",
+    commercialNextStep: "Deploy test pixel/script on Unify's own site + 1-2 partner sites to generate direct comparison data vs. RB2B. Await vendor's legal docs + updated pricing (partnership agreement, white-label addendum, API pricing PDF) before scoping a commercial commitment.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Contact-level website de-anonymization — multi-tenant (parent/child accounts), competitive with RB2B",
+    financeNote: "Pre-commercial — testing tier only ($150/mo, no annual). Custom pricing needed once Unify's identification volume is known.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "Aug 19: Standard ToS covers the test deployment; API pricing and white-label domain use require separate agreements not yet in hand. Haley requested all legal docs (partnership agreement, white-label addendum, API pricing PDF) proactively — awaiting vendor response.",
+  },
+
 }
