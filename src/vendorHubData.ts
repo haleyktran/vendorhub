@@ -2031,6 +2031,7 @@ export const vendorContacts: VendorContact[] = [
       "MCP server available for Claude integration",
       "Pierre's post-meeting actions: add 10K trial credits to account; CTO to increase rate limits",
       "Haley's post-meeting actions: test 1K contacts via bulk search API; email Pierre questions",
+      "Aug 20: Pierre emailed a service-instability notice (partial network outage at one of Icypeas's cloud providers, causing errors/slow loading) followed same morning by a status update confirming the issue was fixed, service recovering, and no data loss.",
     ],
     overallStatus: "trial",
     commercialStatus: null,
