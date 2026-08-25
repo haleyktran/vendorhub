@@ -248,6 +248,37 @@ export const vendorContacts: VendorContact[] = [
     pricing: "$15K upfront commit (vs $80K std); per-credit pricing TBD at higher rate",
   },
 
+  {
+    id: "sixsense",
+    name: "6sense",
+    tier: "P0",
+    category: "Website Visitor · Company Identification",
+    lastContactDate: "2026-08-24",
+    emailStatus: "needs-response",
+    emailSubject: "6sense flagging unlicensed ~6M calls/mo usage — no signed OEM order form since May 2025; requesting pricing call",
+    signal:
+      "Already-live production dependency, not a new eval: 6sense's Company Identification API is one of three providers (alongside Demandbase and Clearbit) powering Unify's website-visitor deanonymization waterfall (per #unify-graphon, Aug 19). Aug 24: Micki Howl (6sense) emailed Austin directly — Unify is consuming the API at ~6M calls/month (last quarter), but there is no current signed OEM order form reflecting that usage; last invoice on file dates to May 2025. Micki wants to put a properly structured agreement in place with volume tiers matched to actual/growing consumption. Austin looped in Haley (BizOps) and Gwen (scheduling) same day. Slack DM (Austin, Aug 24): asked Gwen to schedule the call for the first week after Labor Day — 'too many things going on before then.'",
+    hasApiKey: true,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "6s-1", text: "Gwen to schedule 30-min call with Micki Howl for first week after Labor Day (per Austin, Aug 24)", owner: "me", done: false },
+      { id: "6s-2", text: "Come prepared with Unify's usage/growth trajectory — Micki wants to price for where volume is headed, not just today's ~6M calls/mo", owner: "me", done: false },
+      { id: "6s-3", text: "Review 6sense's proposed volume-tier pricing structure once shared and reconcile against the 'signed ~mid-2026' contract note from the Aug 20 CreatorIQ onboarding doc (inconsistent with 'no signed OEM order form' — needs clarification)", owner: "me", done: false },
+    ],
+    notes: [
+      "Category: Website visitor deanonymization / company identification — NOT a new vendor eval, already in production",
+      "One of 3 providers (6sense, Demandbase, Clearbit) in Unify's live company-level deanonymization waterfall; customers can also BYOK if they already have 6sense/Clearbit/Demandbase",
+      "Aug 19 (#unify-graphon, Sean Oen): best-in-class deanonymization rates of 65-85% on average via the 3-provider waterfall; no head-to-head doc vs RB2B, but anecdotal 3-4x lift claims",
+      "Aug 20 (#onboarding-operations, CreatorIQ handoff doc): '6sense signed ~mid-2026, not fully connected to Salesforce' — contract-status detail that appears to conflict with 6sense's own Aug 24 claim of no current signed order form; needs reconciling",
+      "Aug 21 (#project-cost-optimization, Varad): 6sense flagged as one of the 'older vendors (Demandbase, 6sense, Clearbit) not yet tracked' for cost visibility; cost data requested ahead of Monday metrics review",
+      "Aug 24 (Gmail): Micki Howl (micki.howl@6sense.com) — ~6M API calls/month last quarter, no current signed OEM order form, last invoice on file from May 2025. CC'd Gabriel Valdez (6sense), jq@6sense.com, and eschori@insightpartners.com (Insight Partners).",
+      "This is a legal/compliance exposure item (unlicensed high-volume usage), not a routine renewal — treat with urgency alongside the scheduling ask.",
+    ],
+    overallStatus: "active",
+    commercialStatus: "review",
+    contacts: ["Micki Howl — micki.howl@6sense.com", "Gabriel Valdez — gabriel.valdez@6sense.com", "JQ — jq@6sense.com"],
+  },
+
   // ── P1 ────────────────────────────────────────────────────────────────────
 
   {

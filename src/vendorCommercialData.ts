@@ -198,6 +198,26 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     legalNotes: "Mar 31: NEW deal — $15K upfront. Kathryn confirming per-credit pricing. Haley to send legal agreement template to Kathryn. Also need to set up shared Slack channel. Apr 22: Contract confirmed SIGNED per internal data vendor workstream update (#product-on-prem-data).",
   },
 
+  // ── 🔵 REVIEW ────────────────────────────────────────────────────────────
+
+  sixsense: {
+    commitmentTier: null,
+    commitmentLabel: "TBD — volume-tiered",
+    pricingTldr: "No current signed OEM order form despite ~6M API calls/mo already in production; 6sense proposing volume-tiered pricing matched to actual usage.",
+    pricingDetail: "6sense's Company Identification API is already live in Unify's production website-visitor waterfall (one of 3 providers alongside Demandbase and Clearbit), consumed at ~6M calls/month last quarter per 6sense's own usage data. Last invoice on file dates to May 2025. Micki Howl (6sense) reached out directly to Austin Aug 24, 2026 to formalize a proper agreement — volume tiers matched to consumption, predictable pricing as usage grows. No pricing structure proposed yet; call to be scheduled.",
+    capability: "enrich-only",
+    commercialNextStep: "Gwen to schedule 30-min call with Micki Howl for first week after Labor Day (per Austin, Aug 24). Bring usage/growth trajectory; get 6sense's proposed volume-tier structure and negotiate. Also reconcile against the Aug 20 CreatorIQ handoff note claiming '6sense signed ~mid-2026' — conflicts with 6sense's own 'no current signed order form' claim.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: 72000000,
+    coverageNote: "Company identification / website-visitor deanonymization API — one of 3 providers (6sense, Demandbase, Clearbit) in production waterfall",
+    financeNote: "Currently unbilled/under-contracted despite heavy live production usage (~6M calls/mo) — real financial and legal exposure until a new agreement (or back-billing) is negotiated. Urgent, not a routine renewal.",
+    legalStatus: "not-started",
+    resellAgreementStatus: "need-reseller-agreement",
+    legalNotes: "No signed OEM order form currently reflects live usage; last invoice on file from May 2025. 6sense (Micki Howl) requested a new agreement with volume tiers as of Aug 24, 2026 email to Austin. Flagged as a compliance/legal exposure item given the usage-without-contract gap — prioritize over standard-cadence vendor legal work.",
+  },
+
   // ── 🟡 WAIT ──────────────────────────────────────────────────────────────
 
   charmio: {
