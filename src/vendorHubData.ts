@@ -2102,6 +2102,31 @@ export const vendorContacts: VendorContact[] = [
   },
 
   {
+    id: "autobound",
+    name: "Autobound",
+    tier: null,
+    category: "AI Sales Copy / Signal-Search Integration",
+    lastContactDate: "2026-08-27",
+    emailStatus: "none",
+    signal:
+      "Active paid integration (not a new eval) — AI-generated sales copy / signal-search vendor; signal-search host-functions run live in Unify's chat product under namespace='autobound'. Billed via Stripe invoice + Ramp card on Autobound's standard clickthrough ToS — no negotiated MSA on file. Aug 24-25 (Gmail, Gwen/billing): Gwen asked Haley to confirm whether Autobound is on clickthrough terms with no specific end date; Haley confirmed yes. Aug 27, 10am PDT: 'Autobound <> Unify Onboarding Check-In' held per calendar (daniel@autobound.ai, kyle@autobound.ai, Austin, Haley) — Granola transcript not yet synced, follow up for outcome detail.",
+    hasApiKey: true,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "ab-1", text: "Follow up on Aug 27 Onboarding Check-In outcome once Granola transcript syncs (or ask attendees directly)", owner: "me", done: false },
+      { id: "ab-2", text: "Confirm with Gwen/billing whether clickthrough terms (no end date) are acceptable long-term or whether a negotiated MSA should be pursued", owner: "me", done: false },
+    ],
+    notes: [
+      "Category: AI Sales Copy / Signal-Search Integration — active paid integration, not a vendor eval",
+      "Billing: Stripe invoices + Ramp card payment; clickthrough ToS, no negotiated contract on file, no specific end date (confirmed by Haley to Gwen, Aug 25)",
+      "Aug 27 10am PDT: Autobound <> Unify Onboarding Check-In held (daniel@autobound.ai, kyle@autobound.ai, Austin, Haley) — transcript unavailable, follow up for details",
+    ],
+    overallStatus: "active",
+    commercialStatus: "signed",
+    contacts: ["Daniel — daniel@autobound.ai", "Kyle — kyle@autobound.ai"],
+  },
+
+  {
     id: "coresignal",
     name: "Coresignal",
     tier: "P1",
