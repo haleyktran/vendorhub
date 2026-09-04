@@ -2132,7 +2132,7 @@ export const vendorContacts: VendorContact[] = [
     name: "Coresignal",
     tier: "P1",
     category: "Company Data · People Data · LinkedIn Posts",
-    lastContactDate: "2026-08-31",
+    lastContactDate: "2026-09-04",
     emailStatus: "needs-response",
     emailSubject: "Aug 31: Unify accounting confirmed receipt of Coresignal's 3-month prepayment proforma invoice — Haley still needs to sign the DocuSign doc; payment processing + data delivery pending",
     signal:
@@ -2207,6 +2207,7 @@ export const vendorContacts: VendorContact[] = [
       "Contacts: Paulius Borkys (primary), Karolis K. (separate rep thread, unanswered as of last check)",
       "Sep 2, 2:43pm PDT (#external-unify-coresignal, Varad Tupe): technical data-delivery handshake begun — Varad set up S3 delivery into Unify's ingestion bucket and requested Coresignal's AWS account ID (or IAM principal ARN) plus STS External ID (if used) to configure the cross-account role. Integration work now underway.",
       "Sep 3, 10:35am EDT (#pod-enrichment, 'New vendor contracts' thread): ADL flagged that Ramp's contract-management system is missing the signed Coresignal contract PDF (needed for finance to approve invoices going forward, per a new proposed process where Haley uploads signed contracts to Ramp for accounting to reference). Haley tested forwarding the Coresignal contract to contracts@ramp.com and believes it matched correctly — confirming with ADL. Same thread flagged FullEnrich's contract is also missing from Ramp (Austin signed and holds the copies; Haley to retrieve and forward).",
+      "Sep 4, 1:38pm EDT (#pod-enrichment, same 'New vendor contracts' thread): Haley confirmed resolution — Coresignal now shows correctly in Ramp's contracts tab, created via the forward to contracts@ramp.com. Alex Lucey (ADL) acknowledged ('awesome thanks') but flagged he's not an expert and asked Gwen to confirm it's set up right on Tuesday — treat as resolved-pending-Gwen's-confirmation, not fully closed.",
     ],
     overallStatus: "active",
     commercialStatus: "committed",
