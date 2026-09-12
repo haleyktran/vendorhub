@@ -1931,10 +1931,10 @@ export const vendorContacts: VendorContact[] = [
     name: "Forager.ai",
     tier: null,
     category: "People Data · Contact Enrichment · Phone",
-    lastContactDate: "2026-04-25",
-    emailStatus: "needs-response",
+    lastContactDate: "2026-09-11",
+    emailStatus: "waiting-on-them",
     signal:
-      "Meeting done Apr 20 with Peter Friis. #1 mobile provider on Clay (quality focus), also #1 personal email on Clay. ~100M mobiles (~30M US, rest global); releasing 200–400M more in coming months. 800M people profiles + 65M companies (data feed). Credits: mobile=15cr, email=5cr; standard min 50K credits/yr (annual contract). Data feed: $85K/yr people, $65K/yr company. Reseller pricing ~4x standard. Apr 21: Account confirmed active, API key available in Account Settings. Apr 23: Follow-up email — 'free credits are waiting' (trial credits not yet claimed). Apr 25: Final check-in email — 'One last thing before I go…' offering test credits in exchange for a short chat.",
+      "Meeting done Apr 20 with Peter Friis. #1 mobile provider on Clay (quality focus), also #1 personal email on Clay. ~100M mobiles (~30M US, rest global); releasing 200–400M more in coming months. 800M people profiles + 65M companies (data feed). Credits: mobile=15cr, email=5cr; standard min 50K credits/yr (annual contract). Data feed: $85K/yr people, $65K/yr company. Reseller pricing ~4x standard. Apr 21: Account confirmed active, API key available in Account Settings. Apr 23: Follow-up email — 'free credits are waiting' (trial credits not yet claimed). Apr 25: Final check-in email — 'One last thing before I go…' offering test credits in exchange for a short chat. NOTE: this vendor is now well past trial stage — first placed in production phone waterfall Aug 3, currently front-of-waterfall (highest-priced, most-accurate phone source). Full Aug–Sep contract/billing/usage history tracked in contactVendorData.ts (id: forager) and vendorCommercialData.ts (id: forager); summary below is the latest checkpoint only. Sep 11 (Granola, pricing-comparison call w/ Diana Carboni held): September usage forecasting to ~900K credits vs. the 375K/mo contracted plan (nearly 2.5x over). Team decided to monitor through September and revisit tier upgrade in mid-October rather than commit now. A ~$1M/mo credit tier was discussed as offering ~15% lower cost per credit than current. Diana to send formal tier pricing + invoice-timing details as follow-up — awaiting that.",
     hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
@@ -1959,6 +1959,7 @@ export const vendorContacts: VendorContact[] = [
       "Apr 25: Final check-in email — 'One last thing before I go…' — offering test credits in exchange for short chat; trial credits still unclaimed",
       "Prior contact: Ahmed Abdelaziz (ahmed@forager.ai) was Gwen's prior contact",
       "Aug 19 (#enrich-alerts, Datadog): linkedinslug/person_email_async lookup alerted at 99.7% failure + latency spike to 90-237s; Ross's follow-up traced this to a broader enrich-worker Temporal slowness episode (also hit Prospeo), not Forager-specific — see contactVendorData for full detail.",
+      "Sep 11 (Granola, pricing-comparison call, Diana Carboni): Sep usage forecasting ~900K credits vs. 375K/mo contracted plan; agreed to monitor through Sep and reassess in mid-Oct. ~$1M/mo tier discussed (~15% lower cost/credit) — Diana to send formal tier pricing + invoice-timing follow-up.",
     ],
     overallStatus: "active",
     commercialStatus: "wait",
