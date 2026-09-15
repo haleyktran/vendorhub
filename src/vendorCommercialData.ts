@@ -218,6 +218,24 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     legalNotes: "No signed OEM order form currently reflects live usage; last invoice on file from May 2025. Sep 9 meeting: 2023 MSA may still be valid — open question whether an order form/amendment is sufficient or a new MSA is required; Unify wants terms reviewed against current legal posture. Sep 10: 6sense's legal team now drafting an updated agreement to send for review — first concrete legal-doc movement on this account.",
   },
 
+  demandbase: {
+    commitmentTier: null,
+    commitmentLabel: "TBD",
+    pricingTldr: "No pricing/contract terms known yet. Meeting scheduled Sep 21 — may parallel the 6sense OEM-formalization conversation given the shared waterfall category.",
+    pricingDetail: "Demandbase's Company Identification API is already live in Unify's production website-visitor waterfall (one of 3 providers alongside 6sense and Clearbit — see 6sense entry). No usage audit or contract review has surfaced yet for Demandbase specifically. Sep 21 meeting (Austin, Haley + Alexandra Bonavota/D. Fiori from Demandbase) may be the first step toward a usage/contract check similar to the 6sense workstream.",
+    capability: "enrich-only",
+    commercialNextStep: "Attend Sep 21 'Unify <> Demandbase' meeting — confirm whether this is a routine check-in or a usage/contract formalization conversation. Audit actual Demandbase call volume against any signed order form once purpose is clear.",
+    commercialOwner: "haley",
+    annualBudgetUsd: null,
+    budgetStatus: "exploring",
+    estimatedAnnualVolume: null,
+    coverageNote: "Company identification / website-visitor deanonymization API — one of 3 providers (6sense, Demandbase, Clearbit) in production waterfall",
+    financeNote: "Contract/usage status unknown — worth checking given the 6sense OEM gap (unbilled high-volume usage) surfaced the same risk pattern in this vendor category.",
+    legalStatus: null,
+    resellAgreementStatus: "need-to-review",
+    legalNotes: "No legal review yet. Sep 21 meeting may clarify contract status — check for a parallel to 6sense's unbilled-usage exposure.",
+  },
+
   // ── 🟡 WAIT ──────────────────────────────────────────────────────────────
 
   charmio: {

@@ -285,6 +285,32 @@ export const vendorContacts: VendorContact[] = [
     contacts: ["Micki Howl — micki.howl@6sense.com", "Gabriel Valdez — gabriel.valdez@6sense.com", "JQ — jq@6sense.com"],
   },
 
+  {
+    id: "demandbase",
+    name: "Demandbase",
+    tier: "P0",
+    category: "Website Visitor · Company Identification",
+    lastContactDate: "2026-09-14",
+    emailStatus: "none",
+    signal:
+      "Already-live production dependency, not a new eval: Demandbase's Company Identification API is one of three providers (alongside 6sense and Clearbit) powering Unify's website-visitor deanonymization waterfall (see 6sense entry for shared waterfall/legal-exposure context). Sep 14 (Calendar): 'Unify <> Demandbase' meeting confirmed for Mon Sep 21, 2026, 12:00-12:30pm PT (Google Meet). Attendees: Austin Hughes (organizer), Alexandra Bonavota (abonavota@demandbase.com, accepted), D. Fiori (dfiori@demandbase.com, tentative), Haley (accepted). No pricing, contract, or usage detail known yet — purpose not stated in the invite; given the timing and shared category with the 6sense OEM-formalization conversation, this may be a similar usage/contract check-in.",
+    hasApiKey: true,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "db-1", text: "Attend 'Unify <> Demandbase' meeting Mon Sep 21, 12:00-12:30pm PT with Austin + Alexandra Bonavota/D. Fiori — confirm purpose (routine check-in vs. usage/contract review like 6sense)", owner: "me", done: false },
+      { id: "db-2", text: "Once purpose is confirmed, audit actual Demandbase call volume vs. any signed order form — same exposure pattern surfaced with 6sense (unbilled high-volume usage)", owner: "me", done: false },
+    ],
+    notes: [
+      "Category: Website visitor deanonymization / company identification — NOT a new vendor eval, already in production",
+      "One of 3 providers (6sense, Demandbase, Clearbit) in Unify's live company-level deanonymization waterfall; see 6sense entry (Aug 19, #unify-graphon) for the 65-85% blended de-anon rate context",
+      "Sep 14 (Calendar): meeting created by Gwen — 'Unify <> Demandbase,' Mon Sep 21, 12:00-12:30pm PT, Google Meet (meet.google.com/gfv-ahyo-kkr). Attendees: Austin Hughes (accepted), Alexandra Bonavota (accepted), D. Fiori (tentative), Haley (accepted).",
+      "No commercial/contract/usage detail known yet — confirm scope on the call before assuming this parallels 6sense's unbilled-usage exposure.",
+    ],
+    overallStatus: "active",
+    commercialStatus: "review",
+    contacts: ["Alexandra Bonavota — abonavota@demandbase.com", "D. Fiori — dfiori@demandbase.com"],
+  },
+
   // ── P1 ────────────────────────────────────────────────────────────────────
 
   {
