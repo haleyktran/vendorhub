@@ -171,6 +171,7 @@ export const vendorContacts: VendorContact[] = [
       { id: "harm-4", text: "Review OpenAPI spec dropped by Mike: https://api.harmonic.ai/openapi.json", owner: "me", done: false },
       { id: "harm-5", text: "Join 30-min Zoom call with Mike Palmer Thu Apr 9 1–1:30pm PDT (trial API key kickoff)", owner: "me", done: true },
       { id: "harm-6", text: "Run latency tests and API evaluation using Harmonic trial credentials (Austin + Kunal active)", owner: "me", done: false },
+      { id: "harm-7", text: "Attend 'Haley and Mike Palmer' 30-min Zoom call Thu Sep 17, 2026 1-1:30pm PDT (booked via Calendly by Mike, Sep 16) — likely follow-up on contract amendment status", owner: "me", done: false },
     ],
     notes: [
       "Slack channel: #harmonic-unify",
@@ -190,6 +191,7 @@ export const vendorContacts: VendorContact[] = [
       "Apr 16: Scout 2.0 launched — Max emailed announcing major new product update. Daily driver for most power users; use cases expanded well beyond original scope.",
       "Apr 29: Follow-up 'Harmonic <> Unify' call with Mike Palmer + Eric (harmonic.ai) done — calendar confirmed attendees: Mike Palmer, Eric (harmonic.ai), Haley, Alex (Unify). Transcript unavailable — follow up on contract amendment status and no-caching constraint discussion.",
       "Aug 8: Generic 'Harmonic Checkin' email from Carter (Harmonic success team, not Mike/Eric) — re-engagement outreach offering a 15/30-min activation session. No new commercial or contract info; contract amendment status from Apr 29 still outstanding.",
+      "Sep 16 (Calendar invite from mike@harmonic.ai): new 30-min Zoom meeting booked — 'Haley and Mike Palmer,' Thu Sep 17, 2026, 1-1:30pm PDT. Purpose not stated in invite; likely follow-up on the still-outstanding contract amendment status (no-caching constraint, liability cap, indemnification redlines) — confirm on the call.",
       "Granola: https://notes.granola.ai/d/cf73611b-10dc-425e-b036-5f64d2330c62",
     ],
     overallStatus: "active",
@@ -253,9 +255,9 @@ export const vendorContacts: VendorContact[] = [
     name: "6sense",
     tier: "P0",
     category: "Website Visitor · Company Identification",
-    lastContactDate: "2026-09-10",
+    lastContactDate: "2026-09-16",
     emailStatus: "needs-response",
-    emailSubject: "Sep 10: John Queally (6sense) sent formal pricing proposal post-meeting — $180K/mo for 6M calls, needs review + response",
+    emailSubject: "Sep 16: John Queally sent 6sense's draft legal agreement (from their legal team) — Haley to review before responding to the $180K/mo proposal",
     signal:
       "Already-live production dependency, not a new eval: 6sense's Company Identification API is one of three providers (alongside Demandbase and Clearbit) powering Unify's website-visitor deanonymization waterfall (per #unify-graphon, Aug 19). Aug 24: Micki Howl (6sense) emailed Austin directly — Unify is consuming the API at ~6M calls/month (last quarter), but there is no current signed OEM order form reflecting that usage; last invoice on file dates to May 2025. Micki wants to put a properly structured agreement in place with volume tiers matched to actual/growing consumption. Austin looped in Haley (BizOps) and Gwen (scheduling) same day. Slack DM (Austin, Aug 24): asked Gwen to schedule the call for the first week after Labor Day — 'too many things going on before then.'",
     hasApiKey: true,
@@ -265,7 +267,8 @@ export const vendorContacts: VendorContact[] = [
       { id: "6s-4", text: "Attend Zoom meeting with Micki Howl — confirmed on calendar for Wed Sep 9, 2026, 2:30-2:55pm PT ('6sense x Unify — formalizing our API relationship'; attendees: Austin, Gwen, Eitan Schori (Insight Partners), Haley, John Queally (6sense), Micki Howl organizer)", owner: "me", done: true },
       { id: "6s-2", text: "Come prepared with Unify's usage/growth trajectory — Micki wants to price for where volume is headed, not just today's ~6M calls/mo", owner: "me", done: true },
       { id: "6s-3", text: "Review 6sense's proposed volume-tier pricing structure once shared and reconcile against the 'signed ~mid-2026' contract note from the Aug 20 CreatorIQ onboarding doc (inconsistent with 'no signed OEM order form' — needs clarification)", owner: "me", done: false },
-      { id: "6s-5", text: "Review John Queally's Sep 10 formal pricing proposal ($180K/mo for 6M calls, $20K/1M overage) with finance/legal and respond — audit active vs. churned-customer-driven API volume first per meeting takeaway", owner: "me", done: false },
+      { id: "6s-5", text: "Review John Queally's Sep 10 formal pricing proposal ($180K/mo for 6M calls, $20K/1M overage) with finance/legal and respond — audit active vs. churned-customer-driven API volume first per meeting takeaway", owner: "me", done: true },
+      { id: "6s-6", text: "Review 6sense's Sep 16 draft legal agreement (sent by John Queally, from their legal team) before responding to the pricing proposal — 6sense offered to get their legal counsel on a call", owner: "me", done: false },
     ],
     notes: [
       "Category: Website visitor deanonymization / company identification — NOT a new vendor eval, already in production",
@@ -279,6 +282,7 @@ export const vendorContacts: VendorContact[] = [
       "Sep 3 (Calendar): meeting time confirmed — Wed Sep 9, 2026, 2:30-2:55pm PT, Zoom (6sense.zoom.us). Full attendee list: Austin Hughes, Gwen Lagunero, Eitan Schori (eschori@insightpartners.com), Haley, John Queally (jq@6sense.com), Micki Howl (organizer).",
       "Sep 9 (Granola, meeting held): Original 2023 OEM deal was $25K/yr for 1M calls/mo. Unify is now at ~5.8M calls/mo (6.3M in August) — list pricing at $0.005/call would imply ~$360K/yr at 6M calls/mo. 6sense offered volume-tiered 'buy down' pricing with a ramp for expected 20%+ growth. No invoice sent since May 2025 due to 6sense's own oversight — they're resetting from here. 2023 MSA may still be valid; open question whether an order form/amendment suffices or a new MSA is required — Unify wants terms reviewed against current legal posture. Next steps: Haley to audit active vs. churned-customer-driven API volume before committing to a tier; Micki/John to send tiered pricing + original OEM agreement (cc Austin) and confirm MSA path.",
       "Sep 10 (Gmail, jq@6sense.com, cc Micki Howl/Eitan Schori/Austin): John Queally sent 6sense's formal post-meeting proposal — honors existing per-call rate of $0.0025; contract value $180,000/mo covering up to 6M API calls/mo (in line with last quarter's average); overage $20,000 per additional 1M calls/mo beyond base volume; 6sense will NOT bill for any unbilled API calls prior to this go-forward agreement. 6sense's legal team is drafting an updated agreement to send for review. Needs Haley/Austin response.",
+      "Sep 16, 6:41pm (Gmail, Haley → jq@6sense.com, cc Micki Howl/Eitan Schori/Austin): Haley followed up asking for the updated legal agreement before responding on the pricing proposal. Sep 16, 7:18pm (Gmail, jq@6sense.com): John Queally replied same evening — 'just got this back from our legal team' — attached the draft agreement, and offered to get 6sense's legal counsel on a call with Unify's as Haley reviews. Draft agreement now in hand; review still outstanding as of this sweep.",
     ],
     overallStatus: "active",
     commercialStatus: "review",
@@ -2150,7 +2154,7 @@ export const vendorContacts: VendorContact[] = [
     name: "Autobound",
     tier: null,
     category: "AI Sales Copy / Signal-Search Integration",
-    lastContactDate: "2026-08-27",
+    lastContactDate: "2026-09-16",
     emailStatus: "none",
     signal:
       "Active paid integration (not a new eval) — AI-generated sales copy / signal-search vendor; signal-search host-functions run live in Unify's chat product under namespace='autobound'. Billed via Stripe invoice + Ramp card on Autobound's standard clickthrough ToS — no negotiated MSA on file. Aug 24-25 (Gmail, Gwen/billing): Gwen asked Haley to confirm whether Autobound is on clickthrough terms with no specific end date; Haley confirmed yes. Aug 27, 10am PDT: 'Autobound <> Unify Onboarding Check-In' held per calendar (daniel@autobound.ai, kyle@autobound.ai, Austin, Haley) — Granola transcript not yet synced, follow up for outcome detail.",
@@ -2159,11 +2163,13 @@ export const vendorContacts: VendorContact[] = [
     actionItems: [
       { id: "ab-1", text: "Follow up on Aug 27 Onboarding Check-In outcome once Granola transcript syncs (or ask attendees directly)", owner: "me", done: false },
       { id: "ab-2", text: "Confirm with Gwen/billing whether clickthrough terms (no end date) are acceptable long-term or whether a negotiated MSA should be pursued", owner: "me", done: false },
+      { id: "ab-3", text: "Attend 'Haley / Daniel (Unify / Autobound)' call Thu Sep 17, 2026 10-10:30am CT (booked by daniel@autobound.ai, Sep 16) — purpose not stated in invite, confirm on the call", owner: "me", done: false },
     ],
     notes: [
       "Category: AI Sales Copy / Signal-Search Integration — active paid integration, not a vendor eval",
       "Billing: Stripe invoices + Ramp card payment; clickthrough ToS, no negotiated contract on file, no specific end date (confirmed by Haley to Gwen, Aug 25)",
       "Aug 27 10am PDT: Autobound <> Unify Onboarding Check-In held (daniel@autobound.ai, kyle@autobound.ai, Austin, Haley) — transcript unavailable, follow up for details",
+      "Sep 16 (Calendar invite from daniel@autobound.ai): new call booked — 'Haley / Daniel (Unify / Autobound),' Thu Sep 17, 2026, 10-10:30am CT. Purpose unstated; may be a follow-up to the Aug 27 onboarding check-in.",
     ],
     overallStatus: "active",
     commercialStatus: "signed",

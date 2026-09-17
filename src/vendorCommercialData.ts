@@ -206,7 +206,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "Sep 10 formal proposal: $180K/mo for 6M calls/mo (honors existing $0.0025/call rate), $20K per additional 1M calls/mo overage, no back-billing for prior unbilled usage.",
     pricingDetail: "6sense's Company Identification API is already live in Unify's production website-visitor waterfall (one of 3 providers alongside Demandbase and Clearbit). Sep 9 meeting: original 2023 OEM deal was $25K/yr for 1M calls/mo; Unify now at ~5.8M calls/mo (6.3M in August) — list pricing at $0.005/call would imply ~$360K/yr at 6M calls/mo. Sep 10, John Queally (6sense) sent formal proposal: honors existing $0.0025/call base rate; contract value $180,000/mo covering up to 6M calls/mo (in line with last quarter's average); overage $20,000 per additional 1M calls/mo; 6sense will NOT bill for any unbilled API calls prior to this go-forward agreement. 6sense's legal team is drafting an updated agreement.",
     capability: "enrich-only",
-    commercialNextStep: "Review John Queally's Sep 10 pricing proposal ($180K/mo base, $20K/1M overage) with finance — audit active vs. churned-customer-driven API volume first (meeting takeaway) before responding. Await 6sense's draft agreement and route through legal to confirm MSA path (amendment to 2023 MSA vs. new MSA).",
+    commercialNextStep: "6sense sent their draft legal agreement Sep 16 (John Queally, from 6sense legal). Review the draft against the Sep 10 pricing proposal terms ($180K/mo base, $20K/1M overage) and route through Unify legal — 6sense offered to get their legal counsel on a call. Confirm MSA path (amendment to 2023 MSA vs. new MSA) as part of the review.",
     commercialOwner: "haley",
     annualBudgetUsd: 2160000,
     budgetStatus: "exploring",
@@ -215,7 +215,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     financeNote: "Currently unbilled/under-contracted despite heavy live production usage (~6M calls/mo) — real financial and legal exposure until a new agreement is signed. Sep 10 proposal implies ~$2.16M/yr at current volume ($180K/mo); 6sense confirmed no back-billing for prior unbilled usage. Urgent, not a routine renewal.",
     legalStatus: "contract-review",
     resellAgreementStatus: "need-reseller-agreement",
-    legalNotes: "No signed OEM order form currently reflects live usage; last invoice on file from May 2025. Sep 9 meeting: 2023 MSA may still be valid — open question whether an order form/amendment is sufficient or a new MSA is required; Unify wants terms reviewed against current legal posture. Sep 10: 6sense's legal team now drafting an updated agreement to send for review — first concrete legal-doc movement on this account.",
+    legalNotes: "No signed OEM order form currently reflects live usage; last invoice on file from May 2025. Sep 9 meeting: 2023 MSA may still be valid — open question whether an order form/amendment is sufficient or a new MSA is required; Unify wants terms reviewed against current legal posture. Sep 10: 6sense's legal team now drafting an updated agreement to send for review — first concrete legal-doc movement on this account. Sep 16: Haley requested the draft agreement before responding to pricing; John Queally sent it same evening (from 6sense legal) and offered a legal-to-legal call — draft now in hand, Unify review still outstanding.",
   },
 
   demandbase: {
