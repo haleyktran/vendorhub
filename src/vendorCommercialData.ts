@@ -67,7 +67,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "$0.04/credit, $10K upfront min. API enrichment only — no bulk, no caching.",
     pricingDetail: "$10K credit commitment required upfront, then quarterly true-up at $0.04/credit. No data caching allowed — each end-customer call must be a unique live API call. No bulk dataset available for partners.",
     capability: "finds-enrich",
-    commercialNextStep: "Follow up with Mike Palmer on Apr 29 meeting outcomes — confirm contract amendment status (no-caching constraint, liability cap, indemnification redlines still outstanding). Send proposed amendments to unblock signing.",
+    commercialNextStep: "Follow up with Mike Palmer on Apr 29 meeting outcomes — confirm contract amendment status (no-caching constraint, liability cap, indemnification redlines still outstanding). Send proposed amendments to unblock signing. Sep 17: follow-up call rescheduled by Mike to Fri Sep 18, 11:30am-12pm PDT — use this call to push for amendment status.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1vjT5BINvN0k0yCoXp_NtVvPpUXgFXzcV/edit",
     contractUrl: "https://docs.google.com/document/d/1s-VVOE0sH6p2hD8wsn0vEgx6oTxwvVRgwPNi6DLC0rM/edit",
@@ -78,7 +78,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     financeNote: "API-only; no data caching allowed. Strong US startup coverage.",
     legalStatus: null,
     resellAgreementStatus: "sent-redlines",
-    legalNotes: "Apr 9 legal review: highest-risk contract. Issues: no data accuracy warranty, $100K liability cap, broad customer indemnification. Austin wants to proceed; Haley to send proposed amendments. Apr 16 follow-up legal review: higher liability cap remains an issue; missing non-infringement warranty flagged as additional risk. Amendments still outstanding. Apr 29: Follow-up 'Harmonic <> Unify' call done with Mike Palmer + Eric — transcript unavailable; follow up on contract amendment status and no-caching constraint.",
+    legalNotes: "Apr 9 legal review: highest-risk contract. Issues: no data accuracy warranty, $100K liability cap, broad customer indemnification. Austin wants to proceed; Haley to send proposed amendments. Apr 16 follow-up legal review: higher liability cap remains an issue; missing non-infringement warranty flagged as additional risk. Amendments still outstanding. Apr 29: Follow-up 'Harmonic <> Unify' call done with Mike Palmer + Eric — transcript unavailable; follow up on contract amendment status and no-caching constraint. Sep 17: next call with Mike rescheduled to Sep 18, 11:30am-12pm PDT — amendment status still unresolved as of this sweep.",
   },
 
   upriver: {
@@ -883,20 +883,20 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
 
   autobound: {
     commitmentTier: "none",
-    commitmentLabel: "No commit — clickthrough",
-    pricingTldr: "Running on Autobound's standard clickthrough ToS via Stripe/Ramp billing; no negotiated MSA, no specific end date.",
-    pricingDetail: "Active paid integration on Autobound's standard clickthrough terms — no formal order form or MSA on file. Billed via Stripe invoice, paid via Ramp card.",
+    commitmentLabel: "No commit — clickthrough (new bundle proposal pending, $55K-$95K/yr)",
+    pricingTldr: "Existing chat integration: clickthrough ToS via Stripe/Ramp, no negotiated MSA. NEW (Sep 17): Autobound proposed a heavily discounted signal flat-file/API bundle tied to their pending M&A close — 3 options from $55K-$95K/yr (75-90% off list) — decision needed before their Sep 30 deadline.",
+    pricingDetail: "Active paid integration on Autobound's standard clickthrough terms — no formal order form or MSA on file. Billed via Stripe invoice, paid via Ramp card. Sep 10: Daniel (Autobound CEO) disclosed Autobound signed an LOI to be acquired and has a $350K revenue gap to close by Sep 30; offered Unify full signal-database access (list ~$2.02M) at 75-85% off if signed by then. Sep 17 call + follow-up proposal narrowed this to a smaller bundle: 3 flat-annual-fee options, unlimited records, no charge-on-failure (unlike PredictLeads, Unify's current news/hiring vendor) — (1) News only: $55K (list $90K); (2) News + Hiring Trends: $65K (list $180K); (3) News + Hiring Trends + full SEC filings family (10-K/10-Q/20-F/8-K/6-K + earnings transcripts): $95K (list $545K). Extras offered: $25K/$50K/$75K of bonus API credits (no charge for misses) on options 1/2/3; year-2 price lock at same discount; free 60-day trial of 5 more signal types (Reddit, podcast, Twitter, patent, LinkedIn), $35K/type/yr to keep after; 6-month free historical access. Haley steered toward the News+Hiring Trends+10-K combination as most relevant; declined patents and a LinkedIn/Twitter flat file (Unify already evaluating an alternate LinkedIn flat-file vendor). Pricing reverts to list/standard discount post-M&A — this offer is time-boxed.",
     capability: "platform",
-    commercialNextStep: "Decide whether clickthrough terms remain sufficient long-term or whether to pursue a negotiated MSA/DPA now that there's an active onboarding relationship (Aug 27 check-in call).",
+    commercialNextStep: "Decide whether clickthrough terms remain sufficient long-term for the base integration or whether to pursue a negotiated MSA/DPA (Aug 27 check-in follow-up). SEPARATELY, URGENT: review Daniel's Sep 17 flat-file/API discount proposal ($55K-$95K/yr) with Austin and reply before Autobound's Sep 30 M&A-driven deadline — target reconnecting with Daniel Mon/Tue Sep 21-22.",
     commercialOwner: "haley",
     annualBudgetUsd: null,
-    budgetStatus: "signed",
+    budgetStatus: "exploring",
     estimatedAnnualVolume: null,
-    coverageNote: "AI-generated sales copy / signal-search integration — active paid usage, not a new vendor eval",
-    financeNote: "Small recurring spend via Ramp card; billed on Stripe invoices under clickthrough terms.",
+    coverageNote: "AI-generated sales copy / signal-search integration — active paid usage, not a new vendor eval. New proposal under review: News/Hiring Trends/SEC-filings signal flat file + API credits.",
+    financeNote: "Small recurring spend via Ramp card; billed on Stripe invoices under clickthrough terms. New one-time-window proposal ($55K-$95K/yr) would be a new, separate budget line pending Austin's sign-off — not yet approved.",
     legalStatus: "not-started",
     resellAgreementStatus: null,
-    legalNotes: "No MSA/DPA on file — running on Autobound's standard clickthrough ToS. Aug 25: Haley confirmed to Gwen (billing) that there's no specific end date under these terms.",
+    legalNotes: "No MSA/DPA on file for the existing integration — running on Autobound's standard clickthrough ToS. Aug 25: Haley confirmed to Gwen (billing) that there's no specific end date under these terms. Sep 17: new flat-file/API bundle proposal (see pricingDetail) sent as a straightforward flat annual fee per Daniel's email — no MSA/DPA terms discussed yet for this specific bundle; would need its own contracting/legal review if Unify proceeds, separate from the base clickthrough integration.",
   },
 
   fullenrich: {
