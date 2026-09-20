@@ -67,7 +67,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     pricingTldr: "$0.04/credit, $10K upfront min. API enrichment only — no bulk, no caching.",
     pricingDetail: "$10K credit commitment required upfront, then quarterly true-up at $0.04/credit. No data caching allowed — each end-customer call must be a unique live API call. No bulk dataset available for partners.",
     capability: "finds-enrich",
-    commercialNextStep: "Follow up with Mike Palmer on Apr 29 meeting outcomes — confirm contract amendment status (no-caching constraint, liability cap, indemnification redlines still outstanding). Send proposed amendments to unblock signing. Sep 17: follow-up call rescheduled by Mike to Fri Sep 18, 11:30am-12pm PDT — use this call to push for amendment status.",
+    commercialNextStep: "Follow up with Mike Palmer on Apr 29 meeting outcomes — confirm contract amendment status (no-caching constraint, liability cap, indemnification redlines still outstanding). Send proposed amendments to unblock signing. Sep 18 call with Mike went ahead as scheduled but no transcript was captured — follow up directly with Mike to get the amendment status in writing.",
     commercialOwner: "will",
     questionnaireUrl: "https://docs.google.com/document/d/1vjT5BINvN0k0yCoXp_NtVvPpUXgFXzcV/edit",
     contractUrl: "https://docs.google.com/document/d/1s-VVOE0sH6p2hD8wsn0vEgx6oTxwvVRgwPNi6DLC0rM/edit",
@@ -78,7 +78,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     financeNote: "API-only; no data caching allowed. Strong US startup coverage.",
     legalStatus: null,
     resellAgreementStatus: "sent-redlines",
-    legalNotes: "Apr 9 legal review: highest-risk contract. Issues: no data accuracy warranty, $100K liability cap, broad customer indemnification. Austin wants to proceed; Haley to send proposed amendments. Apr 16 follow-up legal review: higher liability cap remains an issue; missing non-infringement warranty flagged as additional risk. Amendments still outstanding. Apr 29: Follow-up 'Harmonic <> Unify' call done with Mike Palmer + Eric — transcript unavailable; follow up on contract amendment status and no-caching constraint. Sep 17: next call with Mike rescheduled to Sep 18, 11:30am-12pm PDT — amendment status still unresolved as of this sweep.",
+    legalNotes: "Apr 9 legal review: highest-risk contract. Issues: no data accuracy warranty, $100K liability cap, broad customer indemnification. Austin wants to proceed; Haley to send proposed amendments. Apr 16 follow-up legal review: higher liability cap remains an issue; missing non-infringement warranty flagged as additional risk. Amendments still outstanding. Apr 29: Follow-up 'Harmonic <> Unify' call done with Mike Palmer + Eric — transcript unavailable; follow up on contract amendment status and no-caching constraint. Sep 17: next call with Mike rescheduled to Sep 18, 11:30am-12pm PDT — amendment status still unresolved as of this sweep. Sep 19: Calendar confirms the Sep 18 call took place as scheduled (not cancelled/rescheduled); no Granola transcript captured and no follow-up email from Mike yet — amendment status remains unresolved, follow up directly.",
   },
 
   upriver: {

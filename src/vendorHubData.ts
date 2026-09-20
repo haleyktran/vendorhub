@@ -158,7 +158,7 @@ export const vendorContacts: VendorContact[] = [
     name: "Harmonic.ai",
     tier: "P0",
     category: "Fundraising & Company Intelligence",
-    lastContactDate: "2026-09-17",
+    lastContactDate: "2026-09-18",
     emailStatus: "waiting-on-them",
     signal:
       "Existing Unify customer. 33M+ companies globally, very strong on private companies and startups. Early detection via legal filings. Real-time signals: funding, departmental headcount, founder tracking. $0.04/API call, $10K upfront commit. No data caching — each end-customer needs a unique call. Apr 8: Mike sent Harmonic account invites for Haley, Austin, and Kunal + full API onboarding notes (auth, core endpoints, MCP guide). API keys now active. Apr 9: Kickoff Zoom call with Mike Palmer completed. Legal review Apr 9: highest-risk contract — no data accuracy warranty, $100K liability cap, broad customer indemnification. Austin wants to proceed; Haley to send proposed amendments. Apr 14: Trial credits hit 1K cap (Kunal flagged in Slack); Mike bumped to 2,500 credits. Haley told Mike legal review nearly done — close to signing. Sep 17: follow-up call rescheduled by Mike to Fri Sep 18, 11:30am-12pm PDT — still-outstanding contract amendments to be revisited.",
@@ -171,7 +171,8 @@ export const vendorContacts: VendorContact[] = [
       { id: "harm-4", text: "Review OpenAPI spec dropped by Mike: https://api.harmonic.ai/openapi.json", owner: "me", done: false },
       { id: "harm-5", text: "Join 30-min Zoom call with Mike Palmer Thu Apr 9 1–1:30pm PDT (trial API key kickoff)", owner: "me", done: true },
       { id: "harm-6", text: "Run latency tests and API evaluation using Harmonic trial credentials (Austin + Kunal active)", owner: "me", done: false },
-      { id: "harm-7", text: "Attend 'Haley and Mike Palmer' 30-min Zoom call — rescheduled by Mike (Calendly) from Thu Sep 17 1-1:30pm PDT to Fri Sep 18, 2026 11:30am-12pm PDT — likely follow-up on contract amendment status", owner: "me", done: false },
+      { id: "harm-7", text: "Attend 'Haley and Mike Palmer' 30-min Zoom call — rescheduled by Mike (Calendly) from Thu Sep 17 1-1:30pm PDT to Fri Sep 18, 2026 11:30am-12pm PDT — likely follow-up on contract amendment status", owner: "me", done: true },
+      { id: "harm-8", text: "Follow up with Mike on Sep 18 call outcome (no Granola transcript captured) — get contract amendment status in writing", owner: "me", done: false },
     ],
     notes: [
       "Slack channel: #harmonic-unify",
@@ -193,6 +194,7 @@ export const vendorContacts: VendorContact[] = [
       "Aug 8: Generic 'Harmonic Checkin' email from Carter (Harmonic success team, not Mike/Eric) — re-engagement outreach offering a 15/30-min activation session. No new commercial or contract info; contract amendment status from Apr 29 still outstanding.",
       "Sep 16 (Calendar invite from mike@harmonic.ai): new 30-min Zoom meeting booked — 'Haley and Mike Palmer,' Thu Sep 17, 2026, 1-1:30pm PDT. Purpose not stated in invite; likely follow-up on the still-outstanding contract amendment status (no-caching constraint, liability cap, indemnification redlines) — confirm on the call.",
       "Sep 17, 12:09pm PDT (Gmail, updated invitation from mike@harmonic.ai): meeting rescheduled from Thu Sep 17 1-1:30pm PDT to Fri Sep 18, 2026 11:30am-12pm PDT. No content exchanged yet — meeting has not happened as of this sweep.",
+      "Sep 19 (Calendar + Granola check): confirmed via Calendar that the 'Haley and Mike Palmer' Zoom call went ahead as scheduled Fri Sep 18, 11:30am-12pm PDT (status: confirmed, no cancellation/reschedule). No Granola note was captured for it and no follow-up email has come in from Mike since (transcript unavailable — follow up directly with Mike on contract amendment status, no-caching constraint, and liability cap discussion).",
       "Granola: https://notes.granola.ai/d/cf73611b-10dc-425e-b036-5f64d2330c62",
     ],
     overallStatus: "active",
