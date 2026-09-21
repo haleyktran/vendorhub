@@ -2012,6 +2012,7 @@ export const vendorContacts: VendorContact[] = [
       "Aug 19 (#enrich-alerts, Datadog): linkedinslug/person_email_async lookup alerted at 99.7% failure + latency spike to 90-237s; Ross's follow-up traced this to a broader enrich-worker Temporal slowness episode (also hit Prospeo), not Forager-specific — see contactVendorData for full detail.",
       "Sep 11 (Granola, pricing-comparison call, Diana Carboni): Sep usage forecasting ~900K credits vs. 375K/mo contracted plan; agreed to monitor through Sep and reassess in mid-Oct. ~$1M/mo tier discussed (~15% lower cost/credit) — Diana to send formal tier pricing + invoice-timing follow-up.",
       "Sep 11-13 (#enrich-alerts, Datadog): recurring null-return blackout monitor fired on Forager's linkedinslug strategy 3 mornings running, self-recovering each time within ~15 min — see contactVendorData for full detail. Same timestamps also hit Prospeo + internal waterfall paths, pointing to a systemic pipeline issue rather than Forager-specific.",
+      "Sep 18 (#enrich-alerts, Datadog): one more isolated null-return blackout alert on Forager's linkedinslug/person_email_async strategy (03:36-03:38am PDT), self-recovered within ~2 minutes. Unlike the Sep 11-14 pattern, this one hit only Forager — no Prospeo/waterfall_contact_sync co-occurrence. No further recurrence through this sweep (Sep 20).",
     ],
     overallStatus: "active",
     commercialStatus: "wait",
