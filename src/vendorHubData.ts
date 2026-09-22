@@ -298,25 +298,29 @@ export const vendorContacts: VendorContact[] = [
     name: "Demandbase",
     tier: "P0",
     category: "Website Visitor · Company Identification",
-    lastContactDate: "2026-09-14",
-    emailStatus: "none",
+    lastContactDate: "2026-09-21",
+    emailStatus: "waiting-on-them",
+    emailSubject: "Sep 21 meeting held — Demandbase to send API usage/pricing scenarios; Oct 5 follow-up scheduled",
     signal:
-      "Already-live production dependency, not a new eval: Demandbase's Company Identification API is one of three providers (alongside 6sense and Clearbit) powering Unify's website-visitor deanonymization waterfall (see 6sense entry for shared waterfall/legal-exposure context). Sep 14 (Calendar): 'Unify <> Demandbase' meeting confirmed for Mon Sep 21, 2026, 12:00-12:30pm PT (Google Meet). Attendees: Austin Hughes (organizer), Alexandra Bonavota (abonavota@demandbase.com, accepted), D. Fiori (dfiori@demandbase.com, tentative), Haley (accepted). No pricing, contract, or usage detail known yet — purpose not stated in the invite; given the timing and shared category with the 6sense OEM-formalization conversation, this may be a similar usage/contract check-in.",
+      "Already-live production dependency, not a new eval: Demandbase's Company Identification API is one of three providers (alongside 6sense and Clearbit) powering Unify's website-visitor deanonymization waterfall (see 6sense entry for shared waterfall/legal-exposure context). Sep 21 meeting held (12:00-12:30pm PT, Austin + Alexandra Bonavota/D. Fiori + Haley): confirmed this IS a contract/usage renewal conversation like 6sense — current Demandbase contract is $750K/yr, and Demandbase is reassessing terms with an API-call-based pricing model under consideration for renewal. Haley to provide a clean active-customer count; Demandbase to send API usage/pricing scenarios. Follow-up call scheduled for Oct 5.",
     hasApiKey: true,
     latencyTestRun: false,
     actionItems: [
-      { id: "db-1", text: "Attend 'Unify <> Demandbase' meeting Mon Sep 21, 12:00-12:30pm PT with Austin + Alexandra Bonavota/D. Fiori — confirm purpose (routine check-in vs. usage/contract review like 6sense)", owner: "me", done: false },
-      { id: "db-2", text: "Once purpose is confirmed, audit actual Demandbase call volume vs. any signed order form — same exposure pattern surfaced with 6sense (unbilled high-volume usage)", owner: "me", done: false },
+      { id: "db-1", text: "Attend 'Unify <> Demandbase' meeting Mon Sep 21, 12:00-12:30pm PT with Austin + Alexandra Bonavota/D. Fiori — confirm purpose (routine check-in vs. usage/contract review like 6sense)", owner: "me", done: true },
+      { id: "db-2", text: "Provide Demandbase a clean active-customer count (per Sep 21 meeting outcome)", owner: "me", done: false },
+      { id: "db-3", text: "Review API usage/pricing scenarios once Demandbase sends them", owner: "them", done: false },
+      { id: "db-4", text: "Attend Oct 5 follow-up call re: renewal/API-call pricing model", owner: "me", done: false },
     ],
     notes: [
       "Category: Website visitor deanonymization / company identification — NOT a new vendor eval, already in production",
       "One of 3 providers (6sense, Demandbase, Clearbit) in Unify's live company-level deanonymization waterfall; see 6sense entry (Aug 19, #unify-graphon) for the 65-85% blended de-anon rate context",
       "Sep 14 (Calendar): meeting created by Gwen — 'Unify <> Demandbase,' Mon Sep 21, 12:00-12:30pm PT, Google Meet (meet.google.com/gfv-ahyo-kkr). Attendees: Austin Hughes (accepted), Alexandra Bonavota (accepted), D. Fiori (tentative), Haley (accepted).",
-      "No commercial/contract/usage detail known yet — confirm scope on the call before assuming this parallels 6sense's unbilled-usage exposure.",
+      "Sep 21 (Granola, meeting held): current contract is $750K/yr — being reassessed, with an API-call usage model under consideration for renewal (echoes the 6sense OEM-formalization pattern). Also discussed contact and email coverage as Unify's current data-gap focus. Haley to send a clean active-customer count; Demandbase to send API usage/pricing scenarios; Oct 5 follow-up booked.",
     ],
     overallStatus: "active",
     commercialStatus: "review",
     contacts: ["Alexandra Bonavota — abonavota@demandbase.com", "D. Fiori — dfiori@demandbase.com"],
+    pricing: "Current contract $750K/yr; API-call-based pricing model under discussion for renewal",
   },
 
   // ── P1 ────────────────────────────────────────────────────────────────────
@@ -2472,5 +2476,34 @@ export const vendorContacts: VendorContact[] = [
     contacts: ["John — john@knock2.ai"],
     slackChannel: "#unify-knock2",
     pricing: "Testing from $150/mo (no annual); API per-identification, cents/match, 25K–1M+ tiers; custom pricing pending at volume",
+  },
+
+  // ── New / uncategorized ──────────────────────────────────────────────────
+
+  {
+    id: "gryphon",
+    name: "Gryphon.ai",
+    tier: null,
+    category: "Call Compliance · DNC Scrubbing",
+    lastContactDate: "2026-09-21",
+    emailStatus: "needs-response",
+    emailSubject: "Marc Butti (Gryphon) asking to confirm Sep 22 11am ET meeting time — will cancel if no response by 10am ET",
+    signal:
+      "New vendor, first meeting not yet held. Calendar invite 'Unify GTM Conversation with Gryphon' organized by Marc Butti (mbutti@gryphon.ai), scheduled Tue Sep 22, 2026, 11:00-11:30am ET (Microsoft Teams). Sep 21 evening: Marc sent an updated invite note asking Haley to confirm the time still works, flagging he'll cancel if he doesn't hear back by 10am ET the next morning. Likely fits the DNC-scrubbing vendor evaluation Ami/Haley have been running for the Dialer product (per Sep 20 #epd-weekly-updates Dialer Pod update) — not yet confirmed on a call.",
+    hasApiKey: false,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "gr-1", text: "Confirm to Marc Butti that Sep 22, 11:00-11:30am ET still works, or the meeting will be cancelled", owner: "me", done: false },
+      { id: "gr-2", text: "Attend intro call and confirm whether Gryphon fits the DNC-scrubbing vendor evaluation", owner: "me", done: false },
+    ],
+    notes: [
+      "Category: unconfirmed — likely call compliance / DNC scrubbing given timing alongside the Dialer pod's DNC scrubbing vendor eval",
+      "Sep 21 (Calendar): meeting created by Haley (haley@unifygtm.com) at Marc Butti's request — 'Unify GTM Conversation with Gryphon,' Tue Sep 22, 11:00-11:30am ET, Microsoft Teams",
+      "Sep 21, 8:15pm PDT (Calendar update): Marc Butti added a note asking Haley to confirm the time still works, threatening cancellation if no response by 10am ET Sep 22 — needs a quick reply",
+      "No pricing, product, or commercial detail known yet — first touch only",
+    ],
+    overallStatus: "meeting-booked",
+    commercialStatus: null,
+    contacts: ["Marc Butti — mbutti@gryphon.ai"],
   },
 ]
