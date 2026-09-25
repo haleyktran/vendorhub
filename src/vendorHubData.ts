@@ -258,9 +258,9 @@ export const vendorContacts: VendorContact[] = [
     name: "6sense",
     tier: "P0",
     category: "Website Visitor · Company Identification",
-    lastContactDate: "2026-09-16",
-    emailStatus: "needs-response",
-    emailSubject: "Sep 16: John Queally sent 6sense's draft legal agreement (from their legal team) — Haley to review before responding to the $180K/mo proposal",
+    lastContactDate: "2026-09-24",
+    emailStatus: "none",
+    emailSubject: "Sep 24: John Queally CONFIRMED contract is $180K/YEAR (not /mo) for 6M calls/mo; $20K/1M annual overage. 'Unify & 6sense - Contract Review' call booked Tue Sep 29 8:30am PT",
     signal:
       "Already-live production dependency, not a new eval: 6sense's Company Identification API is one of three providers (alongside Demandbase and Clearbit) powering Unify's website-visitor deanonymization waterfall (per #unify-graphon, Aug 19). Aug 24: Micki Howl (6sense) emailed Austin directly — Unify is consuming the API at ~6M calls/month (last quarter), but there is no current signed OEM order form reflecting that usage; last invoice on file dates to May 2025. Micki wants to put a properly structured agreement in place with volume tiers matched to actual/growing consumption. Austin looped in Haley (BizOps) and Gwen (scheduling) same day. Slack DM (Austin, Aug 24): asked Gwen to schedule the call for the first week after Labor Day — 'too many things going on before then.'",
     hasApiKey: true,
@@ -272,6 +272,8 @@ export const vendorContacts: VendorContact[] = [
       { id: "6s-3", text: "Review 6sense's proposed volume-tier pricing structure once shared and reconcile against the 'signed ~mid-2026' contract note from the Aug 20 CreatorIQ onboarding doc (inconsistent with 'no signed OEM order form' — needs clarification)", owner: "me", done: false },
       { id: "6s-5", text: "Review John Queally's Sep 10 formal pricing proposal ($180K/mo for 6M calls, $20K/1M overage) with finance/legal and respond — audit active vs. churned-customer-driven API volume first per meeting takeaway", owner: "me", done: true },
       { id: "6s-6", text: "Review 6sense's Sep 16 draft legal agreement (sent by John Queally, from their legal team) before responding to the pricing proposal — 6sense offered to get their legal counsel on a call", owner: "me", done: false },
+      { id: "6s-7", text: "Attend 'Unify & 6sense - Contract Review' Zoom call Tue Sep 29, 2026 8:30-9:00am PT (organizer John Queally; Austin + Micki Howl + Eitan Schori also invited)", owner: "me", done: false },
+      { id: "6s-8", text: "Route 6sense's draft agreement through Unify legal ahead of the Sep 29 review — pricing now confirmed at $180K/YEAR for 6M calls/mo ($20K/1M annual overage), NOT $180K/mo; correct any finance planning built on the old monthly figure", owner: "me", done: false },
     ],
     notes: [
       "Category: Website visitor deanonymization / company identification — NOT a new vendor eval, already in production",
@@ -287,6 +289,9 @@ export const vendorContacts: VendorContact[] = [
       "Sep 10 (Gmail, jq@6sense.com, cc Micki Howl/Eitan Schori/Austin): John Queally sent 6sense's formal post-meeting proposal — honors existing per-call rate of $0.0025; contract value $180,000/mo covering up to 6M API calls/mo (in line with last quarter's average); overage $20,000 per additional 1M calls/mo beyond base volume; 6sense will NOT bill for any unbilled API calls prior to this go-forward agreement. 6sense's legal team is drafting an updated agreement to send for review. Needs Haley/Austin response.",
       "Sep 16, 6:41pm (Gmail, Haley → jq@6sense.com, cc Micki Howl/Eitan Schori/Austin): Haley followed up asking for the updated legal agreement before responding on the pricing proposal. Sep 16, 7:18pm (Gmail, jq@6sense.com): John Queally replied same evening — 'just got this back from our legal team' — attached the draft agreement, and offered to get 6sense's legal counsel on a call with Unify's as Haley reviews. Draft agreement now in hand; review still outstanding as of this sweep.",
       "Sep 17, 11:49am PDT (#project-cost-optimization, Austin): flagged internally that '6sense came back to us and is asking us to pay... this is going to probably be a ~$10K+/mo data vendor charge,' cc'ing ADL/Varad/Haley — a rough, much lower figure than the actual Sep 10 formal proposal ($180K/mo); likely an early/informal estimate rather than a revised number. Worth clarifying with Austin which figure finance should be planning against.",
+      "Sep 23 (Gmail, jq@6sense.com): John Queally followed up on scheduling; Haley confirmed the Tuesday slot next week ('Yes let's do that slot Tuesday!') and asked a clarifying question — the attached draft contract states $180K/YEAR for up to 6M calls/mo, which differs from the rate she'd seen earlier in the thread.",
+      "Sep 24, 12:10-12:24am (Gmail, jq@6sense.com): PRICING CORRECTED — John Queally confirmed the contract is $180K per YEAR for 6M calls/month (NOT $180K/mo, as this tracker and finance had previously recorded), and clarified the $20K-per-1M-calls overage is an ANNUAL price billed at a monthly rate only in months the overage is triggered. This is ~12x lower than the earlier '$180K/mo' reading and reconciles with Austin's Sep 17 rough '~$10K+/mo' internal estimate ($180K/yr ≈ $15K/mo). ACTION: correct any finance/budget planning that assumed $180K/mo (~$2.16M/yr) — the real figure is ~$180K/yr.",
+      "Sep 24, 12:12am (Gmail + Calendar): John Queally sent a Zoom invite for 'Unify & 6sense - Contract Review' — confirmed on Haley's calendar for Tue Sep 29, 2026, 8:30-9:00am PT (Zoom; organizer JQ; attendees Austin + Haley, with Micki Howl + Eitan Schori/Insight Partners optional). Contract-review focus; get Unify legal's read on the draft before this call.",
     ],
     overallStatus: "active",
     commercialStatus: "review",
@@ -325,6 +330,40 @@ export const vendorContacts: VendorContact[] = [
   },
 
   // ── P1 ────────────────────────────────────────────────────────────────────
+
+  {
+    id: "dnc-intl-dialing",
+    name: "DNC / Intl Dialing (Kyle — vendor name TBD)",
+    tier: "P1",
+    category: "DNC Compliance · Dialing Data",
+    lastContactDate: "2026-09-23",
+    emailStatus: "waiting-on-them",
+    emailSubject: "Sep 23 intro/discovery call held with Kyle — vendor to send MSA + flat-file pricing; SLAs to confirm",
+    signal:
+      "NEW vendor (Sep 23 meeting) — DNC compliance + suppression data to expand Unify's dialing coverage from US/Canada into the UK, France, and Germany. Preferred delivery is DLMS flat files via SFTP (not API) to avoid latency and lower implementation cost. Includes regional DNC lists plus an optional litigator suppression list; refresh cadence varies by country (daily/weekly/monthly). Vendor can manage per-country registrations for a nominal fee — lapsed registration cuts off access immediately. Vendor name not captured on the call (contact: Kyle).",
+    hasApiKey: false,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "dnc-1", text: "Receive and review MSA from Kyle's vendor — focus on liability + indemnification; ensure customer terms state DNC checks do NOT confer legal compliance (customers register individually; Unify does not assume that liability); consider a data-destruction-at-termination carve-out", owner: "them", done: false },
+      { id: "dnc-2", text: "Get flat-file pricing back from vendor (no standard rate; one national-list partner cited ~$25K/mo — pricing depends on refresh cadence + use case, not query volume)", owner: "them", done: false },
+      { id: "dnc-3", text: "Confirm flat-file SLAs — missed-drop handling + a dedicated support contact (vendor cited NPS 81 but flat-file commitments still unconfirmed)", owner: "me", done: false },
+      { id: "dnc-4", text: "Schedule follow-up on UK/France/Germany registration, pricing, and per-country refresh rules", owner: "me", done: false },
+    ],
+    notes: [
+      "Category: DNC compliance / suppression data for international outbound dialing",
+      "Sep 23 (Granola, 'DNC compliance and flat-file integration for international dialing'): intro/discovery call with Kyle. Vendor name not captured on the call.",
+      "Delivery model: DLMS flat files via SFTP preferred over API (avoids latency, lower implementation cost); regional DNC lists + optional litigator suppression list; per-country refresh cadence varies (daily/weekly/monthly)",
+      "Pricing: no standard flat-file rate — one national-list partner reportedly pays ~$25K/mo; price scales with refresh cadence + use case, not API-query volume",
+      "SLAs: vendor cited NPS 81; flat-file commitments (missed drops, dedicated support contact) still to be confirmed",
+      "Legal: MSA to be sent to Haley — review liability + indemnification; customer terms must state DNC checks don't confer legal compliance (customers register individually; Unify doesn't assume that liability); possible data-destruction provision at termination",
+      "Registrations: vendor can manage country registrations for a nominal fee; lapsed registration cuts off access immediately",
+      "Granola: https://notes.granola.ai/d/30c8e53d-68d4-4231-82ab-49c53f7f0f25",
+    ],
+    overallStatus: "active",
+    commercialStatus: "wait",
+    contacts: ["Kyle (vendor name TBD)"],
+    granolaLink: "https://notes.granola.ai/d/30c8e53d-68d4-4231-82ab-49c53f7f0f25",
+  },
 
   {
     id: "theorg",
@@ -493,8 +532,8 @@ export const vendorContacts: VendorContact[] = [
     tier: "P1",
     category: "Website Visitor",
     lastContactDate: "2026-09-22",
-    emailStatus: "none",
-    emailSubject: "Sep 22 call held w/ Kaley — legacy $0.08/resolution pricing held (domain fee dropped); Haley to send narrowed contract + DPA redline in next few days",
+    emailStatus: "needs-response",
+    emailSubject: "Sep 22 (eve) Kaley added VP RevOps Eddie Jameson + asked for domain count & monthly traffic estimate; floated a monthly-commitment plan ($5K/mo/50K std, would honor $0.08) — Haley owes redlines + the volume numbers",
     signal:
       "Person-level website de-anonymization. US: 40–45% person-level, 70–80% total. Global: 30–35% company only. Real-time webhook. OEM-ready multi-tenant model. GDPR consent-gated; cookie notice required. Apr 2: Kaley (Retention.com) set up OEM account. Apr 3: Robb sent 'Welcome to the RB2B OEM Program — Next Steps' email. OEM account is live — add billing details to complete setup. Aug 14 (Gmail, Diana Ross, Cofounder/CRO of Retention.com — RB2B's parent company): flagged RB2B OEM + personal emails as worth exploring 'a few months from now,' alongside an offer to test Retention.com's Contact Data File in the near term. Sep 15 (Gmail + Slack): Haley re-engaged — emailed Diana asking to catch up this week specifically on the RB2B OEM partnership for web visitor reveals, requesting a reference contract with commercial/legal terms to review ASAP. Sep 16 (Gmail, kaley@retention.com): Kaley sent the actual 'RB2B and Unify OEM Agreement_6_26_2026.docx' via Docusign — a pre-drafted legacy OEM agreement. Haley scanned it and replied that Unify's legal team needs to review + send a first pass of redlines, and asked Kaley to also share the DPA. Kaley sent the DPA same day, and flagged that RB2B's OEM pricing structure has changed since the original agreement and that they 'typically don't accommodate substantial redlines' on legacy pricing deals. Sep 17 (#growth-private, Ethan/Austin/Haley): Ethan briefed Austin on status — original economics were $0.08/unique monthly resolution usage-based with the $1/domain/month fee waived; the deal paused earlier over eng scope, COGS/compliance, and OEM-vs-webhook questions; picked back up this week with Haley driving the contract process alongside Crosby (legal), who finished a first pass of redlines. Main open item is commercial: RB2B increased its per-resolution rate from $0.08 to $0.10 and now enforces a $5K minimum on legacy pricing agreements. Haley's read: this is negotiable, not binary — plan is to keep redlines targeted, finish reviewing Crosby's ('pretty bloody') first-pass redlines the morning of Sep 18, and get an updated redlined contract turned around by EOD Sep 18. Same thread confirmed Diana Ross is Retention.com's CRO and that Kaley can get her on a call. Separately, Ethan ran a month-long Knock2 comparison tag against RB2B: RB2B has better coverage by visitor volume, but overlap between the two providers is minimal — validates Knock2 as a possible future supplementary de-anon provider, though the RB2B contract remains the priority for now. Sep 18 (Gmail): Haley asked Kaley to hop on a call Monday to go over commercials and redlines; Kaley agreed and shared her calendar link, then booked 'Unify and RB2B Connect' directly on Haley's calendar for Tue Sep 22, 10-10:30am PDT (Google Meet).",
     hasApiKey: false,
@@ -509,6 +548,7 @@ export const vendorContacts: VendorContact[] = [
       { id: "rb2b-7", text: "Finish reviewing Crosby's first-pass redlines on the OEM Agreement + DPA and send an updated, targeted redline back to RB2B (goal: EOD Sep 18)", owner: "me", done: false },
       { id: "rb2b-8", text: "Attend 'Unify and RB2B Connect' call with Kaley, Tue Sep 22, 10-10:30am PDT — negotiate the $0.08→$0.10/resolution increase and new $5K minimum on legacy pricing", owner: "me", done: true },
       { id: "rb2b-9", text: "Sep 22 call outcome: take a full pass on the main contract + DPA, strip non-essential redlines down to the priority list (liability cap carve-out, mutual indemnification, TOS-as-flow-down, data-collection warranty), and send the focused version to Kaley within the next few days", owner: "me", done: false },
+      { id: "rb2b-10", text: "Reply to Kaley's Sep 22 (eve) email — provide (1) approx # of customer domains expecting to add the RB2B script and (2) estimated monthly website traffic across those domains, so RB2B can build a monthly-commitment plan (finally answers the long-standing web-traffic volume ask)", owner: "me", done: false },
     ],
     notes: [
       "Category: Website Visitor de-anonymization (person + company)",
@@ -529,14 +569,15 @@ export const vendorContacts: VendorContact[] = [
       "Sep 16 (Gmail, kaley@retention.com, cc ethan@): Kaley sent the actual RB2B/Unify OEM Agreement (docx dated 6/26/2026) via Docusign. Haley replied she'd scanned it, flagged Unify legal needs to review and send a first-pass redline, and asked for the DPA. Kaley sent the DPA same day and flagged RB2B's OEM pricing has changed since the original agreement, and that they typically don't accommodate substantial redlines on legacy-pricing agreements.",
       "Sep 17 (#growth-private, Slack): Ethan briefed Austin — deal had paused over eng scope/COGS/compliance/OEM-vs-webhook decision, now moving again with Haley driving contract process + Crosby (legal), who completed a first-pass redline. Commercial open item: RB2B raised its rate $0.08→$0.10/resolution and added a $5K minimum on legacy pricing. Haley believes this is negotiable and plans targeted redlines, aiming to turn around an updated redlined contract by EOD Sep 18. Diana Ross confirmed as Retention.com's CRO. Separately, a month-long Knock2 vs. RB2B comparison tag showed RB2B has better visitor-volume coverage with minimal overlap — Knock2 flagged as a possible future supplementary provider, not a near-term priority.",
       "Sep 18 (Gmail + Calendar): Haley proposed a Monday call on commercials/redlines; Kaley agreed and then booked 'Unify and RB2B Connect' directly for Tue Sep 22, 10-10:30am PDT (Google Meet) — this is the confirmed next touchpoint.",
+      "Sep 22 (Gmail): the call was moved from 10-10:30am to 11-11:30am PT (Haley asked, Kaley agreed) — held at 11am. Sep 22, 1:36pm PDT (Gmail, kaley@retention.com, cc eddie@retention.com): post-call follow-up — Kaley added RB2B/Retention.com's VP of RevOps, Eddie Jameson, to the thread for visibility, said they'll watch for Unify's redlines to the agreement + DPA, and asked Haley for (1) approximately how many domains the team expects to add the RB2B script to and (2) estimated monthly website traffic across those domains. Kaley floated establishing a monthly commitment based on expected volume: RB2B's standard OEM plans today start at $5K/month for 50,000 resolutions with overages at $0.10 — but she reiterated they would honor the $0.08 rate and build the plan that makes sense for Unify, for more predictable billing on both sides as they evaluate the redlines. (Note: the '$5K/mo' figure resurfaces here not as a hard floor but as a proposed volume-commitment plan structure; the $0.08 rate concession from the call still stands.)",
       "Sep 22 (Granola, 'Unify and RB2B Connect' call held): Pricing resolved — legacy pricing agreed at $0.08/resolution only, and the $1/end-customer-domain fee was dropped due to the existing relationship (no $0.10 increase, no $5K minimum after all). RB2B generally does not accept redlines on standard agreements, is flexible only on fixed-MRR contracts, and has one internal contracts person with limited bandwidth — so redlines need to stay minimal and focused. Unify's priority redlines: (1) liability cap — carve out worst-case scenarios, (2) indemnification — make mutual, clarify neither party liable for downstream customer conduct, (3) flow-down obligations — state Unify's TOS explicitly as its flow-down obligation, (4) data warranty — RB2B warrants data collection is reasonably in line with applicable law. RB2B typically does not redline its DPA; Unify's DPA edits are standard parity provisions (incl. reasonable assistance with DSR requests) that Haley will review before sending. Next: Haley takes a full pass on the main contract + DPA, strips non-essential redlines, and sends a focused version to Kaley within the next few days; Kaley will flag the priority areas to RB2B's head of contracts. A live call with RB2B's contracts lead is available if needed to speed review, but there's no hard timeline pressure.",
     ],
     overallStatus: "active",
     commercialStatus: "review",
-    contacts: ["Robb Clarke — robb@rb2b.com", "Kaley Vilmont — kaley@retention.com", "Diana Ross (Cofounder/CRO, Retention.com) — diana@retention.com"],
+    contacts: ["Robb Clarke — robb@rb2b.com", "Kaley Vilmont — kaley@retention.com", "Diana Ross (Cofounder/CRO, Retention.com) — diana@retention.com", "Eddie Jameson (VP RevOps, Retention.com) — eddie@retention.com"],
     attentionLink: "https://app.attention.tech/conversations/cfe81b97-1485-4313-8b20-aeff1377f625",
     granolaLink: "https://notes.granola.ai/d/86fb0180-8ed7-4f66-90e2-eb305f4e1a35",
-    pricing: "Resolved Sep 22 call: legacy pricing held at $0.08/resolution, $1/domain fee dropped — no rate increase or $5K minimum after all. Focused legal redline (liability cap, mutual indemnification, TOS-as-flow-down, data warranty) in progress.",
+    pricing: "Resolved Sep 22 call: legacy pricing held at $0.08/resolution, $1/domain fee dropped — no rate increase or $5K minimum after all. Sep 22 (eve) Kaley proposed layering a monthly-commitment plan on top (std OEM = $5K/mo/50K resolutions, overages $0.10, but would honor the $0.08 rate) pending Unify's domain count + monthly traffic estimate. Focused legal redline (liability cap, mutual indemnification, TOS-as-flow-down, data warranty) in progress.",
   },
 
   {
