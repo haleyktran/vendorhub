@@ -2550,4 +2550,32 @@ export const vendorContacts: VendorContact[] = [
     commercialStatus: null,
     contacts: ["Marc Butti — mbutti@gryphon.ai"],
   },
+
+  {
+    id: "dnclatam",
+    name: "DNC LATAM",
+    tier: null,
+    category: "Call Compliance · DNC Scrubbing",
+    lastContactDate: "2026-09-24",
+    emailStatus: "none",
+    emailSubject: "Intro call booked Mon Sep 28, 11:00-11:30am PDT — inbound from Matias Solina; Haley agreed to chat",
+    signal:
+      "New vendor, inbound. Sep 22: Matias 'Mati' Solina (matias.solina@dnclatam.com) cold-emailed Haley ('DNC Scrubs!') — also pinged on WhatsApp — offering official do-not-call scrubbing for the Dialer via a single API. Haley replied same day agreeing to chat and shared her Calendly link. Sep 24: Matias booked an 'Unify Intro Chat' for Mon Sep 28, 11:00-11:30am PDT (Zoom). Fits the DNC-scrubbing vendor evaluation Ami/Haley are running for the Dialer product, alongside Gryphon and Kyle's flat-file vendor. Per a Sep 23 internal DM (Haley↔Ami), PossibleNow is currently the most responsive of the DNC vendors and Unify may otherwise go to the registries directly. Intro call not yet held as of this sweep.",
+    hasApiKey: false,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "dnclatam-1", text: "Attend DNC LATAM intro call Mon Sep 28, 11:00-11:30am PDT (Zoom) with Matias Solina — clarify coverage (LATAM vs. US/global), API vs. flat-file delivery, and integration/onboarding model", owner: "me", done: false },
+      { id: "dnclatam-2", text: "Compare DNC LATAM against the other DNC-scrubbing vendors in eval (PossibleNow, Gryphon, Kyle's flat-file vendor) or going to the registries directly", owner: "me", done: false },
+    ],
+    notes: [
+      "Category: call compliance / DNC scrubbing for the Dialer product",
+      "Sep 22 (Gmail, 'DNC Scrubs!'): Matias 'Mati' Solina (matias.solina@dnclatam.com) cold outreach — official do-not-call scrubbing via 'one API'; also pinged Haley on WhatsApp. Haley replied same day and sent her Calendly link.",
+      "Sep 24 (Calendly + Calendar): Matias booked 'Unify Intro Chat' for Mon Sep 28, 2026, 11:00-11:30am PDT (Zoom).",
+      "Sep 23 (Slack DM, Haley↔Ami Berman): part of a broader DNC-vendor eval — Ami noted every country offers its DNC list separately (US requires FTC registration); Haley flagged other DNC vendors as 'sus,' with PossibleNow the only responsive one, and floated going to the registries directly if no vendor is a good fit.",
+      "No pricing, coverage detail, or commercial terms known yet — first touch only; confirm regional focus (name implies LATAM) on the intro call.",
+    ],
+    overallStatus: "meeting-booked",
+    commercialStatus: null,
+    contacts: ["Matias Solina — matias.solina@dnclatam.com"],
+  },
 ]
