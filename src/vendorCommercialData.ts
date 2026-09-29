@@ -1043,7 +1043,7 @@ export const vendorCommercialData: Record<string, VendorCommercial> = {
     legalNotes: "Sep 23 (Granola, 'DNC compliance and flat-file integration for international dialing'): MSA to be sent to Haley — review should focus on liability and indemnification. Customer-facing terms must state that DNC checks do NOT confer legal compliance (customers register individually; Unify does not assume that liability). A data-destruction provision at termination may be carved into the MSA. Vendor name not captured on the call.",
   },
 
-  "dnc-latam": {
+  "dnclatam": {
     commitmentTier: null,
     commitmentLabel: "TBD ($2K/mo per country max tier)",
     pricingTldr: "DNC screening/scrubbing for Latin American dialing. Max API tier $2,000/mo per country for up to 100M scrubs; lower-volume API tiers exist but unpriced. Flat file same $2,000/mo point but on an annual commitment. Vendor to send a 3-country tiered quote (MX/AR/CO).",
