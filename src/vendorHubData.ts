@@ -2635,4 +2635,31 @@ export const vendorContacts: VendorContact[] = [
     granolaLink: "https://notes.granola.ai/d/e2f28586-e973-4ae0-819a-807d0ee316ea",
     pricing: "Max API tier $2,000/mo per country (up to 100M scrubs); flat file same price on annual commitment; lower tiers TBD in quote",
   },
+
+  {
+    id: "nationgraph",
+    name: "NationGraph",
+    tier: null,
+    category: "Public Sector Intent · Procurement Intelligence",
+    lastContactDate: "2026-10-02",
+    emailStatus: "none",
+    emailSubject: "Oct 2 intro call held (Haley + Christian Levan) — transcript unavailable, follow up to confirm fit + next steps",
+    signal:
+      "NEW vendor, intro-stage (Oct 2 call). AI-powered public-sector procurement intelligence platform — indexes ~110K government institutions and ~4M government webpages to surface predictive government buying signals (council meetings, budgets, purchase orders, contracts, capital improvement plans, active RFPs). Also offers AI search that matches government decision-makers by role with verified emails + direct phone numbers, and FOIA/public-record automation that delivers structured documents into sales tools. Founded 2024 (Miami HQ; Toronto + SF offices); raised $18M Series A led by Menlo Ventures (closed Q4 2025; ~$22.5M total). Relevant to Unify as a public-sector intent/signal source (adjacent to the firmographic/intent vendor set). Contact: Christian 'Chris' Levan (chris@nationgraph.com).",
+    hasApiKey: false,
+    latencyTestRun: false,
+    actionItems: [
+      { id: "ng-1", text: "Follow up with Christian Levan (chris@nationgraph.com) on the Oct 2 intro — no Granola transcript or recap was captured; confirm what NationGraph pitched, whether it fits Unify's signal/intent needs, and next steps", owner: "me", done: false },
+      { id: "ng-2", text: "Clarify NationGraph's delivery model (API vs. flat file), coverage (US public sector only?), and pricing — none captured yet", owner: "me", done: false },
+    ],
+    notes: [
+      "Category: public-sector procurement/buying intelligence + government decision-maker contact data",
+      "Oct 2 (Calendar + Gmail): 'Haley <> Chris' intro held Fri Oct 2, 2026, 4:00-4:30pm ET (Zoom). Organizer Christian Levan (chris@nationgraph.com); Haley invited (attendance marked optional). No Granola note and no recap email captured — transcript unavailable; follow up for content.",
+      "Company profile (web, Oct 2026): NationGraph — AI procurement intelligence for selling into government. Indexes ~110K government institutions + ~4M gov webpages; products: Signals (predictive gov buying intel), AI search w/ verified emails + direct phone for gov decision-makers, Public Record / FOIA automation. Founded 2024, Miami HQ (+ Toronto, SF). ~44 employees (Aug 2026). $18M Series A led by Menlo Ventures (Q4 2025); ~$22.5M total funding. Founders: Kimia Hamidi (CEO), Eden Ding (CTO).",
+      "NOTE (sweep attribution): added from calendar + email intel only; vendor category/fit inferred from public company profile, not from meeting content. Verify against follow-up before treating fit/pricing as established.",
+    ],
+    overallStatus: "active",
+    commercialStatus: null,
+    contacts: ["Christian Levan — chris@nationgraph.com"],
+  },
 ]
